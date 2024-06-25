@@ -1,6 +1,7 @@
 
 use clap::{Arg, Command};
 use std::io::stdin;
+use console::{Style, Key, Term};
 
 fn main() {
     let matches = Command::new("Bash Command Beautiful Executor")
@@ -26,10 +27,10 @@ fn main() {
     let noconfirm_flag = matches.get_flag("noconfirm");
 
     println!("Command: {}", command);
-    println!("noconfirm: {}", noconfirm_flag)
+    println!("noconfirm: {}", noconfirm_flag);
     loop {
-        let mut user_input = String::new();
-
+        let term = Term::stdout();
+        let mut user_input= Key::Unknown;
         if !noconfirm_flag {
             println!("Next Command: {}", command);
             println!();
@@ -38,7 +39,8 @@ fn main() {
             );
 
             // stdin().read_line(&mut user_input).unwrap();
-            let user_input = read_single_char().unwrap();
+            user_input = term.read_key().unwrap();
+            print!("Read char: {:?}", user_input);
 
             // // Move up three lines
             // execute!(
@@ -58,45 +60,45 @@ fn main() {
             // }
         }
 
-        // match user_input.to_lowercase().as_str() {
-        //     "" => {
-        //         if !force_param {
-        //             println!("Executing command:");
-        //         }
-        //         println!("{}", command);
+        match user_input{
+            Key::Char('\n') | Key::Enter => {
+                // if !force_param {
+                    // println!("Executing command:");
+                // }
+                println!("Command: {}", command);
 
-        //         let output = if result_flag {
-        //             ProcessCommand::new("sh")
-        //                 .arg("-c")
-        //                 .arg(command)
-        //                 .output()
-        //                 .expect("Failed to execute command")
-        //         } else {
-        //             ProcessCommand::new("sh")
-        //                 .arg("-c")
-        //                 .arg(command)
-        //                 .status()
-        //                 .expect("Failed to execute command");
-        //             continue;
-        //         };
+                // let output = if result_flag {
+                //     ProcessCommand::new("sh")
+                //         .arg("-c")
+                //         .arg(command)
+                //         .output()
+                //         .expect("Failed to execute command")
+                // } else {
+                //     ProcessCommand::new("sh")
+                //         .arg("-c")
+                //         .arg(command)
+                //         .status()
+                //         .expect("Failed to execute command");
+                //     continue;
+                // };
 
-        //         if result_flag {
-        //             println!("{}", String::from_utf8_lossy(&output.stdout));
-        //         }
-        //         break;
-        //     }
-        //     "n" => {
-        //         println!("Skipping command: {}", command);
-        //         break;
-        //     }
-        //     "q" => {
-        //         println!("Quitting script.");
-        //         std::process::exit(0);
-        //     }
-        //     _ => {
-        //         println!("Invalid input.");
-        //     }
-        // }
+                // if result_flag {
+                //     println!("{}", String::from_utf8_lossy(&output.stdout));
+                // }
+                break;
+            }
+            Key::Char('n') | Key::Char('N') => {
+                println!("Skipping command: {}", command);
+                break;
+            }
+            Key::Char('q') | Key::Char('Q') => {
+                println!("Quitting script.");
+                std::process::exit(0);
+            }
+            _ => {
+                println!("Invalid input.");
+            }
+        }
     }
 }
 
