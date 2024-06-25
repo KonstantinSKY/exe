@@ -1,33 +1,9 @@
+mod styles;
 
 use clap::{Arg, Command};
-use std::io::stdin;
-use console::{Style, Key, Term};
-trait ApplyStyle {
-    fn green(self) -> String;
-    fn cyan(self) -> String;
-    fn blue(self) -> String;
-    fn red(self) -> String;
-    fn yellow(self) -> String;
-}
+use console::{Key, Term};
+use styles::ApplyStyle;
 
-impl ApplyStyle for &str {
-    fn green(self) -> String {
-        Style::new().green().apply_to(self).to_string()
-    }
-    fn cyan(self) -> String {
-        Style::new().cyan().apply_to(self).to_string()
-    }
-    fn blue(self) -> String {
-        Style::new().blue().apply_to(self).to_string()
-    }
-    fn red(self) -> String {
-        Style::new().red().apply_to(self).to_string()
-    }
-    fn yellow(self) -> String {
-        Style::new().yellow().apply_to(self).to_string()
-    }
-
-}
 fn main() {
     let matches = Command::new("Bash Command Beautiful Executor")
         .version("0.1.0")
@@ -50,7 +26,6 @@ fn main() {
     
     let command = matches.get_one::<String>("command").unwrap();
     let noconfirm_flag = matches.get_flag("noconfirm");
-    let style = Style::new();
     println!("Command: {}", command);
     println!("noconfirm: {}", noconfirm_flag);
     loop {
