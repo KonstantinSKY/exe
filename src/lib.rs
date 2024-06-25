@@ -1,6 +1,6 @@
 #![warn(clippy::pedantic)]  
 
-mod styles;
+pub mod styles;
 
 use console::{Key, Term};
 use styles::ApplyStyle;
