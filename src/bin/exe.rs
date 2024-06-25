@@ -1,8 +1,11 @@
 extern crate exe as app;
 
 use clap::{Arg, Command};
+use app::styles;
 
 fn main() {
+    // styles::app_started();
+
     let matches = Command::new("Bash Command Beautiful Executor")
         .version("0.1.0")
         .about("Executes a bash command with an beautiful interface")
