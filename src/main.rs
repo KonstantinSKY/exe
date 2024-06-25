@@ -20,7 +20,7 @@ fn main() {
                 .help("Skips confirmation")
                 .short('n')
                 .long("noconfirm")
-                .action(clap::ArgAction::SetTrue),
+                .action(clap::ArgAction::SetFalse),
         )
         .get_matches();
     
