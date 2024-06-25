@@ -1,8 +1,18 @@
+#![warn(clippy::pedantic)]  
+
 mod styles;
 
-use clap::{Arg, Command};
+use clap::{Arg, Command, Error};
 use console::{Key, Term};
 use styles::ApplyStyle;
+use std::{io, process::{Command as ShellCommand, ExitStatus}};
+use crossterm::{
+    cursor,
+    event::{self, Event, KeyCode},
+    execute,
+    terminal::{self, ClearType},
+};
+
 
 fn main() {
     let matches = Command::new("Bash Command Beautiful Executor")
@@ -20,52 +30,60 @@ fn main() {
                 .help("Skips confirmation")
                 .short('n')
                 .long("noconfirm")
-                .action(clap::ArgAction::SetFalse),
+                .action(clap::ArgAction::SetTrue),
         )
         .get_matches();
     
     let command = matches.get_one::<String>("command").unwrap();
     let noconfirm_flag = matches.get_flag("noconfirm");
-    println!("Command: {}", command);
-    println!("noconfirm: {}", noconfirm_flag);
+    // println!("Command: {}", command);
+    // println!("noconfirm: {}", noconfirm_flag);
     loop {
+        if noconfirm_flag {
+            run_shell_command(command);
+            return;
+        }
+
+        println!("Next Command: {}", command.white_bold());
+        println!();
+        println!(
+            "Press {}: execute command; {}: skip; {}: force next steps; {}: quit script.",
+            "Enter".green(),
+            "N".yellow(),
+            "F".cyan(),
+            "Q".red()
+        );
+        
         let term = Term::stdout();
-        let mut user_input= Key::Unknown;
-        if !noconfirm_flag {
-            println!("Next Command: {}", command);
-            println!();
-            println!(
-                "Press {}: execute command; {}: skip; {}: force next steps; {}: quit script.",
-                "Enter".green(),
-                "N".yellow(),
-                "F".cyan(),
-                "Q".red()
-            );
+        // stdin().read_line(&mut user_input).unwrap();
+        let user_input = term.read_key().unwrap();
+        // print!("Read char: {:?}", user_input);
 
 
-            // stdin().read_line(&mut user_input).unwrap();
-            user_input = term.read_key().unwrap();
-            print!("Read char: {:?}", user_input);
+        clear_previous_lines(3);
+        // // Move up three lines
+        // execute!(
+        //     io::stdout(),
+        //     cursor::MoveUp(1),
+        //     terminal::Clear(ClearType::CurrentLine),
+        //     cursor::MoveUp(1),
+        //     terminal::Clear(ClearType::CurrentLine),
+        //     cursor::MoveUp(1),
+        //     terminal::Clear(ClearType::CurrentLine),
+        //     // terminal::Clear(ClearType::CurrentLine),
+        //     // terminal::Clear(ClearType::CurrentLine),
+        //     // cursor::MoveUp(3)
+        // )
+        // .unwrap();
 
-            // // Move up three lines
-            // execute!(
-            //     io::stdout(),
-            //     cursor::MoveUp(3),
-            //     terminal::Clear(ClearType::CurrentLine),
-            //     terminal::Clear(ClearType::CurrentLine),
-            //     terminal::Clear(ClearType::CurrentLine),
-            //     cursor::MoveUp(3)
-            // )
-            // .unwrap();
-
-            // if user_input.eq_ignore_ascii_case("f") {
+        //     // if user_input.eq_ignore_ascii_case("f") {
             //     force_param = true;
             //     println!("Force mode");
             //     continue;
             // }
-        }
+        // }
 
-        match user_input{
+        match user_input {
             Key::Char('\n') | Key::Enter => {
                 // if !force_param {
                     // println!("Executing command:");
@@ -79,12 +97,7 @@ fn main() {
                 //         .output()
                 //         .expect("Failed to execute command")
                 // } else {
-                //     ProcessCommand::new("sh")
-                //         .arg("-c")
-                //         .arg(command)
-                //         .status()
-                //         .expect("Failed to execute command");
-                //     continue;
+            run_shell_command(command); 
                 // };
 
                 // if result_flag {
@@ -107,3 +120,25 @@ fn main() {
     }
 }
 
+
+fn clear_previous_lines(lines: u16) {
+
+    // Clear each of those lines
+    for _ in 0..lines {
+        execute!(
+            io::stdout(),
+            cursor::MoveUp(1),
+            terminal::Clear(ClearType::CurrentLine),
+        )
+        .unwrap();
+    }
+}
+
+fn run_shell_command(command: &String){
+    ShellCommand::new("sh")
+    .arg("-c")
+    .arg(command)
+    .status()
+    .expect("Failed to execute command");
+}
+    
