@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 use console::Style;
+use std::env;
 
 
 pub trait ApplyStyle {
@@ -10,6 +11,7 @@ pub trait ApplyStyle {
     fn red(self) -> String;
     fn yellow(self) -> String;
     fn white_bold(self) -> String;
+    fn magenta_bold(self) -> String;
 }
 
 impl ApplyStyle for &str {
@@ -31,6 +33,9 @@ impl ApplyStyle for &str {
     fn white_bold(self) -> String {
         Style::new().white().bold().apply_to(self).to_string()
     }
+    fn magenta_bold(self) -> String {
+        Style::new().magenta().bold().apply_to(self).to_string()
+    }
 
 }
 
@@ -40,4 +45,9 @@ pub fn h1 (header_string: &str) {
 
 pub fn h2 (header_string: &str) {
     println!("\n{}\n", header_string.white_bold());
+}
+
+pub fn app_started() {
+    let binary_name = env::args().next().unwrap();
+    println!("{}: {}", "App started".yellow(), binary_name.magenta_bold());
 }
