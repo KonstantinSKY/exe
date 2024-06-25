@@ -33,3 +33,11 @@ impl ApplyStyle for &str {
     }
 
 }
+
+pub fn h1 (header_string: &str) {
+    println!("\n{}\n", header_string.to_uppercase().white_bold());
+}
+
+pub fn h2 (header_string: &str) {
+    println!("\n{}\n", header_string.white_bold());
+}
