@@ -2,7 +2,30 @@
 use clap::{Arg, Command};
 use std::io::stdin;
 use console::{Style, Key, Term};
+trait ApplyStyle {
+    fn green(self) -> String;
+    fn cyan(self) -> String;
+    fn blue(self) -> String;
+    fn red(self) -> String;
+}
 
+impl ApplyStyle for &str {
+    fn green(self) -> String {
+        Style::new().green().apply_to(self).to_string()
+    }
+
+    fn cyan(self) -> String {
+        Style::new().cyan().apply_to(self).to_string()
+    }
+
+    fn blue(self) -> String {
+        Style::new().blue().apply_to(self).to_string()
+    }
+
+    fn red(self) -> String {
+        Style::new().red().apply_to(self).to_string()
+    }
+}
 fn main() {
     let matches = Command::new("Bash Command Beautiful Executor")
         .version("0.1.0")
@@ -25,7 +48,7 @@ fn main() {
     
     let command = matches.get_one::<String>("command").unwrap();
     let noconfirm_flag = matches.get_flag("noconfirm");
-
+    let style = Style::new();
     println!("Command: {}", command);
     println!("noconfirm: {}", noconfirm_flag);
     loop {
@@ -35,8 +58,13 @@ fn main() {
             println!("Next Command: {}", command);
             println!();
             println!(
-                "Press Enter: execute command; N: skip; F: force next steps; Q: quit script."
+                "Press {}: execute command; {}: skip; {}: force next steps; {}: quit script.",
+                "Enter".green(),
+                "N".cyan(),
+                "F".blue(),
+                "Q".red()
             );
+
 
             // stdin().read_line(&mut user_input).unwrap();
             user_input = term.read_key().unwrap();
