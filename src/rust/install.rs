@@ -10,7 +10,7 @@ pub fn run(noconfirm_flag: bool) {
 
     h1("Rust & Ecosystem Installation and Setting");
 
-    h2("getting installation file");
+    h2("Getting installation file");
     exe(GET_SH_CMD, n);
 
     h2("Adding $PATH variable");
