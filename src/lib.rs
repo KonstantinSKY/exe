@@ -1,6 +1,9 @@
 #![warn(clippy::pedantic)]  
 
 pub mod styles;
+// pub mod insset;
+pub mod rust;
+pub mod sh;
 
 use console::{Key, Term};
 use styles::ApplyStyle;
@@ -10,10 +13,18 @@ use crossterm::{
     execute,
     terminal::{self, ClearType},
 };
+use clap::Arg;
 
+#[must_use] 
+pub fn arg_no_confirm() -> Arg {
+    Arg::new("noconfirm")
+    .help("Skip confirmation flag")
+    .short('n')
+    .long("noconfirm")
+    .action(clap::ArgAction::SetTrue)
+}
 
-pub fn exec (command: &String, noconfirm_flag: bool) {
-    styles::h1("Rust and ecosystem installation");
+pub fn exec (command: &str, noconfirm_flag: bool) {
     loop {
         if noconfirm_flag {
             run_shell_command(command);
@@ -23,35 +34,35 @@ pub fn exec (command: &String, noconfirm_flag: bool) {
         println!("Next Command: {}", command.white_bold());
         println!();
         println!(
-            "Press {}: execute command; {}: skip; {}: force next steps; {}: quit script.",
+            "Press {}: execute command; {}: skip; {} quit script.",
             "Enter".green(),
             "N".yellow(),
-            "F".cyan(),
+            // "F".cyan(),
             "Q".red()
         );
         
-        let term = Term::stdout();
-        let user_input = term.read_key().unwrap();
+        if let Ok(user_input) = Term::stdout().read_key() {
+            clear_previous_lines(3);
 
-
-        clear_previous_lines(3);
-
-        match user_input {
-            Key::Char('\n') | Key::Enter => {
-                run_shell_command(command); 
-                break;
+            match user_input {
+                Key::Char('\n') | Key::Enter => {
+                    run_shell_command(command); 
+                    break;
+                }
+                Key::Char('n' | 'N')  => {
+                    println!("{}: {}", "Skipping command".yellow(), command.white_bold());
+                    break;
+                }
+                Key::Char('q' | 'Q')  => {
+                    println!("Quitting script.");
+                    std::process::exit(0);
+                }
+                _ => {
+                    println!("Invalid input. ");
+                }
             }
-            Key::Char('n') | Key::Char('N') => {
-                println!("Skipping command: {}", command.white_bold());
-                break;
-            }
-            Key::Char('q') | Key::Char('Q') => {
-                println!("Quitting script.");
-                std::process::exit(0);
-            }
-            _ => {
-                println!("Invalid input.");
-            }
+        } else {
+            eprintln!("Failed to read input.");
         }
     }
 }
@@ -70,7 +81,7 @@ fn clear_previous_lines(lines: u16) {
     }
 }
 
-fn run_shell_command(command: &String){
+fn run_shell_command(command: &str){
     println!("{}: {} \n", "Command".blue(), command.white_bold());
 
     ShellCommand::new("sh")
