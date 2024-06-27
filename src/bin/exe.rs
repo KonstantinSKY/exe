@@ -15,8 +15,9 @@ fn main() {
         .get_matches();
 
     match matches.subcommand() {
-        Some(("sh", arg_matches)) => handle_sh_subcommand(arg_matches),
-        Some(("rust", arg_matches)) => handle_rust_subcommand(arg_matches),
+        Some(("sh", arg_matches)) => app::sh::handle(arg_matches),
+        Some(("rust", arg_matches)) => app::rust::handle(arg_matches),
+        
         _ => println!("No Function Found"),
     }
     
