@@ -3,6 +3,7 @@
 pub mod styles;
 pub mod rust;
 pub mod sh;
+pub mod mods;
 
 use clap::Arg;
 
