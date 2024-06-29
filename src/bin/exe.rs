@@ -11,13 +11,15 @@ fn main() {
         .arg_required_else_help(true)
         .subcommand(app::sh::commands())
         .subcommand(app::rust::commands())
-        .subcommand(app::mods::commands())
+        .subcommand(app::rust::mod_commands())
+        .subcommand(app::rust::app_commands())
         .get_matches();
 
     match matches.subcommand() {
         Some(("sh", arg_matches)) => app::sh::handle(arg_matches),
         Some(("rust", arg_matches)) => app::rust::handle(arg_matches),
-        Some(("mod", arg_matches)) => app::mods::handle(arg_matches),
+        Some(("mod", arg_matches)) => app::rust::mod_handle(arg_matches),
+        Some(("app", arg_matches)) => app::rust::app_handle(arg_matches),
 
         _ => println!("No Function Found"),
     }
