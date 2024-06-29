@@ -10,7 +10,9 @@ const SOURCE_DIR: &str = "src";
 
 pub fn run (module_name: &str) {
     h1("Creating new module in Rust project");
-    create_module_directory(SOURCE_DIR, module_name);
+    if create_module_directory(SOURCE_DIR, module_name){
+        return;
+    };
     create_module_directory(&format!("../{SOURCE_DIR}"), module_name);
     
 }
@@ -20,11 +22,11 @@ fn directory_exists(path_string: &str ) -> bool {
     path.is_dir()
 }
 
-fn create_module_directory(target_dir: &str, module_name: &str){
+fn create_module_directory(target_dir: &str, module_name: &str) -> bool{
     h2("Trying to create {module_name} in {target_dir}");
     if !directory_exists(target_dir) {
         println!("Target Directory '{target_dir}' does not exist.", );
-        return;   
+        return false;   
     }
     let module_path = Path::new(target_dir).join(module_name);
 
@@ -32,9 +34,12 @@ fn create_module_directory(target_dir: &str, module_name: &str){
         Ok(()) => {
             println!("Successfully created module directory: {module_path:?}");
             create_module_file(&module_path);
-            process::exit(0);
+            true
         }
-        Err(e) => eprintln!("Failed to create module directory: {e}"),
+        Err(e) => {
+            eprintln!("Failed to create module directory: {e}");
+            false
+        }
     }
 }
 
