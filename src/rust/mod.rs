@@ -6,11 +6,11 @@ use clap::{Command, Arg, ArgMatches};
 
 const SOURCE_DIR: &str = "src";
 
-
+pub const RUST: &str = "rust";
 
 #[must_use]
 pub fn commands() -> Command {
-    Command::new("rust")
+    Command::new(RUST)
         .about("Rust programming language commands")
         .arg_required_else_help(true)
         .subcommand(
