@@ -1,6 +1,7 @@
 #![warn(clippy::pedantic)]  
 
 pub mod styles;
+pub mod deploy; 
 pub mod rust;
 pub mod sh;
 
