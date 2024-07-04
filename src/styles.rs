@@ -9,6 +9,7 @@ pub trait ApplyStyle {
     fn blue(self) -> String;
     fn red(self) -> String;
     fn yellow(self) -> String;
+    fn white(self) -> String;
     fn white_bold(self) -> String;
     fn magenta_bold(self) -> String;
     fn bold(self) -> String;
@@ -29,6 +30,9 @@ impl ApplyStyle for &str {
     }
     fn yellow(self) -> String {
         Style::new().yellow().apply_to(self).to_string()
+    }
+    fn white(self) -> String {
+        Style::new().white().apply_to(self).to_string()
     }
     fn bold(self) -> String {
         Style::new().bold().apply_to(self).to_string()
