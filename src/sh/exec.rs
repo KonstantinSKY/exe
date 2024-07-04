@@ -15,7 +15,7 @@ pub fn exe (command: &str, noconfirm_flag: bool) {
             return;
         }
 
-        println!("{}: {}\n", "Next command".blue(),  command.white_bold());
+        println!("{}: {}\n", "Next command".blue(),  command.white());
         println!(
             "Press {}: execute command; {}: skip; {} quit script.",
             "Enter".green(),
@@ -33,7 +33,7 @@ pub fn exe (command: &str, noconfirm_flag: bool) {
                     break;
                 }
                 Key::Char('n' | 'N')  => {
-                    println!("{}: {}", "Skipping command".yellow(), command.white_bold());
+                    println!("{}: {}", "Skipping command".yellow(), command.white());
                     break;
                 }
                 Key::Char('q' | 'Q')  => {
@@ -65,7 +65,7 @@ fn clear_previous_lines(lines: u16) {
 }
 
 fn run_shell_command(command: &str){
-    println!("{}: {} \n", "Command".blue(), command.white_bold());
+    println!("{}: {} \n", "Command".blue(), command.white());
 
     ShellCommand::new("sh")
     .arg("-c")
