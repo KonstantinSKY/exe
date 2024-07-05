@@ -15,3 +15,12 @@ pub fn arg_no_confirm() -> Arg {
     .long("noconfirm")
     .action(clap::ArgAction::SetTrue)
 }
+
+#[must_use] 
+pub fn arg_version() -> Arg {
+    Arg::new("noconfirm")
+    .help("Skip confirmation flag")
+    .short('n')
+    .long("noconfirm")
+    .action(clap::ArgAction::SetTrue)
+}
