@@ -20,7 +20,8 @@ pub fn commands() -> Command {
         )
         .subcommand(mod_commands())
         .subcommand(app_commands())
-}
+        .arg(crate::arg_version())
+    }
 
 
 pub fn handle(arg_matches: &ArgMatches) {
@@ -31,7 +32,11 @@ pub fn handle(arg_matches: &ArgMatches) {
         Some(("app", sub_arg_matches)) => app_handle(sub_arg_matches),
         
         _ => {
-            eprintln!("No valid subcommand found for rust");
+            if arg_matches.get_flag("version") {
+                println!("Rust version: {}", env!("CARGO_PKG_VERSION"));
+            } else {
+                eprintln!("No valid subcommand found for rust");
+            }
         }
     }
 }
