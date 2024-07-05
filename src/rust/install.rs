@@ -19,11 +19,8 @@ pub fn run(noconfirm_flag: bool) {
     h2("Showing $PATH variable");
     exe("echo $PATH", true);
 
-    h2("Checking rustup Version");
-    exe("rustup --version", true);
-
-    h2("Checking Cargo Version");
-    exe("cargo --version", true);
+    h2("Checking installed Versions");
+    exe("rustc --version; rustup --version; cargo --version", true);
 
     h2("Update rustup to latest Version");
 
