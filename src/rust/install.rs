@@ -19,8 +19,9 @@ pub fn run(noconfirm_flag: bool) {
     h2("Showing $PATH variable");
     exe("echo $PATH", true);
 
-    h2("Checking installed Versions");
-    exe("rustc --version; rustup --version; cargo --version", true);
+    // h2("Checking installed Versions");
+    // exe("rustc --version; rustup --version; cargo --version", true);
+    versions();
 
     h2("Update rustup to latest Version");
 
@@ -28,4 +29,9 @@ pub fn run(noconfirm_flag: bool) {
 
     h2("Open Local Documentation");
     exe("rustup doc", n);
+}
+
+pub fn versions(){
+    h2("Checking installed Versions");
+    exe("rustc --version; rustup --version; cargo --version", true);
 }
