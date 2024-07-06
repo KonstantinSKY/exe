@@ -50,6 +50,9 @@ pub fn exe (command: &str, noconfirm_flag: bool) {
     }
 }
 
+pub fn print_cmd(command: &str){
+    println!("{}: {} \n", "Command".blue(), command.white());
+}
 
 fn clear_previous_lines(lines: u16) {
 
@@ -65,8 +68,7 @@ fn clear_previous_lines(lines: u16) {
 }
 
 fn run_shell_command(command: &str){
-    println!("{}: {} \n", "Command".blue(), command.white());
-
+    print_cmd(command);
     ShellCommand::new("sh")
     .arg("-c")
     .arg(command)
