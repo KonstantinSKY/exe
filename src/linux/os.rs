@@ -2,13 +2,22 @@
 
 use std::process::Command;
 
+
 use super::manjaro;
 
 pub fn update() {
     match get().as_str() {
-        "Manjaro" => manjaro::packages::update::run(),
+        "Manjaro" => manjaro::packages::update(),
         "Unknown" => println!("Unknown operating system"),
         _ => println!("OS not supported for update"),
+    }
+}
+
+pub fn install(packages: &str){
+    match get().as_str() {
+        "Manjaro" => manjaro::packages::install(packages),
+        "Unknown" => println!("Unknown operating system"),
+        _ => println!("OS not supported for install"),
     }
 }
 
@@ -42,5 +51,10 @@ mod tests {
 
         // Asserting the OS is either "Ubuntu" or "Manjaro" or "Unknown" as per current implementation
         assert!(os == "Ubuntu" || os == "Manjaro" || os == "Unknown");
+    }
+
+    #[test]
+    fn test_install() {
+    install("gimp partitionmanager")
     }
 }
