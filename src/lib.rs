@@ -5,6 +5,7 @@ pub mod deploy;
 pub mod rust;
 pub mod sh;
 pub mod linux;
+pub mod code;
 
 use clap::Arg;
 
