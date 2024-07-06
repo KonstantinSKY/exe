@@ -33,7 +33,7 @@ pub fn handle(arg_matches: &ArgMatches) {
         
         _ => {
             if arg_matches.get_flag("version") {
-                println!("Rust version: {}", env!("CARGO_PKG_VERSION"));
+                install::versions();
             } else {
                 eprintln!("No valid subcommand found for rust");
             }
