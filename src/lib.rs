@@ -4,6 +4,7 @@ pub mod styles;
 pub mod deploy; 
 pub mod rust;
 pub mod sh;
+pub mod linux;
 
 use clap::Arg;
 
@@ -18,9 +19,9 @@ pub fn arg_no_confirm() -> Arg {
 
 #[must_use] 
 pub fn arg_version() -> Arg {
-    Arg::new("noconfirm")
-    .help("Skip confirmation flag")
-    .short('n')
-    .long("noconfirm")
+    Arg::new("version")
+    .help("Show versions")
+    .short('v')
+    .long("version")
     .action(clap::ArgAction::SetTrue)
 }
