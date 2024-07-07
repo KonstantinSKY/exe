@@ -14,11 +14,12 @@ pub fn commands() -> Command {
 
 
 pub fn handle(_arg_matches: &ArgMatches) {
-    deploy();
+    deploy(true);
 }
 
 
-fn deploy() {
+fn deploy(no_confirm_flag: bool) {
+    let n = no_confirm_flag;
     h1("Deploy exe binary");
 
     h2("Building exe binary file");
@@ -26,13 +27,13 @@ fn deploy() {
 
 
     h2("Copying exe to ./local/bin");
-    exe("cp target/release/exe $HOME/.local/bin/exe -v", false); 
+    exe("cp target/release/exe $HOME/.local/bin/exe -v", n); 
 
     h2("Copying exe to Tools/bin");
-    exe("cp target/release/exe $HOME/Tools/bin/exe -v", false); 
+    exe("cp target/release/exe $HOME/Tools/bin/exe -v", n); 
 
     h2("Commit and pushing Tools directory");
-    exe("git -C $HOME/Tools add . -v", false);
-    exe("git -C $HOME/Tools commit -av -m 'exe util update'", false);
-    exe("git -C $HOME/Tools push -v", false);
+    exe("git -C $HOME/Tools add . -v", n);
+    exe("git -C $HOME/Tools commit -av -m 'exe util update'", n);
+    exe("git -C $HOME/Tools push -v", n);
 }
