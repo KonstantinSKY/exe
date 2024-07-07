@@ -15,7 +15,7 @@ const EXTENSIONS: [&str; 10] = [
     "bungcip.better-toml",
     "serayuzgur.crates",
     "treetsidesoftware.code-spell-checker",
-    "",
+    "ms-azuretools.vscode-docker",
     "",
     "",
 ];
