@@ -17,6 +17,7 @@ fn main() {
         .subcommand(app::rust::app_commands())
         .subcommand(app::deploy::commands())
         .subcommand(app::sh::kill_commands())
+        .subcommand(app::code::commands())
         .get_matches();
 
     match matches.subcommand() {
@@ -26,6 +27,7 @@ fn main() {
         Some(("app", arg_matches)) => app::rust::app_handle(arg_matches),
         Some(("deploy", arg_matches)) => app::deploy::handle(arg_matches),
         Some(("kill", arg_matches)) => app::sh::kill_handle(arg_matches),
+        Some(("code", arg_matches)) => app::code::handle(arg_matches),
 
         _ => println!("No Function Found"),
     }
