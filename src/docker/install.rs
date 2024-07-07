@@ -32,7 +32,9 @@ pub fn run(){
     h2("Restarting SHELL");
     exe("su $USER", true);
     
-    
+}
+
+pub fn hello(){
     h2("Checking Docker by Hello world (test Image)");
     exe("docker run hello-world", false);
 }

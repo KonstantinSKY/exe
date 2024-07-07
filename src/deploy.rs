@@ -33,7 +33,9 @@ fn deploy(no_confirm_flag: bool) {
     exe("cp target/release/exe $HOME/Tools/bin/exe -v", n); 
 
     h2("Commit and pushing Tools directory");
-    exe("git -C $HOME/Tools add . -v", n);
-    exe("git -C $HOME/Tools commit -av -m 'exe util update'", n);
-    exe("git -C $HOME/Tools push -v", n);
+    let cmd = "git -C $HOME/Tools";
+    exe(&format!("{cmd} pull -v"), n);
+    exe(&format!("{cmd} add . -v"), n);
+    exe(&format!("{cmd} commit -av -m 'exe util update'"), n);
+    exe(&format!("{cmd} push -v"), n);
 }
