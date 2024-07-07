@@ -5,13 +5,22 @@ use crate::{
     sh::exec::{exe, print_cmd},
     styles::{h1, h2},
 };
-pub fn run() {
+pub fn update() {
     h1("System update");
     if  check() {
         return;
     };
-    exe("sudo pamac upgrade -a --no-confirm", false)
+    exe("sudo pamac upgrade -a --no-confirm", false);
 }
+
+pub fn install(packages: &str){
+    update();
+    h2("Installing");
+    let cmd = format!("sudo pamac install {packages} --no-confirm ");
+    exe(&cmd, false);
+
+}
+
 
 const UP_TO_DATE_MESSAGE: &str = "Your system is up to date.";
 
@@ -38,7 +47,7 @@ fn check() -> bool {
     } else {
         // Convert the stderr bytes to a string and print it
         let stderr = str::from_utf8(&output.stderr).expect("Invalid UTF-8 sequence");
-        eprintln!("Error:\n{}", stderr);
+        eprintln!("Error:\n{stderr}");
     }
 
     false
@@ -50,7 +59,12 @@ mod tests {
 
     #[test]
     fn test_run() {
-        run();
+        update();
+    }
+
+    #[test]
+    fn test_install() {
+        install("gimp vlc");
     }
 
     #[test]
