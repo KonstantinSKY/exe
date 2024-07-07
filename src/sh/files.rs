@@ -33,15 +33,12 @@ pub fn slink(source: &str, link: &str) {
     }
     println!("Link path: {link_path:?}");
 
-    if Path::new("~/.config/Code - OSS/User/").exists(){
-        println!("!!!! exits");
-    }
 
     if link_path.exists(){
         println!("{link_path:?} is exists");
         move_to_old(link);
     }
-    
+   
     if !source_path.exists(){
         eprintln!("!!! Error: Source not exist: {source_path:?}");
         return;
@@ -52,3 +49,5 @@ pub fn slink(source: &str, link: &str) {
         println!("Symlink successfully created");
     }
 }
+
+
