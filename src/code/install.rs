@@ -1,3 +1,5 @@
+use std::env;
+
 use crate::linux::os;
 use crate::{
     sh::exec::exe,
@@ -18,10 +20,10 @@ const EXTENSIONS: [&str; 10] = [
     "",
 ];
 
-const CONFIG_PATH: &str = "~/.config/Code - OSS/User/";
-const CONFIG_SOURCE_PATH: &str = "~/Work/Configs/vscode/";
+const CONFIG_PATH: &str = ".config/Code - OSS/User/";
+const CONFIG_SOURCE_PATH: &str = "Work/Configs/vscode/";
 
-const CONFIG_FILES: [&str; 3] = ["setting.json", "keybinding.json", ""];
+const CONFIG_FILES: [&str; 3] = ["settings.json", "keybindings.json", ""];
 
 pub fn run() {
     h1("VS Code install and setup");
@@ -34,16 +36,30 @@ pub fn run() {
         if ext.is_empty() {
             continue;
         }
-        exe(ext, false);
+        exe(&format!("code --install-extension {ext}"), false);
     }
     h2("Creating configs symbolic links");
+
+    let home_dir = env::var("HOME").unwrap_or_default();
     for file in CONFIG_FILES {
         if file.is_empty() {
             continue;
         }
         files::slink(
-            &format!("{CONFIG_SOURCE_PATH}/{file}"),
-            &format!("{CONFIG_PATH}/{file}"),
+            &format!("{home_dir}/{CONFIG_SOURCE_PATH}{file}"),
+            &format!("{home_dir}/{CONFIG_PATH}{file}"),
         );
     }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_run() {
+        run();
+    }
+
 }
