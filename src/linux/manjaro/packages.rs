@@ -7,22 +7,21 @@ use crate::{
 };
 pub fn update() {
     h1("System update");
-    if  check() {
+    if check() {
         return;
     };
     exe("sudo pamac upgrade -a --no-confirm", false);
+    update();
 }
 
-pub fn install(packages: &str){
+pub fn install(packages: &str) {
     update();
     h2("Installing");
     let cmd = format!("sudo pamac install {packages} --no-confirm ");
     exe(&cmd, false);
-
 }
 
-
-const UP_TO_DATE_MESSAGE: &str = "Your system is up to date.";
+// const UP_TO_DATE_MESSAGE: &str = "Your system is up to date.";
 
 fn check() -> bool {
     h2("Checking for update");
@@ -33,24 +32,7 @@ fn check() -> bool {
         .arg("-a")
         .output()
         .expect("Failed to execute command");
-
-    if output.status.success() {
-        // Convert the stdout bytes to a string
-        let stdout = str::from_utf8(&output.stdout).unwrap();
-
-        // Check for the specific string
-        if stdout.contains(UP_TO_DATE_MESSAGE) {
-            println!("{UP_TO_DATE_MESSAGE}");
-            return true;
-        }
-        println!("{stdout}");
-    } else {
-        // Convert the stderr bytes to a string and print it
-        let stderr = str::from_utf8(&output.stderr).expect("Invalid UTF-8 sequence");
-        eprintln!("Error:\n{stderr}");
-    }
-
-    false
+    output.status.success()
 }
 
 #[cfg(test)]
