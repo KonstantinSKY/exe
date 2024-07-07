@@ -36,7 +36,7 @@ fn get() -> String {
         _ => "Unknown", // Default case
     };
 
-    println!("OS: {}", os_name);
+    println!("OS: {os_name}");
     os_name.to_string()
 }
 
@@ -47,7 +47,7 @@ mod tests {
     #[test]
     fn test_get_os() {
         let os = get();
-        println!("Identified OS in test: {}", os);
+        println!("Identified OS in test: {os}");
 
         // Asserting the OS is either "Ubuntu" or "Manjaro" or "Unknown" as per current implementation
         assert!(os == "Ubuntu" || os == "Manjaro" || os == "Unknown");
@@ -55,6 +55,6 @@ mod tests {
 
     #[test]
     fn test_install() {
-    install("gimp partitionmanager")
+    install("gimp partitionmanager");
     }
 }
