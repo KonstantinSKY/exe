@@ -1,6 +1,7 @@
 
 use console::{Key, Term};
-use crate::styles::ApplyStyle;
+use crate::prelude::*;
+// use crate::styles::ApplyStyle;
 use std::{io, process::Command as ShellCommand};
 use crossterm::{
     cursor,
