@@ -1,4 +1,4 @@
-use crate::styles::{h1, h2};
+use crate::prelude::*;
 use std::{
     fs::{self, File},
     path::Path,
@@ -6,7 +6,7 @@ use std::{
 
 
 pub fn run (source_dir: &str, module_name: &str) -> bool {
-    h1("New module in Rust project");
+    H1!("New module in Rust project");
     
     let source_path = Path::new(source_dir);
     if !source_path.is_dir(){
@@ -16,7 +16,7 @@ pub fn run (source_dir: &str, module_name: &str) -> bool {
 
     let module_path =source_path.join(module_name);
 
-    h2("Creating module directory");
+    h2!("Creating module directory: {:?}", &module_path);
     match fs::create_dir(&module_path) {
         Ok(()) => {
             println!("Successfully created module directory: {module_path:?}");
@@ -32,7 +32,7 @@ pub fn run (source_dir: &str, module_name: &str) -> bool {
 
 
 fn create_module_file(target_path: &Path){
-    h2("Creating file mod.rs");
+    h2!("Creating file mod.rs");
     let file_path = target_path.join("mod.rs");
 
     match File::create(&file_path) {
