@@ -1,6 +1,6 @@
 pub mod exec;
 pub mod kill;
-// pub mod files;
+pub mod files;
 
 use clap::{Arg, Command, ArgMatches};
 

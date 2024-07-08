@@ -2,8 +2,8 @@
 
 pub mod prelude;
 pub mod styles;
-// pub mod deploy; 
-// pub mod rust;
+pub mod deploy; 
+pub mod rust;
 pub mod sh;
 pub mod linux;
 // pub mod code;

@@ -1,13 +1,23 @@
 
-use console::{Key, Term};
 use crate::prelude::*;
-// use crate::styles::ApplyStyle;
+use console::{Key, Term};
 use std::{io, process::Command as ShellCommand};
 use crossterm::{
     cursor,
     execute,
     terminal::{self, ClearType},
 };
+
+#[macro_export]
+macro_rules! exe {
+    ($command:expr) => {
+        $crate::sh::exec::exe($command, false);
+    };
+    ($command:expr, $noconfirm_flag:expr) => {
+        $crate::sh::exec::exe($command, $noconfirm_flag);
+    };
+}
+
 
 pub fn exe (command: &str, noconfirm_flag: bool) {
     loop {
@@ -51,10 +61,6 @@ pub fn exe (command: &str, noconfirm_flag: bool) {
     }
 }
 
-pub fn print_cmd(command: &str){
-    println!("{}: {} \n", "Command".blue(), command.white());
-}
-
 fn clear_previous_lines(lines: u16) {
 
     // Clear each of those lines
@@ -69,7 +75,7 @@ fn clear_previous_lines(lines: u16) {
 }
 
 fn run_shell_command(command: &str){
-    print_cmd(command);
+    cmd!("{command}");
     ShellCommand::new("sh")
     .arg("-c")
     .arg(command)

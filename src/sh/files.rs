@@ -1,5 +1,5 @@
-use super::exec::exe;
-use crate::styles::h2;
+
+use crate::prelude::*;
 use std::fs;
 use std::path::Path;
 
@@ -8,17 +8,15 @@ pub fn move_to_old(filename: &str) {
 
     // Check if the file exists
     if fs::metadata(filename).is_ok() {
-        h2(&format!(
-            "Moving existing file {filename} to {old_filename}",
-        ));
+        h2!("Moving existing file {filename} to {old_filename}");
         let cmd: &str = &format!("mv '{filename}' '{old_filename}'");
-        exe(cmd, true);
+        exe!(cmd, true);
         // Execute the move command
     }
 }
 
 pub fn slink(source: &str, link: &str) {
-    h2(&format!("Creating Symbolic link: {link} -> {source}"));
+    h2!("Creating Symbolic link: {link} -> {source}");
     let link_path = Path::new(link);
     let source_path = Path::new(source);
     if link_path.is_symlink(){
@@ -44,7 +42,7 @@ pub fn slink(source: &str, link: &str) {
         return;
     }
 
-    exe(&format!("ln -sf '{source}' '{link}' && readlink -f '{link_path:?}'"),  true);
+    exe!("ln -sf '{source}' '{link}' && readlink -f '{link_path:?}",  true);
     if link_path.is_symlink(){
         println!("Symlink successfully created");
     }

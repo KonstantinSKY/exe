@@ -18,6 +18,12 @@ macro_rules! h2 {
     };
 }
 
+#[macro_export]
+macro_rules! cmd {
+    ($($arg:tt)*) => {
+        println!("{}: {}", "Command".blue(), format!($($arg)*).white());
+    };
+}
 // pub trait ApplyStyle {
 //     fn green(self) -> String;
 //     fn cyan(self) -> String;
