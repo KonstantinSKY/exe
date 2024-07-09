@@ -1,6 +1,6 @@
 use crate::prelude::*;
-use std::{env, str, fs};
 use std::process::Command;
+use std::{env, fs, str};
 
 const LABEL: &str = "Work";
 const DIR: &str = "Work";
@@ -45,41 +45,44 @@ pub fn mount() {
             return;
         }
     };
-    
+
     if fstab_content.contains(&uuid) {
         println!("An entry for this UUID ({uuid}) already exists in /etc/fstab.");
         return;
     }
     // Backup the current fstab
     h2!("Backup the current fstab");
-    exe!(&format!("cp {FSTAB_PATH} {FSTAB_PATH}.bak"));
+    exe!(&format!(
+        "sudo cp {FSTAB_PATH} {FSTAB_PATH}.bak; ls {FSTAB_PATH}.bak"
+    ));
 
     // Add the entry to fstab
     println!("h2 Adding the entry to fstab");
     let new_entry = format!("UUID={uuid} {dir} {FS_TYPE} {OPTIONS} {DUMP} {PASS}\n");
 
     h2!("Adding the entry to fstab: {new_entry}");
-    exe!(&format!("echo '{new_entry}' | sudo tee -a /etc/fstab > /dev/null"));
-
+    exe!(&format!(
+        "echo '{new_entry}' | sudo tee -a /etc/fstab > /dev/null"
+    ));
 
     h2!("Verifying fstab file");
     exe!("sudo findmnt --verify");
-    
+
     h2!("Reviewing the file {FSTAB_PATH}");
     exe!(&format!("cat {FSTAB_PATH}"), true);
-    
+
     h2!("Reloading daemon to use new fstab");
-    exe!("systemctl daemon-reload");
+    exe!("sudo systemctl daemon-reload");
 
     h2!("Mounting all and check it");
     exe!("sudo mount -a; mount");
-    
+
     let user = env::var("USER").unwrap_or_else(|_| String::new());
     h2!("Setting full access to mounted drive for user: {user}");
-    exe!(&format!("sudo chown -R {user}:{user} {dir} && sudo chmod -R 700 {dir} && ls -la {dir}"));
-
+    exe!(&format!(
+        "sudo chown -R {user}:{user} {dir} && sudo chmod -R 700 {dir} && ls -la ~ ; ls -la {dir}"
+    ));
 }
-
 
 fn find_device(label: &str) -> Option<String> {
     let output = Command::new("sudo")
@@ -111,36 +114,37 @@ fn find_device(label: &str) -> Option<String> {
     }
 }
 
-fn get_uuid(drive: &str) ->Option<String>{
+fn get_uuid(drive: &str) -> Option<String> {
     let output = Command::new("sudo")
-    .arg("blkid")
-    .arg("-s")
-    .arg("UUID")
-    .arg("-o")
-    .arg("value")
-    .arg(drive)
-    .output();
+        .arg("blkid")
+        .arg("-s")
+        .arg("UUID")
+        .arg("-o")
+        .arg("value")
+        .arg(drive)
+        .output();
 
     match output {
-        Ok(output) if output.status.success() => {
-            match str::from_utf8(&output.stdout) {
-                Ok(uuid) => {
-                    let uuid = uuid.trim().to_string();
-                    if uuid.is_empty() {
-                        eprintln!("UUID not found for drive: {drive}");
-                        None
-                    } else {
-                        Some(uuid)
-                    }
-                }
-                Err(err) => {
-                    eprintln!("Failed to parse UUID output for drive {drive}: {err}");
+        Ok(output) if output.status.success() => match str::from_utf8(&output.stdout) {
+            Ok(uuid) => {
+                let uuid = uuid.trim().to_string();
+                if uuid.is_empty() {
+                    eprintln!("UUID not found for drive: {drive}");
                     None
+                } else {
+                    Some(uuid)
                 }
             }
-        }
+            Err(err) => {
+                eprintln!("Failed to parse UUID output for drive {drive}: {err}");
+                None
+            }
+        },
         Ok(output) => {
-            eprintln!("blkid command failed for drive {drive}: {}", String::from_utf8_lossy(&output.stderr));
+            eprintln!(
+                "blkid command failed for drive {drive}: {}",
+                String::from_utf8_lossy(&output.stderr)
+            );
             None
         }
         Err(err) => {
@@ -161,7 +165,6 @@ mod tests {
 
     #[test]
     fn test_get_uuid() {
-        
         get_uuid(&find_device(LABEL).unwrap());
     }
 }
