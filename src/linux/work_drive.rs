@@ -26,7 +26,7 @@ pub fn mount() {
     };
 
     h2!("Creating work directory: {dir}");
-    exe!(&format!("mkdir -p {dir}; ls -la {dir}"), true);
+    exe!(&format!("mkdir -p {dir}; ls -la {dir}"));
 
     h2!("Mounting {drive} to directory: {DIR}");
     exe!(&format!("sudo mount '{drive}' '{DIR}'"));
@@ -46,7 +46,7 @@ pub fn mount() {
         println!("UUID: {uuid}");
         uuid
     } else {
-        println!("No valid uuid found.");
+        eprintln!("No valid uuid found.");
         return;
     };
 
@@ -120,11 +120,12 @@ fn get_uuid(drive: &str) ->Option<String>{
         Ok(output) if output.status.success() => {
             match str::from_utf8(&output.stdout) {
                 Ok(uuid) => {
-                    if uuid.trim().is_empty() {
+                    let uuid = uuid.trim().to_string();
+                    if uuid.is_empty() {
                         eprintln!("UUID not found for drive: {drive}");
                         None
                     } else {
-                        Some(uuid.to_string())
+                        Some(uuid)
                     }
                 }
                 Err(err) => {
