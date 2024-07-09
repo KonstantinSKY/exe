@@ -1,31 +1,29 @@
 use std::process::Command as ShellCommand;
 use std::str;
 
-use crate::{
-    sh::exec::{exe, print_cmd},
-    styles::{h1, h2},
-};
+use crate::prelude::*;
+
 pub fn update() {
-    h1("System update");
+    H1!("System update");
     if check() {
         return;
     };
-    exe("sudo pamac upgrade -a --no-confirm", false);
+    exe!("sudo pamac upgrade -a --no-confirm", false);
     update();
 }
 
 pub fn install(packages: &str) {
     update();
-    h2("Installing");
+    h2!("Installing");
     let cmd = format!("sudo pamac install {packages} --no-confirm ");
-    exe(&cmd, false);
+    exe!(&cmd, false);
 }
 
 // const UP_TO_DATE_MESSAGE: &str = "Your system is up to date.";
 
 fn check() -> bool {
-    h2("Checking for update");
-    print_cmd("pamac checkupdates -a");
+    h2!("Checking for update");
+    cmd!("pamac checkupdates -a");
 
     let output = ShellCommand::new("pamac")
         .arg("checkupdates")

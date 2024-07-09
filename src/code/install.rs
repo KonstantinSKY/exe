@@ -1,11 +1,8 @@
+use crate::prelude::*;
 use std::env;
 
 use crate::linux::os;
-use crate::{
-    sh::exec::exe,
-    sh::files,
-    styles::{h1, h2},
-};
+use crate::sh::files;
 
 const EXTENSIONS: [&str; 10] = [
     "vscodevim.vim",
@@ -26,19 +23,19 @@ const CONFIG_SOURCE_PATH: &str = "Work/Configs/vscode/";
 const CONFIG_FILES: [&str; 3] = ["settings.json", "keybindings.json", ""];
 
 pub fn run() {
-    h1("VS Code install and setup");
+    H1!("VS Code install and setup");
 
-    h2("Installing VS Code");
+    h2!("Installing VS Code");
     os::install("code");
 
-    h2("Installing VS Code Extensions");
+    h2!("Installing VS Code Extensions");
     for ext in EXTENSIONS {
         if ext.is_empty() {
             continue;
         }
-        exe(&format!("code --install-extension {ext}"), false);
+        exe!(&format!("code --install-extension {ext}"), false);
     }
-    h2("Creating configs symbolic links");
+    h2!("Creating configs symbolic links");
 
     let home_dir = env::var("HOME").unwrap_or_default();
     for file in CONFIG_FILES {
@@ -52,7 +49,6 @@ pub fn run() {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -61,5 +57,4 @@ mod tests {
     fn test_run() {
         run();
     }
-
 }
