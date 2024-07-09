@@ -4,7 +4,7 @@ use std::str;
 use crate::prelude::*;
 
 pub fn update() {
-    H1!("System update");
+    H1!("System update with pamac");
     if check() {
         return;
     };
@@ -17,6 +17,23 @@ pub fn install(packages: &str) {
     h2!("Installing");
     let cmd = format!("sudo pamac install {packages} --no-confirm ");
     exe!(&cmd, false);
+}
+
+pub fn get_mirrors() {
+    H1!("Repository mirrors update");
+
+    h2!("Showing mirrors status");
+    exe!("pacman-mirrors --status", true);
+
+    h2!("Searching and updating fastest");
+    exe!("sudo pacman-mirrors --fasttrack");
+
+    h2!("Showing New status of mirrors pool");
+    exe! ("pacman-mirrors --status", true);
+
+    
+    h2!("Fast update with pacman");
+    exe!("sudo pacman -Suy --noconfirm");
 }
 
 // const UP_TO_DATE_MESSAGE: &str = "Your system is up to date.";

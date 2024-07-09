@@ -21,6 +21,14 @@ pub fn install(packages: &str){
     }
 }
 
+pub fn mirrors(){
+    match get().as_str() {
+        "Manjaro" => manjaro::packages::get_mirrors(),
+        "Unknown" => println!("Unknown operating system"),
+        _ => println!("OS not supported for install"),
+    }
+}
+
 fn get() -> String {
    // Run the hostnamectl command and capture the output
    let hostname = Command::new("hostnamectl")

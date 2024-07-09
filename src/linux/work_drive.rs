@@ -38,18 +38,6 @@ pub fn mount() {
         return;
     };
 
-
-    
-
-    h2!("Checking mounted drive: {drive}");
-    exe!(&format!("mount | grep {DIR}"), true);
-    
-    let user = env::var("USER").unwrap_or_else(|_| String::new());
-    h2!("Setting full access to mounted drive for user: {user}");
-    exe!(&format!("sudo chown -R {user}:{user} {dir} && sudo chmod -R 700 {dir} && ls -la {dir}"));
-
-
-
     let fstab_content = match fs::read_to_string(FSTAB_PATH) {
         Ok(content) => content,
         Err(err) => {
@@ -75,13 +63,20 @@ pub fn mount() {
 
 
     h2!("Verifying fstab file");
-    exe!("sudo findmmt --verify");
+    exe!("sudo findmnt --verify");
     
     h2!("Reviewing the file {FSTAB_PATH}");
     exe!(&format!("cat {FSTAB_PATH}"), true);
+    
+    h2!("Reloading daemon to use new fstab");
+    exe!("systemctl daemon-reload");
 
     h2!("Mounting all and check it");
     exe!("sudo mount -a; mount");
+    
+    let user = env::var("USER").unwrap_or_else(|_| String::new());
+    h2!("Setting full access to mounted drive for user: {user}");
+    exe!(&format!("sudo chown -R {user}:{user} {dir} && sudo chmod -R 700 {dir} && ls -la {dir}"));
 
 }
 
