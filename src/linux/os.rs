@@ -71,8 +71,8 @@ pub fn setup() {
 
         exe!(&format!("mkdir -p {source}"), true);
         sh::files::slink(source, link);
-        setup_rc();
     }
+    setup_rc();
 }
 
 fn is_empty_dir(path: &Path) -> bool {
@@ -110,10 +110,12 @@ fn setup_rc() {
             }
         };
         h2!("Adding link string");
-        if !file_content.contains(&include_string) {
-            exe!(&format!("echo {include_string} | tee -a {target_path:?}"));
-        }
+        if file_content.contains(&include_string) {
+            println!("The file {target_path:?} already has: {include_string}");
+            continue;
+        };
 
+        exe!(&format!("echo {include_string} | tee -a {target_path:?}"));
         h2!("Checking if added");
         exe!(&format!("tail -n 2 {target_path:?}"), true); 
     
