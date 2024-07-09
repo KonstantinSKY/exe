@@ -15,6 +15,8 @@ pub fn commands() -> Command {
         .subcommand(Command::new("mount_work").about("Mount Work Disk to Work Directory"))
         .subcommand(Command::new("update").about("Update Linux System (fast) "))
         .subcommand(Command::new("mirrors").about("Update Linux Repository mirrors"))
+        
+        .subcommand(Command::new("setup").about("Common Linux Setups"))
 }
 
 pub fn handle(arg_matches: &ArgMatches) {
@@ -22,6 +24,8 @@ pub fn handle(arg_matches: &ArgMatches) {
         Some(("mount_work", _sub_matches)) => work_drive::mount(),
         Some(("update", _sub_matches)) => os::update(),
         Some(("mirrors", _sub_matches)) => os::mirrors(),
+        Some(("setup", _sub_matches)) => os::setup(),
+
         _ => eprintln!("No valid subcommand found"),
     }
 }

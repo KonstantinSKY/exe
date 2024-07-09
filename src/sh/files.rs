@@ -42,7 +42,7 @@ pub fn slink(source: &str, link: &str) {
         return;
     }
 
-    exe!("ln -sf '{source}' '{link}' && readlink -f '{link_path:?}",  true);
+    exe!(&format!("ln -sf {source} {link} && readlink -f {link_path:?}"),  true);
     if link_path.is_symlink(){
         println!("Symlink successfully created");
     }

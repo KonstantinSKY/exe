@@ -1,7 +1,7 @@
 
 
 
-pub fn run(){
-    H1!("Manjaro Setup")
+// pub fn run(){
+//     H1!("Manjaro Setup")
 
-}
+// }
