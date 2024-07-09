@@ -1,6 +1,7 @@
 
-
+use crate::prelude::*;
 use std::process::Command;
+
 
 
 use super::manjaro;
@@ -28,6 +29,16 @@ pub fn mirrors(){
         _ => println!("OS not supported for install"),
     }
 }
+
+pub fn setup(){
+    H1!("Linux setup");
+    h2!("Cloning config repository to Work directory");
+    let dir = env::var("HOME").unwrap_or(String::new())+ "/"+ WORK_DIR;
+    exe!(&format!("git clone {CONFIG_REPO} {dir}; ls -la {dir}"));
+
+
+}   
+
 
 fn get() -> String {
    // Run the hostnamectl command and capture the output
