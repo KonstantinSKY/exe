@@ -19,6 +19,7 @@ fn main() {
         .subcommand(app::sh::kill_commands())
         .subcommand(app::code::commands())
         .subcommand(app::docker::commands())
+        .subcommand(app::linux::commands())
         .get_matches();
 
     match matches.subcommand() {
@@ -30,6 +31,7 @@ fn main() {
         Some(("kill", arg_matches)) => app::sh::kill_handle(arg_matches),
         Some(("code", arg_matches)) => app::code::handle(arg_matches),
         Some(("docker", arg_matches)) => app::docker::handle(arg_matches),
+        Some(("linux", arg_matches)) => app::linux::handle(arg_matches),
 
         _ => println!("No Function Found"),
     }

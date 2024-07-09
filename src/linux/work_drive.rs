@@ -18,7 +18,7 @@ pub fn mount() {
     cmd!("sudo findfs LABEL={LABEL}");
 
     let drive = if let Some(drive) = find_device(LABEL) {
-        println!("Using drive: {drive}");
+        println!("Found drive: {drive}");
         drive
     } else {
         println!("No valid drive found.");
@@ -50,7 +50,14 @@ pub fn mount() {
         return;
     };
 
-    let fstab_content = fs::read_to_string(FSTAB_PATH).expect("Unable to read /etc/fstab");
+    let fstab_content = match fs::read_to_string(FSTAB_PATH) {
+        Ok(content) => content,
+        Err(err) => {
+            eprintln!("Unable to read /etc/fstab: {err}");
+            return;
+        }
+    };
+    
     if fstab_content.contains(&uuid) {
         println!("An entry for this UUID ({uuid}) already exists in /etc/fstab.");
         return;
@@ -88,7 +95,6 @@ fn find_device(label: &str) -> Option<String> {
                 eprintln!("No drive found with label: {label}");
                 None
             } else {
-                println!("Drive found: {drive}");
                 Some(drive.to_string())
             }
         }
@@ -152,5 +158,11 @@ mod tests {
     #[test]
     fn test_find_device() {
         find_device(LABEL);
+    }
+
+    #[test]
+    fn test_get_uuid() {
+        
+        get_uuid(&find_device(LABEL).unwrap());
     }
 }
