@@ -15,6 +15,17 @@ macro_rules! home_dir {
     };
 }
 
+#[macro_export]
+macro_rules! home_path {
+    ($($segment:expr),+) => {{
+        let home_dir = home_dir!(); 
+        let mut path = PathBuf::from(home_dir);
+        $(
+            path.push($segment);
+        )+
+        path
+    }};
+}
 
 
 fn move_to_old(path: &Path) {
@@ -63,3 +74,20 @@ pub fn slink(source_path: &Path, link_path: &Path) {
 }
 
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::env;
+    use std::path::PathBuf;
+
+    #[test]
+    fn test_home_path_with_home_env() {
+        // Set the HOME environment variable for the test.
+        env::set_var("HOME", "/home/sky");
+
+        let expected = PathBuf::from("/home/sky/config/app/settings.json/new_dir");
+        let result = home_path!("config", "app/settings.json", "new_dir");
+
+        assert_eq!(result, expected);
+    }
+}

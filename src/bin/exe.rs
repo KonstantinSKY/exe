@@ -20,6 +20,7 @@ fn main() {
         .subcommand(app::code::commands())
         .subcommand(app::docker::commands())
         .subcommand(app::linux::commands())
+        .subcommand(app::linux::sync_commands())
         .get_matches();
 
     match matches.subcommand() {
@@ -32,6 +33,7 @@ fn main() {
         Some(("code", arg_matches)) => app::code::handle(arg_matches),
         Some(("docker", arg_matches)) => app::docker::handle(arg_matches),
         Some(("linux", arg_matches)) => app::linux::handle(arg_matches),
+        Some(("sync", _arg_matches)) => app::linux::sync::run(),
 
         _ => println!("No Function Found"),
     }

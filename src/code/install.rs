@@ -1,4 +1,4 @@
-use crate::prelude::*;
+use crate::{home_dir, prelude::*};
 use std::env;
 
 use crate::linux::os;
@@ -17,8 +17,8 @@ const EXTENSIONS: [&str; 10] = [
     "",
 ];
 
-const CONFIG_PATH: &str = ".config/Code - OSS/User/";
-const CONFIG_SOURCE_PATH: &str = "Work/Configs/vscode/";
+const VSCODE_CONFIG_PATH: &str = ".config/Code - OSS/User/";
+const VSCODE_CONFIG_SOURCE_PATH: &str = "Work/Configs/vscode/";
 
 const CONFIG_FILES: [&str; 3] = ["settings.json", "keybindings.json", ""];
 
@@ -37,14 +37,13 @@ pub fn run() {
     }
     h2!("Creating configs symbolic links");
 
-    let home_dir = env::var("HOME").unwrap_or_default();
     for file in CONFIG_FILES {
         if file.is_empty() {
             continue;
         }
         files::slink(
-            &format!("{home_dir}/{CONFIG_SOURCE_PATH}{file}"),
-            &format!("{home_dir}/{CONFIG_PATH}{file}"),
+            &Path::new(&home_dir!()).join(VSCODE_CONFIG_SOURCE_PATH).join(file),
+            &Path::new(&home_dir!()).join(VSCODE_CONFIG_PATH).join(file)
         );
     }
 }
