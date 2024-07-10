@@ -1,4 +1,7 @@
-use crate::{prelude::*, sh};
+use crate::code::install;
+use crate::sh::exec::exe;
+use crate::sh::files::slink;
+use crate::{home_dir, prelude::*, sh};
 use std::fs;
 use std::path::Path;
 use std::process::Command;
@@ -30,17 +33,18 @@ pub fn mirrors() {
 }
 
 pub fn setup() {
-    H1!("Linux setup");
+    H1!("Linux common setup");
 
     h2!("Cloning config repository to Work directory");
     let home_dir = get_home_dir();
     let home_dir_path = Path::new(&home_dir);
     let work_dir_path = Path::new(&home_dir).join(WORK_DIR);
-    let work_dir = work_dir_path.to_str().unwrap_or("");
+    let configs_dir_path = work_dir_path.join(CONFIG_DIR);
 
     exe!(&format!(
-        "git clone {CONFIG_REPO} {work_dir}; ls -la {work_dir}"
+        "git clone {CONFIG_REPO} {configs_dir_path:?}; ls -la {configs_dir_path:?}"
     ));
+
     h2!("Creating symbolic links to main directories");
     for dir in MAIN_DIRS {
         if dir.is_empty() {
@@ -69,10 +73,16 @@ pub fn setup() {
         let source = source_path.to_str().unwrap_or("");
         let link = link_path.to_str().unwrap_or("");
 
-        exe!(&format!("mkdir -p {source}"), true);
+        exe!(&format!("mkdir -vp {source}"), true);
         sh::files::slink(source, link);
     }
     setup_rc();
+
+    match get().as_str() {
+        "Manjaro" => manjaro::setup::run(),
+        "Unknown" => println!("Unknown operating system"),
+        _ => println!("OS not supported for install"),
+    }
 }
 
 fn is_empty_dir(path: &Path) -> bool {
@@ -89,11 +99,11 @@ fn is_empty_dir(path: &Path) -> bool {
 fn setup_rc() {
     H1!("Setting up rc files");
     let rc_path = Path::new(&get_home_dir()).join(WORK_DIR).join(MAIN_RC);
-    let include_string = format!(". {rc_path:?}"); 
-
-    for rc_file in RC_FILES {
-        h2!("For {}", rc_file.green());
-        let target_file = ".".to_owned() + rc_file;
+    let include_string = format!(". {}", rc_path.to_str().unwrap());
+    println!("include string: {include_string}");
+    for &rc_file in &RC_FILES {
+        h2!("\nFor {}", rc_file.green());
+        let target_file = format!(".{rc_file}");
         let target_path = Path::new(&get_home_dir()).join(target_file);
         if !target_path.exists() {
             exe!(&format!("touch {target_path:?}"));
@@ -109,17 +119,35 @@ fn setup_rc() {
                 continue;
             }
         };
-        h2!("Adding link string");
+        h2!("Checking if link string  {include_string} is already in {target_path:?}");
+        // println!("{file_content}");
         if file_content.contains(&include_string) {
             println!("The file {target_path:?} already has: {include_string}");
             continue;
         };
 
+        h2!("Adding link string  {include_string} to {target_path:?}");
         exe!(&format!("echo {include_string} | tee -a {target_path:?}"));
+
         h2!("Checking if added");
-        exe!(&format!("tail -n 2 {target_path:?}"), true); 
-    
+        exe!(&format!("tail -n 2 {target_path:?}"), true);
     }
+}
+
+pub fn fonts() {
+    H1!("Additional fonts");
+    h2!("Creating local font directory:");
+
+    let local_font_path = Path::new(&home_dir!()).join(LOCAL_FONT_DIR);
+    let config_font_path = Path::new(&home_dir!()).join(WORK_DIR).join(CONFIG_FONT_DIR);
+
+    slink(&config_font_path, &local_font_path);
+
+    h2!("Clearing fontconfig  cache");
+    exe!("rm -rf ~/.cache/fontconfig/*");
+
+    h2!("Updating fonts cache");
+    exe!(&format!("fc-cache -fv {local_font_path:?}"));
 }
 
 fn get() -> String {
@@ -157,5 +185,10 @@ mod tests {
     #[test]
     fn test_install() {
         install("gimp partitionmanager");
+    }
+
+    #[test]
+    fn test_setup_rc() {
+        setup_rc();
     }
 }

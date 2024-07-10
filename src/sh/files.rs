@@ -3,7 +3,23 @@ use crate::prelude::*;
 use std::fs;
 use std::path::Path;
 
-pub fn move_to_old(filename: &str) {
+
+#[macro_export]
+macro_rules! home_dir {
+    () => {
+        std::env::var("HOME").unwrap_or_else(|_| {
+            std::env::var("USER")
+            .map(|user| format!("/home/{}", user))
+            .unwrap_or_else(|_| "/home".to_string())
+        })
+    };
+}
+
+
+
+fn move_to_old(path: &Path) {
+    
+    let filename = path.to_str().unwrap();
     let old_filename = format!("{filename}.old");
 
     // Check if the file exists
@@ -15,26 +31,24 @@ pub fn move_to_old(filename: &str) {
     }
 }
 
-pub fn slink(source: &str, link: &str) {
-    h2!("Creating Symbolic link: {link} -> {source}");
-    let link_path = Path::new(link);
-    let source_path = Path::new(source);
+pub fn slink(source_path: &Path, link_path: &Path) {
+    h2!("Creating Symbolic link: {link_path:?} -> {source_path:?}");
+    
     if link_path.is_symlink(){
-        println!("{link} is already symlink,  will be deleted");
+        println!("{link_path:?} is already symlink,  will be deleted");
         match fs::remove_file(link_path) {
-            Ok(()) => println!("Successfully deleted old symlink: {link}"),
+            Ok(()) => println!("Successfully deleted old symlink: {link_path:?}"),
             Err(e) => {
-                eprintln!("Failed to delete symlink: {link}. Error: {e}");
+                eprintln!("Failed to delete symlink: {link_path:?}. Error: {e}");
                 return;
             }
         }
     }
     println!("Link path: {link_path:?}");
 
-
     if link_path.exists(){
         println!("{link_path:?} is exists");
-        move_to_old(link);
+        move_to_old(link_path);
     }
    
     if !source_path.exists(){
@@ -42,7 +56,7 @@ pub fn slink(source: &str, link: &str) {
         return;
     }
 
-    exe!(&format!("ln -sf {source} {link} && readlink -f {link_path:?}"),  true);
+    exe!(&format!("ln -sf {source_path:?} {link_path:?} && readlink -f {link_path:?}"),  true);
     if link_path.is_symlink(){
         println!("Symlink successfully created");
     }
