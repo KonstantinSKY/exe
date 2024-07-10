@@ -1,7 +1,7 @@
 use crate::prelude::*;
 
 pub fn run(){
-    let cmd = "git -C $HOME/Configs";
+    let cmd = "git -C $HOME/Work/Configs";
     H1!("All Configs  Sync to GitHub");
     h2!("Pulling from GitHub");
     exe!(&format!("{cmd} pull -v"), true);

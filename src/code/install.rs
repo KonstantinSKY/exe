@@ -1,4 +1,4 @@
-use crate::{home_dir, prelude::*};
+use crate::prelude::*;
 use std::env;
 
 use crate::linux::os;

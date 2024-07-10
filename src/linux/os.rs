@@ -36,44 +36,44 @@ pub fn setup() {
     h2!("Cloning config repository to Work directory");
     // let home_dir = get_home_dir();
     // let home_dir_path = Path::new(&home_dir);
-    let work_dir_path = home_path!(WORK_DIR);
-    // let configs_dir_path = work_dir_path.join(CONFIG_DIR);
+    let work_path = home_path!(WORK_DIR);
+    let configs_path = home_path!(CONFIG_DIR);
 
-    // exe!(&format!(
-    //     "git clone {CONFIG_REPO} {configs_dir_path:?}; ls -la {configs_dir_path:?}"
-    // ));
+    exe!(&format!(
+        "git clone {CONFIG_REPO} {configs_path:?}; ls -la {configs_path:?}"
+    ));
 
-    // h2!("Creating symbolic links to main directories");
-    // for dir in MAIN_DIRS {
-    //     if dir.is_empty() {
-    //         continue;
-    //     }
-    //     println!("For {}", dir.green());
-    //     let link_path = home_dir_path.join(dir);
-    //     let source_path = work_dir_path.join(dir);
+    h2!("Creating symbolic links to main directories");
+    for dir in MAIN_DIRS {
+        if dir.is_empty() {
+            continue;
+        }
+        println!("For {}", dir.green());
+        let link_path = home_path!(dir);
+        let source_path = work_path.join(dir);
 
-    //     if is_empty_dir(&link_path) {
-    //         println!("Found Empty Directory, will be deleted");
-    //         exe!(&format!("rm {link_path:?} -r"), true);
-    //     }
-    //     if link_path.is_dir() {
-    //         println!("Not empty directory: {link_path:?}, will be skip");
-    //         continue;
-    //     }
-    //     if link_path.is_file() {
-    //         println!("{dir} is file, will be skip");
-    //         continue;
-    //     }
-    //     if source_path.exists() && !source_path.is_dir() {
-    //         println!("Source path is Exists and not Directory, will be skipped");
-    //         continue;
-    //     }
-    //     // let source = source_path.to_str().unwrap_or("");
-    //     // let link = link_path.to_str().unwrap_or("");
+        if is_empty_dir(&link_path) {
+            println!("Found Empty Directory, will be deleted");
+            exe!(&format!("rm {link_path:?} -r"), true);
+        }
+        if link_path.is_dir() {
+            println!("Not empty directory: {link_path:?}, will be skip");
+            continue;
+        }
+        if link_path.is_file() {
+            println!("{dir} is file, will be skip");
+            continue;
+        }
+        if source_path.exists() && !source_path.is_dir() {
+            println!("Source path is Exists and not Directory, will be skipped");
+            continue;
+        }
+        // let source = source_path.to_str().unwrap_or("");
+        // let link = link_path.to_str().unwrap_or("");
 
-    //     exe!(&format!("mkdir -vp {source_path:?}"), true);
-    //     sh::files::slink(&source_path, &link_path);
-    // }
+        exe!(&format!("mkdir -vp {source_path:?}"), true);
+        sh::files::slink(&source_path, &link_path);
+    }
     setup_rc();
     fonts();
 
@@ -97,13 +97,15 @@ fn is_empty_dir(path: &Path) -> bool {
 
 fn setup_rc() {
     H1!("Setting up rc files");
-    let rc_path = Path::new(&home_dir!()).join(WORK_DIR).join(MAIN_RC);
+    let rc_path = home_path!(MAIN_RC);
+
     let include_string = format!(". {}", rc_path.to_str().unwrap());
     println!("include string: {include_string}");
     for &rc_file in &RC_FILES {
-        h2!("\nFor {}", rc_file.green());
+        h2!("\n For {}", rc_file.green());
         let target_file = format!(".{rc_file}");
-        let target_path = Path::new(&get_home_dir()).join(target_file);
+        let target_path = home_path!(target_file);
+        
         if !target_path.exists() {
             exe!(&format!("touch {target_path:?}"));
         }
@@ -136,8 +138,8 @@ fn setup_rc() {
 pub fn fonts() {
     H1!("Additional fonts");
 
-    let local_font_path = Path::new(&home_dir!()).join(LOCAL_FONT_DIR);
-    let config_font_path = Path::new(&home_dir!()).join(WORK_DIR).join(CONFIG_FONT_DIR);
+    let local_font_path = home_path!(LOCAL_FONT_DIR);
+    let config_font_path = home_path!(WORK_DIR, CONFIG_FONT_DIR);
 
     slink(&config_font_path, &local_font_path);
 

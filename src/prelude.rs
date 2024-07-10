@@ -1,6 +1,7 @@
 pub use crossterm::style::Stylize;
 pub use std::path::{Path, PathBuf};
 pub use std::env;
+pub use crate::sh::{exec, files};
 
 pub use crate::{cmd, exe, h2, H1, home_path, home_dir};
 
@@ -10,7 +11,6 @@ pub const CONFIGS_DIR: &str = "Work/Configs";
 
 
 pub const CONFIG_REPO: &str = "https://github.com/KonstantinSKY/Configs.git";
-pub const CONFIG_DIR: &str = "Configs";
 
 pub const LOCAL_FONT_DIR: &str = ".local/share/fonts";
 pub const CONFIG_FONT_DIR: &str = "Configs/fonts";
@@ -33,7 +33,7 @@ pub const MAIN_DIRS: [&str; 15] = [
     "",
     "",
 ];
-pub const MAIN_RC: &str = "Configs/rc";
+pub const MAIN_RC: &str = "Work/Configs/rc";
 pub const RC_FILES: [&str; 3] = ["bashrc", "zhsrc", "zshrc"];
 
 // const DESKTOP_VARS: [] =[
