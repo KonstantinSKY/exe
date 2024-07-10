@@ -37,7 +37,7 @@ pub fn setup() {
     // let home_dir = get_home_dir();
     // let home_dir_path = Path::new(&home_dir);
     let work_path = home_path!(WORK_DIR);
-    let configs_path = home_path!(CONFIG_DIR);
+    let configs_path = home_path!(CONFIGS_DIR);
 
     exe!(&format!(
         "git clone {CONFIG_REPO} {configs_path:?}; ls -la {configs_path:?}"
@@ -76,11 +76,11 @@ pub fn setup() {
     }
     setup_rc();
     fonts();
-
+    manjaro::setup::run();
     // match get().as_str() {
-    //     "Manjaro" => manjaro::setup::run(),
-    //     "Unknown" => println!("Unknown operating system"),
-    //     _ => println!("OS not supported for install"),
+        // "Manjaro" => manjaro::setup::run(),
+        // "Unknown" => println!("Unknown operating system"),
+        // _ => println!("OS not supported for install"),
     // }
 }
 

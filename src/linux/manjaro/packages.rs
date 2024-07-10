@@ -14,10 +14,17 @@ pub fn update() {
 
 pub fn install(packages: &str) {
     update();
-    h2!("Installing");
+    h2!("Installing packages for mangaro");
     let cmd = format!("sudo pamac install {packages} --no-confirm ");
     exe!(&cmd, false);
 }
+
+pub fn remove(packages: &str) {
+    h2!("Removing packages for mangaro");
+    let cmd = format!("sudo pamac remove {packages} --no-confirm ");
+    exe!(&cmd, false);
+}
+
 
 pub fn get_mirrors() {
     H1!("Repository mirrors update");
