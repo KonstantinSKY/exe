@@ -41,31 +41,30 @@ pub fn run(){
     exe!("sudo pacman -S materia-gtk-theme --noconfirm");
     
     h2!("Installing Materia Setting Manager");
-    exe!("sudo pacman -S manjaro-settings-manage --noconfirm");
+    exe!("sudo pacman -S manjaro-settings-manager --noconfirm");
 
     h2!("Installing Materia GRT Theme");
     exe!("sudo pacman -S materia-gtk-theme --noconfirm");
 
-    H1!("GRUB SETTING");
-    
+    H1!("Linux Kernel");
+    h2!("Running manjaro setting manager for checking kernels");
+
+    H1!("GRUB SETTINGS");
     h2!("Showing GRUB Config {GRUB_CONFIG}");
-    exe!("cat");
     exe!("cat {GRUB_CONFIG}");
-    exe!("cat {}",GRUB_CONFIG);
     
-    exe!("cat {GRUB_CONFIG}"; true);
-    // h2 Changing GRUB_TIMEOUT_STYLE to 'menu'
-    // exe "sudo sed -i 's/^GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=menu/' $GRUB_CONFIG"
+    h2!("Changing GRUB_TIMEOUT_STYLE for loading menu");
+    exe!("sudo sed -i 's/^GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=menu/' {GRUB_CONFIG}");
     
-    // h2 Showing updated $GRUB_CONFIG
-    // show $GRUB_CONFIG
+    h2!("Showing updated GRUB Config {GRUB_CONFIG}");
+    exe!("cat {GRUB_CONFIG}");
     
-    // h2 Update GRUB to apply the changes
-    // exe "sudo update-grub"
+    h2!("Update GRUB to apply the changes");
+    exe!("sudo update-grub");
     
-    // h1 Reboot system IF Nessesary   
-    // h2 Rebooting system.
-    // exe "sudo reboot"
+    H1!("Reboot system IF Necessary");
+    h2!("Rebooting system.");
+    exe!("sudo reboot");
     
 
 

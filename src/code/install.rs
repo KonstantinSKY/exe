@@ -1,5 +1,4 @@
 use crate::prelude::*;
-use std::env;
 
 use crate::linux::os;
 use crate::sh::files;
