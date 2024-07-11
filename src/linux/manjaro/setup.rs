@@ -40,22 +40,28 @@ pub fn run(){
     h2!("Installing Materia GRT Theme");
     exe!("sudo pacman -S materia-gtk-theme --noconfirm");
     
-    h2!("Installing Materia Setting Manager");
+    h2!("Installing Manjaro Setting Manager");
     exe!("sudo pacman -S manjaro-settings-manager --noconfirm");
 
     h2!("Installing Materia GRT Theme");
     exe!("sudo pacman -S materia-gtk-theme --noconfirm");
+    
+    h2!("Installing update-grub");
+    exe!("sudo pacman -S update-grub --noconfirm");
 
     H1!("Linux Kernel");
     h2!("Running manjaro setting manager for checking kernels");
+    exe!("manjaro-settings-manager &");
 
     H1!("GRUB SETTINGS");
+
     h2!("Showing GRUB Config {GRUB_CONFIG}");
     exe!("cat {GRUB_CONFIG}");
     
-    h2!("Changing GRUB_TIMEOUT_STYLE for loading menu");
-    exe!("sudo sed -i 's/^GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=menu/' {GRUB_CONFIG}");
-    
+    h2!("Changing GRUB_TIMEOUT_STYLE and select theme for loading menu");
+    exe!("sudo sed -i 's/GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=menu/' {GRUB_CONFIG}");
+    exe!("sudo sed -i 's/GRUB_THEME=.*/GRUB_THEME={GRUB_MANJARO_THEME}'/ {GRUB_CONFIG}");
+
     h2!("Showing updated GRUB Config {GRUB_CONFIG}");
     exe!("cat {GRUB_CONFIG}");
     
@@ -82,8 +88,9 @@ pub fn set_time(){
     H1!("System time Setup ");
     h2!("Setting system clock auto sync");
     exe!("sudo timedatectl set-ntp true");
+
     h2!("Showing timedatectl status");
-    exe!("timedatectl status");
+    exe!("timedatectl status"; true);
 }
 
 
