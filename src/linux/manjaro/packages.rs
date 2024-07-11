@@ -8,21 +8,19 @@ pub fn update() {
     if check() {
         return;
     };
-    exe!("sudo pamac upgrade -a --no-confirm", false);
+    exe!("sudo pamac upgrade -a --no-confirm");
     update();
 }
 
 pub fn install(packages: &str) {
     update();
     h2!("Installing packages for mangaro");
-    let cmd = format!("sudo pamac install {packages} --no-confirm ");
-    exe!(&cmd, false);
+    exe!("sudo pamac install {packages} --no-confirm ");
 }
 
 pub fn remove(packages: &str) {
     h2!("Removing packages for mangaro");
-    let cmd = format!("sudo pamac remove {packages} --no-confirm ");
-    exe!(&cmd, false);
+    exe!("sudo pamac remove {packages} --no-confirm ");
 }
 
 
@@ -30,13 +28,13 @@ pub fn get_mirrors() {
     H1!("Repository mirrors update");
 
     h2!("Showing mirrors status");
-    exe!("pacman-mirrors --status", true);
+    exe!("pacman-mirrors --status"; true);
 
     h2!("Searching and updating fastest");
     exe!("sudo pacman-mirrors --fasttrack");
 
     h2!("Showing New status of mirrors pool");
-    exe! ("pacman-mirrors --status", true);
+    exe! ("pacman-mirrors --status"; true);
 
     
     h2!("Fast update with pacman");

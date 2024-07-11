@@ -15,7 +15,7 @@ pub fn run() {
         if ext.is_empty() {
             continue;
         }
-        exe!(&format!("code --install-extension {ext}"), false);
+        exe!("code --install-extension {ext}");
     }
 
     h2!("Creating configs symbolic links");

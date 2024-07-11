@@ -8,25 +8,25 @@ pub fn run(noconfirm_flag: bool) {
     H1!("Rust & Ecosystem Installation and Setting");
 
     h2!("Getting installation file");
-    exe!(GET_SH_CMD, n);
+    exe!("{GET_SH_CMD}"; n);
 
     h2!("Adding $PATH variable");
-    exe!("source $HOME/.cargo/env", n);
+    exe!("source $HOME/.cargo/env"; n);
     
     h2!("Showing $PATH variable");
-    exe!("echo $PATH", true);
+    exe!("echo $PATH"; true);
 
     versions();
 
     h2!("Update rustup to latest Version");
 
-    exe!("rustup update", n);
+    exe!("rustup update"; n);
 
     h2!("Open Local Documentation");
-    exe!("rustup doc", n);
+    exe!("rustup doc"; n);
 }
 
 pub fn versions(){
     h2!("Checking installed Versions");
-    exe!("rustc --version; rustup --version; cargo --version", true);
+    exe!("rustc --version; rustup --version; cargo --version"; true);
 }

@@ -1,32 +1,30 @@
-
 use crate::prelude::*;
 use console::{Key, Term};
-use std::{io, process::Command as ShellCommand};
 use crossterm::{
-    cursor,
-    execute,
+    cursor, execute,
     terminal::{self, ClearType},
 };
+use std::{io, process::Command as ShellCommand};
 
 #[macro_export]
 macro_rules! exe {
-    ($command:expr) => {
-        $crate::sh::exec::exe($command, false);
+    ($command:literal $(, $arg:expr)*) => {
+        $crate::sh::exec::exe(&format!($command $(, $arg)*), false);
     };
-    ($command:expr, $noconfirm_flag:expr) => {
-        $crate::sh::exec::exe($command, $noconfirm_flag);
+    // Pattern for interpolated command with the no_confirm flag
+    ($command:literal $(, $arg:expr)*; $noconfirm_flag:expr) => {
+        $crate::sh::exec::exe(&format!($command $(, $arg)*), $noconfirm_flag);
     };
 }
 
-
-pub fn exe (command: &str, noconfirm_flag: bool) {
+pub fn exe(command: &str, noconfirm_flag: bool) {
     loop {
         if noconfirm_flag {
             run_shell_command(command);
             return;
         }
 
-        println!("{}: {}\n", "Next command".blue(),  command.white());
+        println!("{}: {}\n", "Next command".blue(), command.white());
         println!(
             "Press {}: execute command; {}: skip; {} quit script.",
             "Enter".green(),
@@ -34,20 +32,20 @@ pub fn exe (command: &str, noconfirm_flag: bool) {
             // "F".cyan(),
             "Q".red()
         );
-        
+
         if let Ok(user_input) = Term::stdout().read_key() {
             clear_previous_lines(3);
 
             match user_input {
                 Key::Char('\n') | Key::Enter => {
-                    run_shell_command(command); 
+                    run_shell_command(command);
                     break;
                 }
-                Key::Char('n' | 'N')  => {
+                Key::Char('n' | 'N') => {
                     println!("{}: {}", "Skipping command".yellow(), command.white());
                     break;
                 }
-                Key::Char('q' | 'Q')  => {
+                Key::Char('q' | 'Q') => {
                     println!("Quitting script.");
                     std::process::exit(0);
                 }
@@ -62,7 +60,6 @@ pub fn exe (command: &str, noconfirm_flag: bool) {
 }
 
 fn clear_previous_lines(lines: u16) {
-
     // Clear each of those lines
     for _ in 0..lines {
         execute!(
@@ -74,12 +71,11 @@ fn clear_previous_lines(lines: u16) {
     }
 }
 
-fn run_shell_command(command: &str){
+fn run_shell_command(command: &str) {
     cmd!("{command}");
     ShellCommand::new("sh")
-    .arg("-c")
-    .arg(command)
-    .status()
-    .expect("Failed to execute command");
+        .arg("-c")
+        .arg(command)
+        .status()
+        .expect("Failed to execute command");
 }
-    

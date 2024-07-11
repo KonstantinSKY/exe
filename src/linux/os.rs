@@ -39,9 +39,7 @@ pub fn setup() {
     let work_path = home_path!(WORK_DIR);
     let configs_path = home_path!(CONFIGS_DIR);
 
-    exe!(&format!(
-        "git clone {CONFIG_REPO} {configs_path:?}; ls -la {configs_path:?}"
-    ));
+    exe!("git clone {CONFIG_REPO} {configs_path:?}; ls -la {configs_path:?}"; true);
 
     h2!("Creating symbolic links to main directories");
     for dir in MAIN_DIRS {
@@ -54,7 +52,7 @@ pub fn setup() {
 
         if is_empty_dir(&link_path) {
             println!("Found Empty Directory, will be deleted");
-            exe!(&format!("rm {link_path:?} -r"), true);
+            exe!("rm {link_path:?} -r"; true);
         }
         if link_path.is_dir() {
             println!("Not empty directory: {link_path:?}, will be skip");
@@ -71,7 +69,7 @@ pub fn setup() {
         // let source = source_path.to_str().unwrap_or("");
         // let link = link_path.to_str().unwrap_or("");
 
-        exe!(&format!("mkdir -vp {source_path:?}"), true);
+        exe!("mkdir -vp {source_path:?}"; true);
         sh::files::slink(&source_path, &link_path);
     }
     setup_rc();
@@ -107,7 +105,7 @@ fn setup_rc() {
         let target_path = home_path!(target_file);
         
         if !target_path.exists() {
-            exe!(&format!("touch {target_path:?}"));
+            exe!("touch {target_path:?}");
         }
         if !target_path.is_file() {
             println!("{target_path:?} is not file, skipping)");
@@ -128,10 +126,10 @@ fn setup_rc() {
         };
 
         h2!("Adding link string  {include_string} to {target_path:?}");
-        exe!(&format!("echo {include_string} | tee -a {target_path:?}"));
+        exe!("echo {include_string} | tee -a {target_path:?}");
 
         h2!("Checking if added");
-        exe!(&format!("tail -n 2 {target_path:?}"), true);
+        exe!("tail -n 2 {target_path:?}"; true);
     }
 }
 
@@ -147,7 +145,7 @@ pub fn fonts() {
     exe!("rm -rf ~/.cache/fontconfig/*");
 
     h2!("Updating fonts cache");
-    exe!(&format!("fc-cache -fv {local_font_path:?}"));
+    exe!("fc-cache -fv {local_font_path:?}");
 }
 
 fn get() -> String {

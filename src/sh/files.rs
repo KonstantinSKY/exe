@@ -27,6 +27,11 @@ macro_rules! home_path {
     }};
 }
 
+pub fn delete(files: &str, noconfirm_flag: bool){
+    h2!("Deleting files: {files}");
+    exe!("rm -rv {files}"; noconfirm_flag);
+}
+
 
 fn move_to_old(path: &Path) {
     
@@ -36,8 +41,7 @@ fn move_to_old(path: &Path) {
     // Check if the file exists
     if fs::metadata(filename).is_ok() {
         h2!("Moving existing file {filename} to {old_filename}");
-        let cmd: &str = &format!("mv '{filename}' '{old_filename}'");
-        exe!(cmd, true);
+        exe!("mv '{filename}' '{old_filename}'"; true);
         // Execute the move command
     }
 }
@@ -67,7 +71,7 @@ pub fn slink(source_path: &Path, link_path: &Path) {
         return;
     }
 
-    exe!(&format!("ln -sf {source_path:?} {link_path:?} && readlink -f {link_path:?}"),  true);
+    exe!("ln -sf {source_path:?} {link_path:?} && readlink -f {link_path:?}";  true);
     if link_path.is_symlink(){
         println!("Symlink successfully created");
     }

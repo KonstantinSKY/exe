@@ -17,18 +17,18 @@ fn deploy(no_confirm_flag: bool) {
     H1!("Deploy exe binary");
 
     h2!("Building exe binary file");
-    exe!("cargo build --release", true);
+    exe!("cargo build --release"; true);
 
     h2!("Copying exe to ./local/bin");
-    exe!("cp target/release/exe $HOME/.local/bin/exe -v", n); 
+    exe!("cp target/release/exe $HOME/.local/bin/exe -v"; n); 
 
     h2!("Copying exe to Tools/bin");
-    exe!("cp target/release/exe $HOME/Tools/bin/exe -v", n); 
+    exe!("cp target/release/exe $HOME/Tools/bin/exe -v"; n); 
 
     h2!("Commit and pushing Tools directory");
     let cmd = "git -C $HOME/Tools";
-    exe!(&format!("{cmd} pull -v"), n);
-    exe!(&format!("{cmd} add . -v"), n);
-    exe!(&format!("{cmd} commit -av -m 'exe util update'"), n);
-    exe!(&format!("{cmd} push -v"), n);
+    exe!("{cmd} pull -v"; n);
+    exe!("{cmd} add . -v"; n);
+    exe!("{cmd} commit -av -m 'exe util update'"; n);
+    exe!("{cmd} push -v"; n);
 }

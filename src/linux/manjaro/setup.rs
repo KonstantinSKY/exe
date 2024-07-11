@@ -1,4 +1,4 @@
-use files::slink;
+use files::{slink, delete};
 
 use crate::prelude::*;
 
@@ -32,6 +32,45 @@ pub fn run(){
     h2!("Removing unneeded packages");
     super::packages::remove(MANJARO_I3_PACKAGES_TO_REMOVE);
 
+    delete(MANJARO_I3_FILES_TO_DELETE, true);
+    
+    h2!("Installing Trash-CLI");
+    exe!("sudo pacman -S trash-cli --noconfirm");
+
+    h2!("Installing Materia GRT Theme");
+    exe!("sudo pacman -S materia-gtk-theme --noconfirm");
+    
+    h2!("Installing Materia Setting Manager");
+    exe!("sudo pacman -S manjaro-settings-manage --noconfirm");
+
+    h2!("Installing Materia GRT Theme");
+    exe!("sudo pacman -S materia-gtk-theme --noconfirm");
+
+    H1!("GRUB SETTING");
+    
+    h2!("Showing GRUB Config {GRUB_CONFIG}");
+    exe!("cat");
+    exe!("cat {GRUB_CONFIG}");
+    exe!("cat {}",GRUB_CONFIG);
+    
+    exe!("cat {GRUB_CONFIG}"; true);
+    // h2 Changing GRUB_TIMEOUT_STYLE to 'menu'
+    // exe "sudo sed -i 's/^GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=menu/' $GRUB_CONFIG"
+    
+    // h2 Showing updated $GRUB_CONFIG
+    // show $GRUB_CONFIG
+    
+    // h2 Update GRUB to apply the changes
+    // exe "sudo update-grub"
+    
+    // h1 Reboot system IF Nessesary   
+    // h2 Rebooting system.
+    // exe "sudo reboot"
+    
+
+
+    
+
 }
 
 
@@ -46,4 +85,18 @@ pub fn set_time(){
     exe!("sudo timedatectl set-ntp true");
     h2!("Showing timedatectl status");
     exe!("timedatectl status");
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_exe() {
+        exe!("cat {GRUB_CONFIG}");
+        exe!("cat {}", GRUB_CONFIG);
+        exe!("cat {GRUB_CONFIG}"; true);
+    }
+
 }
