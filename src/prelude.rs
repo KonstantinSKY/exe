@@ -3,12 +3,18 @@ pub use crossterm::style::Stylize;
 pub use std::env;
 pub use std::path::{Path, PathBuf};
 
-pub use crate::{cmd, exe, h2, home_dir, home_path, H1};
+pub use crate::{cmd, exe, run, h2, home_dir, home_path, H1, warn_print};
 
 pub const WORK_DIR: &str = "Work";
 pub const CONFIGS_DIR: &str = "Work/Configs";
+pub const BACKUP_DIR: &str = "Work/BackUps";
 
+//configs 
 pub const CONFIG_REPO: &str = "https://github.com/KonstantinSKY/Configs.git";
+
+// TODO  pub const I3_CONFIG_FILES [($str, &str); 5] =  
+
+
 pub const CONFIG_FILES: [&str; 3] = ["settings.json", "keybindings.json", ""];
 
 pub const LOCAL_FONT_DIR: &str = ".local/share/fonts";
@@ -50,7 +56,7 @@ pub const MAIN_DIRS: [&str; 15] = [
 pub const MAIN_RC: &str = "Work/Configs/rc";
 pub const RC_FILES: [&str; 3] = ["bashrc", "zhsrc", "zshrc"];
 
-pub const MANJARO_I3_PACKAGES_TO_REMOVE: &str = "bmenu pacui pcmanfm mupdf libmupdf tesseract-data-afr tesseract";
+pub const MANJARO_I3_PACKAGES_TO_REMOVE: &str = "bmenu pacui pcmanfm mupdf libmupdf tesseract-data-afr tesseract" ;
 pub const MANJARO_I3_FILES_TO_DELETE: &str = ".bash_profile";
 
 pub const GRUB_CONFIG: &str = "/etc/default/grub";

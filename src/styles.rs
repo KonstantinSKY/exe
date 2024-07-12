@@ -14,6 +14,14 @@ macro_rules! h2 {
     };
 }
 
+//todo!() warn_print
+#[macro_export]
+macro_rules! warn_print {
+    ($($arg:tt)*) => {
+        println!("\n{} ...", format!($($arg)*).red().bold());
+    };
+}
+
 #[macro_export]
 macro_rules! cmd {
     ($($arg:tt)*) => {

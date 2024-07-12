@@ -7,6 +7,26 @@ use crossterm::{
 use std::{io, process::Command as ShellCommand};
 
 #[macro_export]
+macro_rules! run {
+    // Pattern for a function with no arguments, no message, and no confirmation flag
+    ($func:expr) => {{
+        $crate::sh::exec::run_fn($func, "", false);
+    }};
+    // Pattern for a function with a message but no confirmation flag
+    ($func:expr, $msg:expr) => {{
+        $crate::sh::exec::run_fn($func, $msg, false);
+    }};
+    // Pattern for a function with a confirmation flag but no message
+    ($func:expr, $confirm:expr) => {{
+        $crate::sh::exec::run_fn($func, "", $confirm);
+    }};
+    // Pattern for a function with both a message and a confirmation flag
+    ($func:expr, $msg:expr, $confirm:expr) => {{
+        $crate::sh::exec::run_fn($func, $msg, $confirm);
+    }};
+}
+
+#[macro_export]
 macro_rules! exe {
     ($command:literal $(, $arg:expr)*) => {
         $crate::sh::exec::exe(&format!($command $(, $arg)*), false);
@@ -15,6 +35,34 @@ macro_rules! exe {
     ($command:literal $(, $arg:expr)*; $noconfirm_flag:expr) => {
         $crate::sh::exec::exe(&format!($command $(, $arg)*), $noconfirm_flag);
     };
+}
+
+pub fn run_fn<F>(function: F, message: &str, noconfirm_flag: bool)
+where
+    F: Fn(),
+{
+    loop {
+        if noconfirm_flag {
+            function();
+            return;
+        }
+        println!("{}: {}\n", "Next Function".red(), message.white());
+        println!(
+            "Press {}: to Run Function; {}: skip; {} quit script.",
+            "Enter".green(),
+            "N".yellow(),
+            // "F".cyan(),
+            "Q".red()
+        );
+        match select_input() {
+            Some(true) => function(),
+            Some(false) => {
+                println!("{}: {}", "Skipping Function".yellow(), message.white());
+                break;
+            }
+            None => {}
+        }
+    }
 }
 
 pub fn exe(command: &str, noconfirm_flag: bool) {
@@ -32,30 +80,36 @@ pub fn exe(command: &str, noconfirm_flag: bool) {
             // "F".cyan(),
             "Q".red()
         );
-
-        if let Ok(user_input) = Term::stdout().read_key() {
-            clear_previous_lines(3);
-
-            match user_input {
-                Key::Char('\n') | Key::Enter => {
-                    run_shell_command(command);
-                    break;
-                }
-                Key::Char('n' | 'N') => {
-                    println!("{}: {}", "Skipping command".yellow(), command.white());
-                    break;
-                }
-                Key::Char('q' | 'Q') => {
-                    println!("Quitting script.");
-                    std::process::exit(0);
-                }
-                _ => {
-                    println!("Invalid input. ");
-                }
+        match select_input() {
+            Some(true) => run_shell_command(command),
+            Some(false) => {
+                println!("{}: {}", "Skipping command".yellow(), command.white());
+                break;
             }
-        } else {
-            eprintln!("Failed to read input.");
+            None => {}
         }
+    }
+}
+
+fn select_input() -> Option<bool> {
+    if let Ok(user_input) = Term::stdout().read_key() {
+        clear_previous_lines(3);
+
+        match user_input {
+            Key::Char('\n') | Key::Enter => Some(true),
+            Key::Char('n' | 'N') => Some(false),
+            Key::Char('q' | 'Q') => {
+                println!("Quitting program...");
+                std::process::exit(0);
+            }
+            _ => {
+                println!("Invalid input. ");
+                None
+            }
+        }
+    } else {
+        eprintln!("Failed to read input.");
+        None
     }
 }
 
