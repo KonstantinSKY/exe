@@ -82,42 +82,71 @@ pub fn slink(source_path: &Path, link_path: &Path) {
     }
 }
 
-fn backup(source_file: &str) -> bool {
-    let source_path = Path::new(source_file);
+macro_rules! backup {
+    ($($arg:tt)*) => {
+        backup(&PathBuf::from(format!($($arg)*)), &home_path!(BACKUP_DIR))
+    };
+    ($($arg1:tt)*; $($arg2:tt)*) => {
+        backup(&PathBuf::from(format!($($arg1)*)), &home_path!($($arg2)*))
+    };
+}
 
-    let now = chrono::Utc::now();
-    let timestamp = now.format("%Y-%m-%d_%H-%M-%S-%f").to_string();
-    let target_file = format!("{source_file}.backup_{timestamp}");
-
-    // Check if the provided path is a symlink
+#[must_use]
+pub fn backup(source_path: &Path, storage_path: &Path) -> bool {
+    if !source_path.exists() {
+        eprintln!("Source path is not exists: {source_path:?}");
+        return false;
+    }
     if source_path.is_symlink() {
-        eprintln!("Can not backup symlink: {}", source_file);
+        eprintln!("Can not backup symlink: {source_path:?}");
+        return false;
+    }
+    if !storage_path.is_dir() {
+        eprintln!("Wrong storage directory with path:{storage_path:?}");
         return false;
     }
 
-    println!("Backing up {} --> {}", source_file, target_file);
-    match fs::copy(source_file, &target_file) {
-        Ok(_) => {
-            println!("Backup successful: {}", target_file);
-            return true;
-        },
-        Err(e) => {
-            eprintln!("Failed to copy file: {}", e);
+    let now = chrono::Utc::now();
+    let timestamp = now.format("%Y-%m-%d_%H-%M-%S-%f").to_string();
+    let source: String = if let Some(name) = source_path.to_str() {
+        format!("{}_backup_{timestamp}", &name[1..])
+    } else {
+        eprintln!("Invalid source file name: {source_path:?}");
+        return false;
+    };
+
+    // let target_filename = format!("{}",source");
+    let target_path = storage_path.join(source);
+     // Ensure the target directory exists
+     if let Some(parent) = target_path.parent() {
+        if let Err(e) = fs::create_dir_all(parent) {
+            eprintln!("Failed to create target directory: {e}");
             return false;
         }
     }
-}
 
-fn copy(source_file: &str, target_file: &str) -> io::Result<()> {
-    fs::copy(source_file, target_file)?;
-    Ok(())
+    println!("Backing up {source_path:?} --> {target_path:?}");
+
+    match fs::copy(source_path, &target_path) {
+        Ok(_) => {
+            println!("Backup successful: {target_path:?}");
+            true
+        }
+        Err(e) => {
+            eprintln!("Failed to copy file: {e}");
+            false
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use std::env;
+    use std::fs::File;
+    use std::io::Write;
     use std::path::PathBuf;
+    use tempfile::tempdir;
 
     #[test]
     fn test_home_path_with_home_env() {
@@ -128,5 +157,34 @@ mod tests {
         let result = home_path!("config", "app/settings.json", "new_dir");
 
         assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_backup_source_does_not_exist() {
+        let temp_dir = tempdir().unwrap();
+        let source_file = temp_dir.path().join("nonexistent.txt");
+        let storage_dir = temp_dir.path().join("backup");
+
+        // Create the storage directory
+        fs::create_dir(&storage_dir).unwrap();
+
+        // Run the backup function
+        assert!(!backup(&source_file, &storage_dir));
+    }
+
+    #[test]
+    fn test_backup_success() {
+        let temp_dir = tempdir().unwrap();
+        let source_path = temp_dir.path().join("source.txt");
+
+        // Create the source file
+        {
+            let mut file = File::create(&source_path).unwrap();
+            writeln!(file, "Hello, world!").unwrap();
+        }
+
+        // Run the backup function
+        // assert!(backup!("{}", source_path.to_str().unwrap()));
+        let _ = backup!("{}", source_path.to_str().unwrap());
     }
 }
