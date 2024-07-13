@@ -5,6 +5,7 @@ use crate::sh::files::enable_config_param;
 use std::process::Command as ShellCommand;
 use std::str;
 
+
 pub fn update() {
     H1!("System update with pamac");
     if check() {
@@ -15,9 +16,19 @@ pub fn update() {
 }
 
 pub fn install(packages: &str) {
-    update();
+    // update();
     h2!("Installing packages for Manjaro: {packages}");
+    exe!("pamac info {packages} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
     exe!("sudo pamac install {packages} --no-confirm ");
+}
+
+pub fn install_many(packages: &[&str]){
+    for package in packages{
+        if package.is_empty(){
+            continue;
+        }
+        install(package);
+    }
 }
 
 pub fn remove(packages: &str) {
@@ -100,7 +111,7 @@ mod tests {
 
     #[test]
     fn test_install() {
-        install("gimp vlc");
+        install("unzip");
     }
 
     #[test]

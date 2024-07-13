@@ -1,5 +1,5 @@
 use files::{slink, delete};
-use super::packages::enable_aur;
+use super::packages::{update,enable_aur};
 
 use crate::{linux::manjaro::packages, prelude::*};
 
@@ -39,6 +39,8 @@ pub fn run(){
 
     delete(MANJARO_I3_FILES_TO_DELETE, true);
     
+    h2!("Installing first required package collection: {REQUIRED_PACKAGES_1}");
+
     h2!("Installing Trash-CLI");
     exe!("sudo pacman -S trash-cli --noconfirm");
 
@@ -84,11 +86,7 @@ pub fn run(){
     exe!("sudo reboot");
     
 
-
-    
-
 }
-
 
 
 fn i3_setup(){
