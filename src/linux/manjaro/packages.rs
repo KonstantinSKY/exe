@@ -53,8 +53,10 @@ fn check() -> bool {
     output.status.success()
 }
 
-fn enable_aur() {
+pub fn enable_aur() {
     H1!("PAMAC & AUR (ADVANCED USER REPOSITORY) SETUP in $CONFIG");
+    h2!("Updating config file: {PAMAC_CONFIG}");
+
     let ecp = enable_config_param;
     ecp(
         "EnableAUR",
@@ -79,6 +81,9 @@ fn enable_aur() {
         PAMAC_CONFIG,
         "Download updates in background",
     );
+
+    h2!("Showing config file {PAMAC_CONFIG}");
+    exe!("sudo cat {PAMAC_CONFIG}");
 }
 
 #[cfg(test)]

@@ -1,4 +1,5 @@
 use files::{slink, delete};
+use super::packages::enable_aur;
 
 use crate::prelude::*;
 
@@ -57,7 +58,7 @@ pub fn run(){
     exe!("manjaro-settings-manager &");
 
 
-
+    run!(enable_aur, "Enabling AUR and others pamac settings");
 
     H1!("GRUB SETTINGS");
 
