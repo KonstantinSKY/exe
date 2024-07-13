@@ -51,14 +51,15 @@ pub fn enable_config_param(param: &str, config_file: &str, message: &str) {
     h2!("{message}");
     // exe!("sed -i 's/#{param}/{param}' $config_file");
 
-    cmd!("sed -i 's/#{param}/{param}' $config_file");
+    cmd!("sudo sed -i 's/#{param}/{param}' $config_file");
     let sed_command = format!("s/#{param}/{param}/");
 
-    let output: Result<Output, std::io::Error> = Command::new("sed")
-        .arg("-i")
-        .arg(&sed_command)
-        .arg(config_file)
-        .output();
+    let output: Result<Output, std::io::Error> = Command::new("sudo")
+    .arg("sed")
+    .arg("-i")
+    .arg(sed_command)
+    .arg(config_file)
+    .output();
 
     match output {
         Ok(output) => {
@@ -111,6 +112,7 @@ pub fn slink(source_path: &Path, link_path: &Path) {
     }
 }
 
+#[macro_export]
 macro_rules! backup {
     ($($arg:tt)*) => {
         backup(&PathBuf::from(format!($($arg)*)), &home_path!(BACKUP_DIR))

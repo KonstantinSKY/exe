@@ -3,7 +3,7 @@ pub use crossterm::style::Stylize;
 pub use std::env;
 pub use std::path::{Path, PathBuf};
 
-pub use crate::{cmd, exe, run, h2, home_dir, home_path, H1, warn_print};
+pub use crate::{cmd, exe, run, h2, home_dir, home_path, H1, warn_print, backup};
 
 pub const WORK_DIR: &str = "Work";
 pub const CONFIGS_DIR: &str = "Work/Configs";

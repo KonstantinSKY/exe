@@ -1,3 +1,5 @@
+use files::backup;
+
 use crate::prelude::*;
 use crate::sh::files::enable_config_param;
 use std::process::Command as ShellCommand;
@@ -55,8 +57,9 @@ fn check() -> bool {
 
 pub fn enable_aur() {
     H1!("PAMAC & AUR (ADVANCED USER REPOSITORY) SETUP in $CONFIG");
+    if !backup!("{PAMAC_CONFIG}") {return;}
     h2!("Updating config file: {PAMAC_CONFIG}");
-
+    
     let ecp = enable_config_param;
     ecp(
         "EnableAUR",
