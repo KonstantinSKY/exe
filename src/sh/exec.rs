@@ -46,7 +46,7 @@ where
             function();
             return;
         }
-        println!("{}: {}\n", "Next Function".red(), message.white());
+        println!("{}: {}\n", "Next Function".dark_blue(), message.white());
         println!(
             "Press {}: to Run Function; {}: skip; {} quit script.",
             "Enter".green(),
@@ -55,7 +55,10 @@ where
             "Q".red()
         );
         match select_input() {
-            Some(true) => function(),
+            Some(true) => {
+                function();
+                break;
+            }
             Some(false) => {
                 println!("{}: {}", "Skipping Function".yellow(), message.white());
                 break;
@@ -81,7 +84,10 @@ pub fn exe(command: &str, noconfirm_flag: bool) {
             "Q".red()
         );
         match select_input() {
-            Some(true) => run_shell_command(command),
+            Some(true) => {
+                run_shell_command(command);
+                break;
+            }
             Some(false) => {
                 println!("{}: {}", "Skipping command".yellow(), command.white());
                 break;

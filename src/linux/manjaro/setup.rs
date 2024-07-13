@@ -60,7 +60,7 @@ pub fn run(){
 
     run!(enable_aur, "Enabling AUR and others pamac settings");
     packages::update();
-    
+
     H1!("GRUB SETTINGS");
 
     h2!("Showing GRUB Config {GRUB_CONFIG}");
@@ -99,7 +99,6 @@ pub fn set_time(){
     H1!("System time Setup ");
     h2!("Setting system clock auto sync");
     exe!("sudo timedatectl set-ntp true");
-
     h2!("Showing timedatectl status");
     exe!("timedatectl status"; true);
 }
