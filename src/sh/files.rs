@@ -1,6 +1,7 @@
 use crate::prelude::*;
 use std::fs;
 use std::path::Path;
+use std::process::{Command, Output};
 
 #[macro_export]
 macro_rules! home_dir {
@@ -43,13 +44,41 @@ fn move_to_old(path: &Path) {
 }
 
 pub fn enable_config_param(param: &str, config_file: &str, message: &str) {
-    if Path::new(config_file).exists() {
+    if !Path::new(config_file).exists() {
         warn_print!("{config_file} is not exists");
         return;
     }
     h2!("{message}");
-    exe!("sed -i 's/#{param}/{param}' $config_file");
+    // exe!("sed -i 's/#{param}/{param}' $config_file");
+
+    cmd!("sed -i 's/#{param}/{param}' $config_file");
+    let sed_command = format!("s/#{param}/{param}/");
+
+    let output: Result<Output, std::io::Error> = Command::new("sed")
+        .arg("-i")
+        .arg(&sed_command)
+        .arg(config_file)
+        .output();
+
+    match output {
+        Ok(output) => {
+            if output.status.success() {
+                println!("Successfully updated {param} in {config_file}");
+            } else {
+                eprintln!(
+                    "Failed to update {} in {}. Error: {}",
+                    param,
+                    config_file,
+                    String::from_utf8_lossy(&output.stderr)
+                );
+            }
+        }
+        Err(e) => {
+            eprintln!("Failed to execute sed command: {e}");
+        }
+    }
 }
+
 
 pub fn slink(source_path: &Path, link_path: &Path) {
     h2!("Creating Symbolic link: {link_path:?} -> {source_path:?}");
@@ -117,8 +146,8 @@ pub fn backup(source_path: &Path, storage_path: &Path) -> bool {
 
     // let target_filename = format!("{}",source");
     let target_path = storage_path.join(source);
-     // Ensure the target directory exists
-     if let Some(parent) = target_path.parent() {
+    // Ensure the target directory exists
+    if let Some(parent) = target_path.parent() {
         if let Err(e) = fs::create_dir_all(parent) {
             eprintln!("Failed to create target directory: {e}");
             return false;
@@ -126,7 +155,6 @@ pub fn backup(source_path: &Path, storage_path: &Path) -> bool {
     }
 
     println!("Backing up {source_path:?} --> {target_path:?}");
-
     match fs::copy(source_path, &target_path) {
         Ok(_) => {
             println!("Backup successful: {target_path:?}");

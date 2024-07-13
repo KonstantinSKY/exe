@@ -1,7 +1,7 @@
+use crate::prelude::*;
+use crate::sh::files::enable_config_param;
 use std::process::Command as ShellCommand;
 use std::str;
-
-use crate::prelude::*;
 
 pub fn update() {
     H1!("System update with pamac");
@@ -23,7 +23,6 @@ pub fn remove(packages: &str) {
     exe!("sudo pamac remove {packages} --no-confirm ");
 }
 
-
 pub fn get_mirrors() {
     H1!("Repository mirrors update");
 
@@ -36,7 +35,6 @@ pub fn get_mirrors() {
     h2!("Showing New status of mirrors pool");
     exe! ("pacman-mirrors --status"; true);
 
-    
     h2!("Fast update with pacman");
     exe!("sudo pacman -Suy --noconfirm");
 }
@@ -53,6 +51,34 @@ fn check() -> bool {
         .output()
         .expect("Failed to execute command");
     output.status.success()
+}
+
+fn enable_aur() {
+    H1!("PAMAC & AUR (ADVANCED USER REPOSITORY) SETUP in $CONFIG");
+    let ecp = enable_config_param;
+    ecp(
+        "EnableAUR",
+        PAMAC_CONFIG,
+        "Allow Pamac to search and install packages from AUR",
+    );
+    ecp(
+        "CheckAURUpdate",
+        PAMAC_CONFIG,
+        "When AUR support is enabled check for updates from AUR",
+    );
+    ecp("RemoveUnrequiredDeps",
+        PAMAC_CONFIG, 
+        "When removing a package, also remove those dependencies that are not required by other packages (recurse option)");
+    ecp(
+        "NoUpdateHideIcon",
+        PAMAC_CONFIG,
+        "When no update is available, hide the tray icon",
+    );
+    ecp(
+        "DownloadUpdates",
+        PAMAC_CONFIG,
+        "Download updates in background",
+    );
 }
 
 #[cfg(test)]

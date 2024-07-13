@@ -58,6 +58,7 @@ pub const RC_FILES: [&str; 3] = ["bashrc", "zhsrc", "zshrc"];
 
 pub const MANJARO_I3_PACKAGES_TO_REMOVE: &str = "bmenu pacui pcmanfm mupdf libmupdf tesseract-data-afr tesseract" ;
 pub const MANJARO_I3_FILES_TO_DELETE: &str = ".bash_profile";
+pub const PAMAC_CONFIG: &str = "/etc/pamac.conf";
 
 pub const GRUB_CONFIG: &str = "/etc/default/grub";
 pub const GRUB_MANJARO_THEME: &str = "/usr/share/grub/themes/manjaro/theme.txt";
