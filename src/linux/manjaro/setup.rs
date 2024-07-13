@@ -1,7 +1,7 @@
 use files::{slink, delete};
 use super::packages::enable_aur;
 
-use crate::prelude::*;
+use crate::{linux::manjaro::packages, prelude::*};
 
 
 pub fn run(){
@@ -59,7 +59,8 @@ pub fn run(){
 
 
     run!(enable_aur, "Enabling AUR and others pamac settings");
-
+    packages::update();
+    
     H1!("GRUB SETTINGS");
 
     h2!("Showing GRUB Config {GRUB_CONFIG}");
