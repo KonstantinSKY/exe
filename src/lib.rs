@@ -10,6 +10,9 @@ pub mod code;
 pub mod docker;
 
 use clap::Arg;
+use serde::Deserialize;
+use std::path::{Path, PathBuf};
+use std::fs;
 
 
 #[must_use] 
@@ -28,4 +31,25 @@ pub fn arg_version() -> Arg {
     .short('v')
     .long("version")
     .action(clap::ArgAction::SetTrue)
+}
+
+#[derive(Deserialize, Debug)]
+struct Configs {
+    paths: files,
+}
+
+impl Configs {
+    fn load() -> Result<Self, Box<dyn std::error::Error>> {
+        let contents = fs::read_to_string("configs.toml")?;
+        let mut configs: Configs = toml::from_str(&contents)?;
+        configs.paths.validate_paths();
+        Ok(configs)
+    }
+}
+
+
+fn init_config() {
+    let configs = Configs::load();
+    println!("Configs: {configs:?}");
+    // CONFIG.set(config).expect("Failed to set config");
 }
