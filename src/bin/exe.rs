@@ -6,6 +6,9 @@ use clap::Command;
 
 fn main() {
     // styles::app_started();
+    app::init_config();
+
+
 
     let matches = Command::new("Universal Beautiful Executor")
         .version("0.1.0")

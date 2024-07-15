@@ -34,21 +34,22 @@ pub fn arg_version() -> Arg {
 }
 
 #[derive(Deserialize, Debug)]
-struct Configs {
-    paths: files,
+pub struct Configs {
+    code: PathBuf,
+    nvim: PathBuf,
 }
 
 impl Configs {
     fn load() -> Result<Self, Box<dyn std::error::Error>> {
         let contents = fs::read_to_string("configs.toml")?;
-        let mut configs: Configs = toml::from_str(&contents)?;
-        configs.paths.validate_paths();
+        let configs: Configs = toml::from_str(&contents)?;
+        // configs.paths.validate_paths();
         Ok(configs)
     }
 }
 
 
-fn init_config() {
+pub fn init_config() {
     let configs = Configs::load();
     println!("Configs: {configs:?}");
     // CONFIG.set(config).expect("Failed to set config");
