@@ -6,7 +6,7 @@ use clap::Command;
 
 fn main() {
     // styles::app_started();
-    app::init_config();
+    app::configs::init_config();
 
 
 
