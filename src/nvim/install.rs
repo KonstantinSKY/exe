@@ -1,4 +1,3 @@
-use std::{fs, process::exit};
 
 use crate::prelude::*;
 use files::slink;
@@ -58,7 +57,7 @@ mod tests {
     #[test]
     fn test_init_nvim_config() {
         crate::configs::init_config();
-        println!("Test Config dir path is valid and existdddd");
+        println!("Test Config dir path is valid and exist");
         run();
 
         // assert_eq!(configs.code, PathBuf::from("/path/to/code.toml"));
