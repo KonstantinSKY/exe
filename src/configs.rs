@@ -2,6 +2,7 @@ use crate::prelude::*;
 use once_cell::sync::OnceCell;
 use serde::Deserialize;
 use std::collections::HashMap;
+use std::error::Error;
 use std::fs;
 use std::path::PathBuf;
 
@@ -39,11 +40,10 @@ impl Configs {
 
     fn get_from_toml(contents: &str) -> Configs {
         if let Ok(mut configs) = toml::from_str::<Configs>(contents) {
-            println!("Got Configs: {contents}");
+            // println!("Got Configs: {contents}");
             configs.canonicalize_paths();
             configs
         } else {
-            println!("Got Configs: {contents}");
             Configs {
                 paths: HashMap::new(),
             }
@@ -71,12 +71,10 @@ impl Configs {
 }
 
 pub fn get_config_path(key: &str) -> PathBuf {
-
-    println!("CONFIGS FROM path got config: {CONFIGS:#?}");
+    // println!("CONFIGS FROM path got config: {CONFIGS:#?}");
     if let Some(configs) = CONFIGS.get() {
-        println!("{key} path got config: {configs:?}");
         if let Some(path) = configs.paths.get(key) {
-            println!("{key} path from global config: {path:?}");
+            // println!("{key} path from global config: {path:?}");
             if path.exists() {
                 path.clone()
             } else {
@@ -99,8 +97,29 @@ pub fn init_config() {
         Ok(()) => (),
         Err(_) => println!("Failed to set CONFIGS GLOBAL VARIABLE. It might be already set."),
     }
-    println!("CONFIGS SETT: {CONFIGS:#?}");
+    // println!("CONFIGS SETT: {CONFIGS:#?}");
 }
+
+/// Reads and parses a TOML file into the specified type.
+///
+/// # Errors
+/// This function will exit the program if the file cannot be read or if the
+/// contents cannot be parsed as TOML.
+#[must_use] 
+pub fn read_and_parse_toml<T: for<'de> Deserialize<'de>>(path: &Path) -> T {
+    if let Ok(contents) = fs::read_to_string(path) {
+        if let Ok(config) = toml::from_str::<T>(&contents) {
+            config
+        } else {
+            println!("Can't convert from TOML file: {path:?}");
+            exit(1);
+        }
+    } else {
+        println!("Can't read file: {path:?}");
+        exit(1);
+    }
+}
+
 
 #[cfg(test)]
 mod tests {

@@ -25,20 +25,9 @@ pub struct Files {
 
 impl Config {
     fn new(path: &Path) -> Self {
-        if let Ok(contents) = fs::read_to_string(path) {
-            if let Ok(config) = toml::from_str::<Config>(&contents) {
-                config
-            } else {
-                println!("Can't convert from TOML file: {path:?}");
-                exit(1);
-            }
-        } else {
-            println!("Can't read file: {path:?}");
-            exit(1);
-        }
+        crate::configs::read_and_parse_toml(path)
     }
 }
-
 pub fn run() {
     // let configs= crate::configs::Configs::new();
     // println!("Got Configs: {configs:#?}");
@@ -46,21 +35,20 @@ pub fn run() {
     let config = Config::new(&config_source_path);
     // println!("nvim config: {config:#?}");
     H1!("NEOVIM and ECOSYSTEM Installation and setup for Linux");
-    
+
     h2!("Installing Neovim and Eco system");
     crate::linux::manjaro::packages::install(&config.packages);
 
     h2!("Creating directory: {:?}", &config.paths.config_dir);
     exe!("mkdir -pv {:?}", &config.paths.config_dir);
 
-    let link_path = home_path!(&config.paths.config_dir);
-    let source_path = home_path!(&config.paths.config_source_dir);
-    
+    let link_path = home_path!(&config.files.init_vim);
+    let source_path = home_path!(&config.files.configs_init_vim);
+
     slink(&source_path, &link_path);
 
     h2!("installing plugins");
     exe!("nvim -c 'PlugInstall' -c ':x' -c ':x'");
-
 }
 
 #[cfg(test)]
