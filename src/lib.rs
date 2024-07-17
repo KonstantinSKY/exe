@@ -10,6 +10,7 @@ pub mod sh;
 pub mod styles;
 pub mod configs;
 pub mod nvim;
+pub mod megasync;
 
 use clap::Arg;
 
