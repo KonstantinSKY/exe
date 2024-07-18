@@ -13,6 +13,7 @@ pub mod nvim;
 pub mod megasync;
 pub mod pass;
 pub mod ssh;
+pub mod git;
 
 use clap::Arg;
 
