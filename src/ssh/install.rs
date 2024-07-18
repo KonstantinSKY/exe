@@ -18,10 +18,10 @@ impl Config {
 }
 
 pub fn run() {
-    let config_source_path = crate::configs::get_config_path("pass");
-    let config = Config::new(&config_source_path);
-
     H1!("SSH Installation and setup for Linux");
+    
+    let config_source_path = crate::configs::get_config_path("ssh");
+    let config = Config::new(&config_source_path);
 
     h2!("Installing OpenSSH");
     crate::linux::manjaro::packages::update();
@@ -29,7 +29,7 @@ pub fn run() {
 
     h2!("Checking how installed openssh");
     exe!("which ssh"; true);
-    exe!("systemctl status sshd --no-pager"; true);
+    exe!("sudo systemctl status sshd --no-pager"; true);
 
     h2!("Starting and Enabling openssh daemon");
     exe!("sudo systemctl start sshd");
@@ -52,5 +52,5 @@ pub fn run() {
 
     h2!("Checking GitLab ssh access");
     exe!("ssh -T git@gitlab.com"; true);
-    
+
 }
