@@ -51,7 +51,7 @@ impl Configs {
     }
 
     fn canonicalize_paths(&mut self) {
-        let base_path = home_path!("Work/Configs");
+        let base_path = home_path!("Work");
         self.paths.retain(|_key, path| {
             let absolute_path = base_path.join(&path);
 

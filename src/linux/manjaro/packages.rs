@@ -16,7 +16,6 @@ pub fn update() {
 }
 
 pub fn install(packages: &str) {
-    update();
     h2!("Installing packages for Manjaro: {packages}");
     exe!("pamac info {packages} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
     exe!("sudo pamac install {packages} --no-confirm ");

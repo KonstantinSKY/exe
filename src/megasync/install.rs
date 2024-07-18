@@ -23,6 +23,7 @@ pub fn run() {
 
     H1!("MEGASYNC Daemon Installation and setup for Linux");
     h2!("Installing");
+    crate::linux::manjaro::packages::update();
     crate::linux::manjaro::packages::install(&config.packages);
     exe!("mega-version"; true);
     h2!("Login in");

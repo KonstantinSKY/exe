@@ -11,6 +11,7 @@ pub mod styles;
 pub mod configs;
 pub mod nvim;
 pub mod megasync;
+pub mod pass;
 
 use clap::Arg;
 
