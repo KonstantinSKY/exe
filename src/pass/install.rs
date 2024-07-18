@@ -39,6 +39,7 @@ pub fn run() {
     slink(&password_store_source_path, &password_store_link_path);
 
 
+
     h2!("Installing ecosystem");
     crate::linux::manjaro::packages::update();
     crate::linux::manjaro::packages::install(&config.packages);
@@ -64,20 +65,21 @@ pub fn run() {
         return;
     }
 
-    cmd!("gpg --import-ownertrust {ot_list_path:?}");
-    let import_ownertrust_status = Command::new("gpg")
-        .arg("--import-ownertrust")
-        .arg(format!("{ot_list_path:?}"))
-        .status();
+    exe!("gpg --import-ownertrust {ot_list_path:?}");
+    // cmd!("gpg --import-ownertrust {ot_list_path:?}");
+    // let import_ownertrust_status = Command::new("gpg")
+    //     .arg("--import-ownertrust")
+    //     .arg(format!("{ot_list_path:?}"))
+    //     .status();
 
-    match import_ownertrust_status {
-        Ok(status) if status.success() => {
-            println!("Ownertrust imported successfully.");
-        }
-        _ => {
-            eprintln!("Failed to import ownertrust.");
-        }
-    }
+    // match import_ownertrust_status {
+    //     Ok(status) if status.success() => {
+    //         println!("Ownertrust imported successfully.");
+    //     }
+    //     _ => {
+    //         eprintln!("Failed to import ownertrust.");
+    //     }
+    // }
 
    
     // Check for existing GPG keys
