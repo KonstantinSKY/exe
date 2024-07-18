@@ -12,6 +12,7 @@ pub mod configs;
 pub mod nvim;
 pub mod megasync;
 pub mod pass;
+pub mod ssh;
 
 use clap::Arg;
 

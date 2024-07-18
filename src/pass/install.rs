@@ -1,6 +1,5 @@
 use crate::prelude::*;
 use serde::Deserialize;
-use std::process::{Command, ExitStatus};
 use crate::sh::files::slink; 
 
 #[derive(Deserialize, Debug)]
@@ -11,7 +10,7 @@ pub struct Config {
     password_store_source: String,
     password_store_repo: String,
     ot_list: String,
-    ot_txt: String,
+    // ot_txt: String,
     pub_key: String,
     sec_key: String,
 }
@@ -66,20 +65,6 @@ pub fn run() {
     }
 
     exe!("gpg --import-ownertrust {ot_list_path:?}");
-    // cmd!("gpg --import-ownertrust {ot_list_path:?}");
-    // let import_ownertrust_status = Command::new("gpg")
-    //     .arg("--import-ownertrust")
-    //     .arg(format!("{ot_list_path:?}"))
-    //     .status();
-
-    // match import_ownertrust_status {
-    //     Ok(status) if status.success() => {
-    //         println!("Ownertrust imported successfully.");
-    //     }
-    //     _ => {
-    //         eprintln!("Failed to import ownertrust.");
-    //     }
-    // }
 
    
     // Check for existing GPG keys
