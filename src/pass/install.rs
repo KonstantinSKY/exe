@@ -10,7 +10,7 @@ pub struct Config {
     password_store_link: String,
     password_store_source: String,
     password_store_repo: String,
-    owner_trust_list: String,
+    ot_list: String,
     ot_txt: String,
     pub_key: String,
     sec_key: String,
@@ -48,7 +48,7 @@ pub fn run() {
 
 
     h2!("Importing ownertrust list");
-    let ot_list_path = home_path!(&config.security_dir, &config.owner_trust_list); // Update this path as necessary
+    let ot_list_path = home_path!(&config.security_dir, &config.ot_list); // Update this path as necessary
     if !ot_list_path.exists() {
         println!("{ot_list_path:?} not exists");
         return;

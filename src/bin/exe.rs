@@ -25,6 +25,7 @@ fn main() {
         .subcommand(app::linux::commands())
         .subcommand(app::linux::sync_commands())
         .subcommand(app::megasync::commands())
+        .subcommand(app::pass::commands())
         .get_matches();
 
     match matches.subcommand() {
@@ -39,6 +40,7 @@ fn main() {
         Some(("linux", arg_matches)) => app::linux::handle(arg_matches),
         Some(("sync", _arg_matches)) => app::linux::sync::run(),
         Some(("mega", arg_matches)) => app::megasync::handle(arg_matches),
+        Some(("pass", arg_matches)) => app::pass::handle(arg_matches),
 
         _ => println!("No Function Found"),
     }

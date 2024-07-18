@@ -11,8 +11,12 @@ pub fn update() {
     if check() {
         return;
     };
+    h2!("Quit from pamac-manager");
+    exe!("pkill pamac-manager"; true);
     exe!("sudo pamac upgrade -a --no-confirm");
     update();
+    h2!("Run pamac-manager");
+    exe!("pamac-manager");
 }
 
 pub fn install(packages: &str) {
