@@ -1,7 +1,7 @@
 
 use crate::prelude::*;
-use files::slink;
 use serde::Deserialize;
+use crate::sh::credentials::Credentials;
 
 #[derive(Deserialize, Debug)]
 pub struct Config {
@@ -24,7 +24,19 @@ pub fn run() {
     H1!("MEGASYNC Daemon Installation and setup for Linux");
     h2!("Installing");
     crate::linux::manjaro::packages::install(&config.packages);
+    exe!("mega-version"; true);
+    h2!("Login in");
 
+    match  Credentials::input(){
+        Ok(credentials) => {
+            exe!("mega-login {} {}", credentials.username, credentials.password);
+
+        },
+        Err(e) => {
+            println!("Error Credentials input: {e}");
+            return
+        }
+    }
 
     h2!("Login Checking and list of active sync directories");
     exe!("mega-whoami && mega-sync");

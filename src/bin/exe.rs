@@ -24,6 +24,7 @@ fn main() {
         .subcommand(app::docker::commands())
         .subcommand(app::linux::commands())
         .subcommand(app::linux::sync_commands())
+        .subcommand(app::megasync::commands())
         .get_matches();
 
     match matches.subcommand() {
@@ -37,6 +38,7 @@ fn main() {
         Some(("docker", arg_matches)) => app::docker::handle(arg_matches),
         Some(("linux", arg_matches)) => app::linux::handle(arg_matches),
         Some(("sync", _arg_matches)) => app::linux::sync::run(),
+        Some(("mega", arg_matches)) => app::megasync::handle(arg_matches),
 
         _ => println!("No Function Found"),
     }
