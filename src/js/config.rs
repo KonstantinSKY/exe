@@ -1,10 +1,7 @@
-use crate::prelude::*;
-use serde::Deserialize;
-use crate::sh::files::slink; 
 
 #[derive(Deserialize, Debug)]
 pub struct Config {
-    pub packages: Packages,
+    pub packages: String,
 }
 
 impl Config {
@@ -26,17 +23,4 @@ pub struct Packages {
 pub fn get(key:&str) -> Config{
     let config_source_path = crate::configs::get_config_path(key);
     Config::new(&config_source_path)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_get() {
-        let config = get("manjaro");
-
-        eprintln!("Config: {config:#?}");
-
-    }
 }

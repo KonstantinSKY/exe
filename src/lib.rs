@@ -14,6 +14,7 @@ pub mod megasync;
 pub mod pass;
 pub mod ssh;
 pub mod git;
+pub mod js;
 
 use clap::Arg;
 

@@ -1,5 +1,5 @@
 use files::{slink, delete};
-use super::packages::{update, enable_aur, install_many};
+use super::packages::{update, enable_aur, install};
 
 use crate::{linux::manjaro::packages, prelude::*};
 
@@ -35,25 +35,12 @@ pub fn run(){
 //     i3_setup();
     
     h2!("Removing unneeded packages");
-    super::packages::remove(MANJARO_I3_PACKAGES_TO_REMOVE);
+    super::packages::remove(&config.packages.unneeded);
 
     delete(MANJARO_I3_FILES_TO_DELETE, true);
     
-    // h2!("Installing first required package collection: {REQUIRED_PACKAGES_1}");
-
-    h2!("Installing Trash-CLI");
-    exe!("sudo pacman -S trash-cli --noconfirm");
-
-    h2!("Installing Manjaro Setting Manager");
-    exe!("sudo pacman -S manjaro-settings-manager --noconfirm");
-
-    h2!("Installing Materia GRK Theme");
-    exe!("sudo pacman -S materia-gtk-theme --noconfirm");
-    
-    h2!("Installing update-grub");
-    exe!("sudo pacman -S update-grub --noconfirm");
-
-
+    h2!("Installing first required package collection: {:?}",config.packages.requirements);
+    install(&config.packages.requirements_2);
 
     H1!("Linux Kernel");
     h2!("Running manjaro setting manager for checking kernels");
@@ -78,15 +65,15 @@ pub fn run(){
     h2!("Update GRUB to apply the changes");
     exe!("sudo update-grub");
 
-    h2!("Installing package collection: requirements2 : {:?}", config.packages.requirements2);
-    install_many(&config.packages.requirements2);
+    h2!("Installing package collection: requirements2 : {:?}", config.packages.requirements_2);
+    install(&config.packages.requirements_2);
 
     //TODO AUR Enabling
     h2!("Installing package collection: internet : {:?}", config.packages.internet);
-    install_many(&config.packages.internet);
+    install(&config.packages.internet);
 
     h2!("Installing package collection: communication : {:?}", config.packages.communication);
-    install_many(&config.packages.communication);
+    install(&config.packages.communication);
     
     H1!("Reboot system IF Necessary");
     

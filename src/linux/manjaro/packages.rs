@@ -1,11 +1,12 @@
 use files::backup;
 
+use crate::linux::manjaro::packages;
 use crate::prelude::*;
 use serde::Deserialize;
+use crate::styles;
 use crate::sh::files::enable_config_param;
-use std::process::Command as ShellCommand;
+use std::process::{exit, Command};
 use std::str;
-
 
 
 pub fn update() {
@@ -23,8 +24,20 @@ pub fn update() {
 
 pub fn install(packages: &str) {
     h2!("Installing packages for Manjaro: {packages}");
-    exe!("pamac info {packages} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
-    exe!("sudo pamac install {packages} --no-confirm ");
+    let packages_vec: Vec<&str> = packages.split_whitespace().collect();
+    for package in packages_vec{
+        if package.is_empty(){
+            continue;
+        }
+        println!("Installing: {package}");
+        exe!("pamac info {package} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
+        exe!("sudo pamac install {package} --no-confirm");
+        if !check_installed(package){
+            println!("{}", format!("Package NOT installed: {package}").red());
+            return;
+        }
+        println!("{}", format!("Package successfully installed: {package}").green());
+    }
 }
 
 pub fn install_many(packages: &[String]){
@@ -38,9 +51,28 @@ pub fn install_many(packages: &[String]){
 }
 
 pub fn remove(packages: &str) {
-    h2!("Removing packages for mangaro");
-    exe!("sudo pamac remove {packages} --no-confirm ");
+    h2!("Removing packages: {packages}");
+    let packages_vec: Vec<&str> = packages.split_whitespace().collect();
+    // h2!("Removing packages: {packages_vec:?}");
+    for package in packages_vec{
+        if package.is_empty(){
+            continue;
+        }
+        h2!("Removing package: {packages}");
+        exe!("pamac info {package} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
+        if !check_installed(package){
+            continue;
+        }
+        exe!("sudo pamac remove {package} --no-confirm ");
+        if check_installed(package){
+            println!("{}", format!("Package NOT removed: {package}").red());
+            return;
+        }
+        println!("{}", format!("Package successfully removed: {package}").green());
+
+    }
 }
+
 
 pub fn get_mirrors() {
     H1!("Repository mirrors update");
@@ -64,7 +96,7 @@ fn check() -> bool {
     h2!("Checking for update");
     cmd!("pamac checkupdates -a");
 
-    let output = ShellCommand::new("pamac")
+    let output = Command::new("pamac")
         .arg("checkupdates")
         .arg("-a")
         .output()
@@ -106,7 +138,28 @@ pub fn enable_aur() {
     exe!("sudo cat {PAMAC_CONFIG}");
 }
 
+#[must_use] 
+pub fn check_installed(package_name: &str) -> bool {
+    let command = format!("pamac list --installed | grep -E '^{package_name} '");
+    let output = match Command::new("sh")
+        .arg("-c")
+        .arg(&command)
+        .output()  {
+            Ok(output) => output,
+            Err(e) => {
+                eprintln!("Failed to run pamac: {e}");
+                return false;
+            }
+        };
 
+    if output.status.success() {
+        let stdout = str::from_utf8(&output.stdout).unwrap_or("").trim();
+        println!("Package installed: {stdout}");
+        return true;
+    }
+    println!("Package not installed:  {package_name}");
+    false
+}
 
 
 #[cfg(test)]
