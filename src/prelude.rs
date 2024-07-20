@@ -66,7 +66,7 @@ pub const MAIN_DIRS: [&str; 15] = [
 pub const MAIN_RC: &str = "Work/Configs/rc";
 pub const RC_FILES: [&str; 3] = ["bashrc", "zhsrc", "zshrc"];
 
-pub const MANJARO_I3_PACKAGES_TO_REMOVE: &str = "bmenu pacui pcmanfm mupdf libmupdf tesseract-data-afr tesseract" ;
+pub const MANJARO_I3_PACKAGES_TO_REMOVE: &str = "bmenu palemoon pacui pcmanfm mupdf libmupdf tesseract-data-afr tesseract" ;
 pub const MANJARO_I3_FILES_TO_DELETE: &str = ".bash_profile";
 pub const PAMAC_CONFIG: &str = "/etc/pamac.conf";
 

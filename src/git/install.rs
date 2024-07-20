@@ -18,7 +18,7 @@ impl Config {
 
 pub fn run() {
     H1!("GIT Installation and setup for Linux");
-    let config_source_path = crate::configs::get_config_path("ssh");
+    let config_source_path = crate::configs::get_config_path("git");
     let config = Config::new(&config_source_path);
 
     h2!("Installing GIT and Ecosystem");

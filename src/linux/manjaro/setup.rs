@@ -1,11 +1,14 @@
 use files::{slink, delete};
-use super::packages::{update,enable_aur};
+use super::packages::{update, enable_aur, install_many};
 
 use crate::{linux::manjaro::packages, prelude::*};
 
 
 pub fn run(){
     H1!("Manjaro Linux Setup");
+
+    let config = super::config::get("manjaro");
+
 
     run!(set_time, "Setting system time");
 
@@ -31,9 +34,6 @@ pub fn run(){
     slink(&home_path!(CONFIGS_DIR, "urxvt.Xresources.cfg"), &home_path!(".Xresources"));
 //     i3_setup();
     
-
-
-
     h2!("Removing unneeded packages");
     super::packages::remove(MANJARO_I3_PACKAGES_TO_REMOVE);
 
@@ -78,10 +78,18 @@ pub fn run(){
     h2!("Update GRUB to apply the changes");
     exe!("sudo update-grub");
 
+    h2!("Installing package collection: requirements2 : {:?}", config.packages.requirements2);
+    install_many(&config.packages.requirements2);
+
     //TODO AUR Enabling
+    h2!("Installing package collection: internet : {:?}", config.packages.internet);
+    install_many(&config.packages.internet);
 
-
+    h2!("Installing package collection: communication : {:?}", config.packages.communication);
+    install_many(&config.packages.communication);
+    
     H1!("Reboot system IF Necessary");
+    
     h2!("Rebooting system.");
     exe!("sudo reboot");
     

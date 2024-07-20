@@ -1,9 +1,11 @@
 use files::backup;
 
 use crate::prelude::*;
+use serde::Deserialize;
 use crate::sh::files::enable_config_param;
 use std::process::Command as ShellCommand;
 use std::str;
+
 
 
 pub fn update() {
@@ -25,7 +27,7 @@ pub fn install(packages: &str) {
     exe!("sudo pamac install {packages} --no-confirm ");
 }
 
-pub fn install_many(packages: &[&str]){
+pub fn install_many(packages: &[String]){
     update();
     for package in packages{
         if package.is_empty(){
@@ -103,6 +105,9 @@ pub fn enable_aur() {
     h2!("Showing config file {PAMAC_CONFIG}");
     exe!("sudo cat {PAMAC_CONFIG}");
 }
+
+
+
 
 #[cfg(test)]
 mod tests {
