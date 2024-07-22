@@ -28,6 +28,7 @@ fn main() {
         .subcommand(app::pass::commands())
         .subcommand(app::ssh::commands())
         .subcommand(app::git::commands())
+        .subcommand(app::js::commands())
         .get_matches();
 
     match matches.subcommand() {
@@ -45,6 +46,7 @@ fn main() {
         Some(("pass", arg_matches)) => app::pass::handle(arg_matches),
         Some(("ssh", arg_matches)) => app::ssh::handle(arg_matches),
         Some(("git", arg_matches)) => app::git::handle(arg_matches),
+        Some(("js", arg_matches)) => app::js::handle(arg_matches),
 
         _ => println!("No Function Found"),
     }
