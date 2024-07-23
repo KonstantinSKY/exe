@@ -4,7 +4,7 @@ use crossterm::{
     cursor, execute,
     terminal::{self, ClearType},
 };
-use std::{io, process::Command as ShellCommand};
+use std::{io, process::{Command as ShellCommand, Stdio}};
 
 #[macro_export]
 macro_rules! run {
@@ -136,6 +136,8 @@ fn run_shell_command(command: &str) {
     ShellCommand::new("sh")
         .arg("-c")
         .arg(command)
+        .stdout(Stdio::inherit())
+        .stderr(Stdio::inherit())
         .status()
         .expect("Failed to execute command");
 }

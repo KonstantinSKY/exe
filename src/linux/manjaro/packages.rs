@@ -1,11 +1,8 @@
 use files::backup;
 
-use crate::linux::manjaro::packages;
 use crate::prelude::*;
-use serde::Deserialize;
-use crate::styles;
 use crate::sh::files::enable_config_param;
-use std::process::{exit, Command};
+use std::process::Command;
 use std::str;
 
 
@@ -18,8 +15,8 @@ pub fn update() {
     exe!("pkill pamac-manager"; true);
     exe!("sudo pamac upgrade -a --no-confirm");
     update();
-    h2!("Run pamac-manager");
-    exe!("pamac-manager");
+    // h2!("Run pamac-manager in background");
+    // exe!("pamac-manager");
 }
 
 pub fn install(packages: &str) {
