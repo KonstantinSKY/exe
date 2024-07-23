@@ -40,7 +40,7 @@ pub fn run(){
     delete(MANJARO_I3_FILES_TO_DELETE, true);
     
     h2!("Installing first required package collection: {:?}",config.packages.requirements);
-    install(&config.packages.requirements_2);
+    install(&config.packages.requirements);
 
     H1!("Linux Kernel");
     h2!("Running manjaro setting manager for checking kernels");

@@ -16,6 +16,9 @@ pub fn run(noconfirm_flag: bool) {
     h2!("Showing $PATH variable");
     exe!("echo $PATH"; true);
 
+    h2!("Restart shell");
+    exe!("source .bashrc");
+
     versions();
 
     h2!("Update rustup to latest Version");
