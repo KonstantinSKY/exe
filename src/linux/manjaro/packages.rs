@@ -1,9 +1,8 @@
-use files::backup;
-
 use crate::prelude::*;
 use crate::sh::files::enable_config_param;
 use std::process::Command;
 use std::str;
+use files::backup;
 
 
 pub fn update() {
@@ -26,12 +25,12 @@ pub fn install(packages: &str) {
         if package.is_empty(){
             continue;
         }
-        println!("Installing: {package}");
+        h2!("\nInstalling: {package}");
         exe!("pamac info {package} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
         exe!("sudo pamac install {package} --no-confirm");
         if !check_installed(package){
             println!("{}", format!("Package NOT installed: {package}").red());
-            return;
+            continue;
         }
         println!("{}", format!("Package successfully installed: {package}").green());
     }
@@ -63,7 +62,7 @@ pub fn remove(packages: &str) {
         exe!("sudo pamac remove {package} --no-confirm ");
         if check_installed(package){
             println!("{}", format!("Package NOT removed: {package}").red());
-            return;
+            continue;
         }
         println!("{}", format!("Package successfully removed: {package}").green());
 

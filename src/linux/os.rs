@@ -72,8 +72,8 @@ pub fn setup() {
         exe!("mkdir -vp {source_path:?}"; true);
         sh::files::slink(&source_path, &link_path);
     }
-    setup_rc();
-    fonts();
+    run!(setup_rc, "Setting RC files for all shell");
+    run!(fonts, "Font Setting");
     manjaro::setup::run();
     // match get().as_str() {
         // "Manjaro" => manjaro::setup::run(),

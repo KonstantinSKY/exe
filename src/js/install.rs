@@ -8,6 +8,10 @@ pub fn run (){
 h2!("Installing needed packages");
 install("nodejs npm yarn nvm");
 
+h2!("Activating NVM");
+
+exe!("source /usr/share/nvm/init-nvm.sh");
+
 h2!("Showing versions");
 exe!("node --version; npm --version;  yarn --version; nvm --version"; true);
 
@@ -19,8 +23,8 @@ exe!("node --version; npm --version;  yarn --version; nvm --version"; true);
 // exe!("export NVM_DIR='$HOME/.nvm'");
 // exe!(r"[ -s '$NVM_DIR/nvm.sh' ] && \. '$NVM_DIR/nvm.sh'"; true);
 
-// h2!("Reloading terminal");
-// exe!("source $HOME/.bashrc");
+h2!("Reloading terminal");
+exe!("source $HOME/.bashrc");
 
 // H1!("NODE.JS VERSIONS");
 // h2!("Node remote LTS versions");
