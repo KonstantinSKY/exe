@@ -1,4 +1,3 @@
-
 use crate::prelude::*;
 use files::slink;
 use serde::Deserialize;
@@ -19,7 +18,6 @@ pub struct Paths {
 #[derive(Deserialize, Debug)]
 pub struct Files {
     init_vim: PathBuf,
-    configs_init_vim: PathBuf,
 }
 
 impl Config {
@@ -35,14 +33,17 @@ pub fn run() {
     // println!("nvim config: {config:#?}");
     H1!("NEOVIM and ECOSYSTEM Installation and setup for Linux");
 
+    h2!("Removing old vim");
+
+    crate::linux::manjaro::packages::remove("vim");
     h2!("Installing Neovim and Eco system");
     crate::linux::manjaro::packages::install(&config.packages);
 
     h2!("Creating directory: {:?}", &config.paths.config_dir);
     exe!("mkdir -pv {:?}", &config.paths.config_dir);
 
-    let link_path = home_path!(&config.files.init_vim);
-    let source_path = home_path!(&config.files.configs_init_vim);
+    let link_path = home_path!(&config.paths.config_dir, &config.files.init_vim);
+    let source_path = home_path!(&config.paths.config_source_dir, &config.files.init_vim);
 
     slink(&source_path, &link_path);
 

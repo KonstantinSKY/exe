@@ -25,7 +25,7 @@ pub fn install(packages: &str) {
         if package.is_empty(){
             continue;
         }
-        h2!("\nInstalling: {package}");
+        h2!("Installing: {package}");
         exe!("pamac info {package} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
         exe!("sudo pamac install {package} --no-confirm");
         if !check_installed(package){

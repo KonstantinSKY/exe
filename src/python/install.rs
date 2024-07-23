@@ -7,5 +7,8 @@ pub fn run() {
     h2!("Installing needed packages");
     install("base-devel openssl zlib xz tk bzip2 libffi pyenv python-poetry");
     exe!("python --version; poetry --version;  pyenv --version;"; true);
-    exe!("sh");
+    exe!("pyenv versions; pyenv which");
+
+    h2!("check for available versions");
+    exe!("pyenv install --list");
 }

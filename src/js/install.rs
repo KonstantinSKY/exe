@@ -12,35 +12,31 @@ pub fn run() {
     let nvm_init = "source /usr/share/nvm/init-nvm.sh";
 
     h2!("Showing versions");
-    exe!("node --version; npm --version;  yarn --version; {nvm_init}; nvm --version"; true);
+    exe!("echo 'Node:'; node --version; 
+            echo 'npm:'; npm --version; 
+            echo 'yarn:'; yarn --version; 
+            {nvm_init}; 
+            echo 'nvm:'; nvm --version"; true);
 
-    // H1!("NVM - Node Version Manager");
-    // h2!("Installing nvm");
-    // exe!("wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash");
+    H1!("NODE.JS VERSIONS");
+    h2!("Node remote LTS versions");
+    exe!("{nvm_init}; nvm ls-remote --lts"; true);
 
-    // h2!("Exporting variables");
-    // exe!("export NVM_DIR='$HOME/.nvm'");
-    // exe!(r"[ -s '$NVM_DIR/nvm.sh' ] && \. '$NVM_DIR/nvm.sh'"; true);
+    h2!("Node Installed versions");
+    exe!("{nvm_init}; nvm ls"; true);
 
-    // H1!("NODE.JS VERSIONS");
-    // h2!("Node remote LTS versions");
-    // exe!("nvm ls-remote --lts"; true);
+    h2!("Installing NodeJS latest LTS version, switch to and showing all installed versions");
+    exe!("{nvm_init}; nvm install --lts; nvm use --lts");
 
-    // h2!("Node Installed versions");
-    // exe!("nvm ls"; true);
+    h2!("Node Installed versions:");
+    exe!("{nvm_init}; nvm ls"; true);
+    h2!("Current activated version:");
+    exe!("{nvm_init}; nvm current"; true);
 
-    // h2!("Installing NodeJS latest LTS version, switch to and showing all installed versions");
-    // exe!("nvm install --lts; nvm use --lts");
+    H1!("NPM versions");
+    h2!("Checking npm version for update");
+    exe!("npm -g outdated npm"; true);
 
-    // h2!("Node Installed versions:");
-    // exe!("nvm ls"; true);
-    // h2!("Current activated version:");
-    // exe!("nvm current"; true);
-
-    // H1!("NPM  versions");
-    // h2!("Checking npm version for update");
-    // exe!("npm -g outdated npm"; true);
-
-    // h2!("Update npm for latest version");
-    // exe!("npm install -g npm@latest; npm --version");
+    h2!("Update npm for latest version");
+    exe!("sudo npm install -g npm@latest; npm --version");
 }
