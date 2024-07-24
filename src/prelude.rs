@@ -40,10 +40,10 @@ pub const VSCODE_EXTENSIONS: [&str; 10] = [
     "pkief.material-icon-theme",
     "bungcip.better-toml",
     "serayuzgur.crates",
-    "treetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker",
     "ms-azuretools.vscode-docker",
     "ms-python.python",
-    "ms-python.debugpy",
+    ""
 ];
 
 pub const MAIN_DIRS: [&str; 15] = [

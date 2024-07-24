@@ -10,8 +10,8 @@ pub fn update() {
     if check() {
         return;
     };
-    h2!("Quit from pamac-manager");
-    exe!("pkill pamac-manager"; true);
+    // h2!("Quit from pamac-manager");
+    // exe!("pkill pamac-manager"; true);
     exe!("sudo pamac upgrade -a --no-confirm");
     update();
     // h2!("Run pamac-manager in background");
@@ -26,7 +26,7 @@ pub fn install(packages: &str) {
             continue;
         }
         h2!("Installing: {package}");
-        exe!("pamac info {package} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
+        // exe!("pamac info {package} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
         exe!("sudo pamac install {package} --no-confirm");
         if !check_installed(package){
             println!("{}", format!("Package NOT installed: {package}").red());
@@ -54,8 +54,8 @@ pub fn remove(packages: &str) {
         if package.is_empty(){
             continue;
         }
-        h2!("Removing package: {packages}");
-        exe!("pamac info {package} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
+        h2!("Removing package: {package}");
+        // exe!("pamac info {package} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
         if !check_installed(package){
             continue;
         }

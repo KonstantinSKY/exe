@@ -1,3 +1,5 @@
+use tempfile::NamedTempFile;
+
 use crate::prelude::*;
 use std::fs;
 use std::path::Path;
@@ -55,11 +57,11 @@ pub fn enable_config_param(param: &str, config_file: &str, message: &str) {
     let sed_command = format!("s/#{param}/{param}/");
 
     let output: Result<Output, std::io::Error> = Command::new("sudo")
-    .arg("sed")
-    .arg("-i")
-    .arg(sed_command)
-    .arg(config_file)
-    .output();
+        .arg("sed")
+        .arg("-i")
+        .arg(sed_command)
+        .arg(config_file)
+        .output();
 
     match output {
         Ok(output) => {
@@ -79,7 +81,6 @@ pub fn enable_config_param(param: &str, config_file: &str, message: &str) {
         }
     }
 }
-
 
 pub fn slink(source_path: &Path, link_path: &Path) {
     h2!("Creating Symbolic link: {link_path:?} -> {source_path:?}");
@@ -167,6 +168,38 @@ pub fn backup(source_path: &Path, storage_path: &Path) -> bool {
             false
         }
     }
+}
+
+pub fn force_copy(source_path: &Path, destination_path: &Path) {
+    // Create a temporary file
+    let temp_file = match NamedTempFile::new() {
+        Ok(temp_file) => temp_file,
+        Err(e) => {
+            eprintln!("Cant Create the Temporary file. Error: {e}");
+            return;
+        }
+    };
+    let temp_path = temp_file.path().to_path_buf();
+
+    // Copy the source file to the temporary file
+    match fs::copy(source_path, &temp_path) {
+        Ok(_) => {}
+        Err(e) => {
+            eprintln!("Can not copy {source_path:?} to Temporary path {temp_path:?}. Error: {e}");
+            return;
+        }
+    }
+    // Move the temporary file to the destination
+    match fs::rename(&temp_path, destination_path) {
+        Ok(()) => {}
+        Err(e) => {
+            eprintln!(
+                "Can not move {temp_path:?} to Temporary path {destination_path:?}. Error: {e}"
+            );
+            return;
+        }
+    }
+    println!("Force copy finished successfully from {source_path:?} to {destination_path:?}");
 }
 
 #[cfg(test)]

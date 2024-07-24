@@ -24,6 +24,7 @@ fn main() {
         .subcommand(app::docker::commands())
         .subcommand(app::linux::commands())
         .subcommand(app::linux::sync_commands())
+        .subcommand(app::linux::add_commands())
         .subcommand(app::megasync::commands())
         .subcommand(app::pass::commands())
         .subcommand(app::ssh::commands())
@@ -42,8 +43,11 @@ fn main() {
         Some(("kill", arg_matches)) => app::sh::kill_handle(arg_matches),
         Some(("code", arg_matches)) => app::code::handle(arg_matches),
         Some(("docker", arg_matches)) => app::docker::handle(arg_matches),
+        //Linux
         Some(("linux", arg_matches)) => app::linux::handle(arg_matches),
         Some(("sync", _arg_matches)) => app::linux::sync::run(),
+        Some(("add", arg_matches)) => app::linux::add_handle(arg_matches),
+        
         Some(("mega", arg_matches)) => app::megasync::handle(arg_matches),
         Some(("pass", arg_matches)) => app::pass::handle(arg_matches),
         Some(("ssh", arg_matches)) => app::ssh::handle(arg_matches),

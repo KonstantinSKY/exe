@@ -3,7 +3,8 @@ pub mod os;
 pub mod sync;
 pub mod work_drive;
 
-use clap::{ArgMatches, Command};
+use clap::{Arg, ArgAction, ArgMatches, Command};
+use manjaro::packages;
 
 #[must_use]
 pub fn commands() -> Command {
@@ -37,4 +38,26 @@ pub fn sync_handle(arg_matches: &ArgMatches) {
         Some(("sync", _sub_matches)) => sync::run(),
         _ => eprintln!("No valid subcommand found"),
     }
+}
+
+#[must_use] //Applications commands
+pub fn add_commands() -> Command {
+    Command::new("add").about("Install new package(s) to Linux system")
+    .arg_required_else_help(true)
+    .arg(
+        Arg::new("packages")
+            .help("The package name(s). You can add many package in one time")
+            .required(true)
+            .action(ArgAction::Append),
+    )
+}
+
+pub fn add_handle(arg_matches: &ArgMatches) {
+    if let Some(packages) = arg_matches.get_many::<String>("packages") {
+        for package in packages {
+            println!("Installing package: {package}");
+        }
+        } else {
+            eprintln!("Error: Command argument is required");
+        }
 }
