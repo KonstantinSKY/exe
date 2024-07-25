@@ -155,7 +155,11 @@ fn get() -> String {
         .expect("Failed to execute command");
 
     let hostname_str = String::from_utf8_lossy(&hostname.stdout);
-    println!("{hostname_str}");
+    for line in hostname_str.lines() {
+        if line.contains("Operating System") {
+            println!("{line}");
+        }
+    }
 
     let os_name = match hostname_str {
         s if s.contains("Ubuntu") => "Ubuntu",
@@ -163,7 +167,7 @@ fn get() -> String {
         _ => "Unknown", // Default case
     };
 
-    println!("OS: {os_name}");
+    // println!("OS: {os_name}");
     os_name.to_string()
 }
 

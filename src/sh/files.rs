@@ -171,8 +171,13 @@ pub fn backup(source_path: &Path, storage_path: &Path) -> bool {
 }
 
 pub fn force_copy(source_path: &Path, destination_path: &Path) {
+    // Create a temporary file in the destination directory
+    let Some(destination_dir_path) = destination_path.parent() else {
+        eprintln!("Invalid destination path");
+        return;
+    };
     // Create a temporary file
-    let temp_file = match NamedTempFile::new() {
+    let temp_file = match NamedTempFile::new_in(destination_dir_path) {
         Ok(temp_file) => temp_file,
         Err(e) => {
             eprintln!("Cant Create the Temporary file. Error: {e}");
@@ -199,7 +204,7 @@ pub fn force_copy(source_path: &Path, destination_path: &Path) {
             return;
         }
     }
-    println!("Force copy finished successfully from {source_path:?} to {destination_path:?}");
+    println!("{}", format!("Force copy finished successfully from {source_path:?} to {destination_path:?}").green());
 }
 
 #[cfg(test)]

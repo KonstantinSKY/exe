@@ -9,6 +9,8 @@ pub fn run(){
 
     let config = super::config::get("manjaro");
 
+    h2!("Stop PC beeper");
+    exe!("echo 'blacklist pcspkr' | sudo tee -a /etc/modprobe.d/nobeep.conf");
 
     run!(set_time, "Setting system time");
 
@@ -90,6 +92,7 @@ fn i3_setup(){
 
 pub fn set_time(){
     H1!("System time Setup ");
+    exe!("timedatectl status"; true);
     h2!("Setting system clock auto sync");
     exe!("sudo timedatectl set-ntp true");
     h2!("Showing timedatectl status");

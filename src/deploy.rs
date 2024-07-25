@@ -19,8 +19,11 @@ fn deploy(no_confirm_flag: bool) {
     h2!("Building exe binary file");
     exe!("cargo build --release"; true);
 
-    h2!("Copying exe to ./local/bin");
-    exe!("cp target/release/exe $HOME/.local/bin/exe -v"; n); 
+    h2!("Force Copying exe to ./local/bin");
+    let source_path = Path::new("target/release/exe");
+
+    let destination_path = home_path!(".local/bin/exe");
+    crate::sh::files::force_copy(source_path, &destination_path); 
 
     h2!("Copying exe to Tools/bin");
     exe!("cp target/release/exe $HOME/Tools/bin/exe -v"; n); 

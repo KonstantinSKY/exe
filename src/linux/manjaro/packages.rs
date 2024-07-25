@@ -21,12 +21,14 @@ pub fn update() {
 pub fn install(packages: &str) {
     h2!("Installing packages for Manjaro: {packages}");
     let packages_vec: Vec<&str> = packages.split_whitespace().collect();
+    update();
+    
     for package in packages_vec{
         if package.is_empty(){
             continue;
         }
         h2!("Installing: {package}");
-        // exe!("pamac info {package} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
+        exe!("pamac info {package} | grep -E 'Name|Version|Description' | awk '{{$1=$1;print}}'"; true);
         exe!("sudo pamac install {package} --no-confirm");
         if !check_installed(package){
             println!("{}", format!("Package NOT installed: {package}").red());

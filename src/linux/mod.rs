@@ -55,7 +55,8 @@ pub fn add_commands() -> Command {
 pub fn add_handle(arg_matches: &ArgMatches) {
     if let Some(packages) = arg_matches.get_many::<String>("packages") {
         for package in packages {
-            println!("Installing package: {package}");
+            // println!("Installing package: {package}");
+            os::install(package);
         }
         } else {
             eprintln!("Error: Command argument is required");

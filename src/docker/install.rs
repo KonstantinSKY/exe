@@ -26,8 +26,8 @@ pub fn run(){
     h2!("Adding current user to docker group");
     exe!("sudo usermod -aG docker $USER");
     
-    h2!("Restarting SHELL");
-    exe!("su $USER"; true);
+    h2!("Don't forget system restart");
+    exe!("sudo reboot");
     
 }
 
