@@ -19,6 +19,7 @@ fn main() {
         .subcommand(app::rust::mod_commands())
         .subcommand(app::rust::app_commands())
         .subcommand(app::deploy::commands())
+        .subcommand(app::deploy::get_commands())
         .subcommand(app::sh::kill_commands())
         .subcommand(app::code::commands())
         .subcommand(app::docker::commands())
@@ -40,6 +41,7 @@ fn main() {
         Some(("mod", arg_matches)) => app::rust::mod_handle(arg_matches),
         Some(("app", arg_matches)) => app::rust::app_handle(arg_matches),
         Some(("deploy", arg_matches)) => app::deploy::handle(arg_matches),
+        Some(("get", _arg_matches)) => app::deploy::get(),
         Some(("kill", arg_matches)) => app::sh::kill_handle(arg_matches),
         Some(("code", arg_matches)) => app::code::handle(arg_matches),
         Some(("docker", arg_matches)) => app::docker::handle(arg_matches),

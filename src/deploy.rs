@@ -1,8 +1,7 @@
-
 use crate::prelude::*;
-use clap::{Command, ArgMatches};
+use clap::{ArgMatches, Command};
 
-#[must_use]  //Self deploying commands
+#[must_use] //Self deploying commands
 pub fn commands() -> Command {
     Command::new("deploy")
         .about("Build exe bin file, self deploying to ~/local/bin and renew in ~/Tools/bin")
@@ -11,6 +10,15 @@ pub fn commands() -> Command {
 pub fn handle(_arg_matches: &ArgMatches) {
     deploy(true);
 }
+
+#[must_use] //Self deploying commands
+pub fn get_commands() -> Command {
+    Command::new("get").about("Get exe binary file from GitHub and copy to ~/.local/bin")
+}
+
+// pub fn get_handle(_arg_matches: &ArgMatches) {
+//     get();
+// }
 
 fn deploy(no_confirm_flag: bool) {
     let n = no_confirm_flag;
@@ -23,13 +31,13 @@ fn deploy(no_confirm_flag: bool) {
     let source_path = Path::new("target/release/exe");
 
     let destination_path = home_path!(".local/bin/exe");
-    crate::sh::files::force_copy(source_path, &destination_path); 
+    crate::sh::files::force_copy(source_path, &destination_path);
 
     h2!("Copying exe to Project exe Directory");
     let project_path = home_path!("Projects/exe");
     let bin_path = home_path!(project_path.clone(), "bin/exe");
 
-    exe!("cp {destination_path:?} {bin_path:?} -v"; true); 
+    exe!("cp {destination_path:?} {bin_path:?} -v"; n);
 
     h2!("Commit and pushing Tools directory");
     let cmd = &format!("git -C {project_path:?}");
@@ -37,4 +45,20 @@ fn deploy(no_confirm_flag: bool) {
     exe!("{cmd} add . -v"; n);
     exe!("{cmd} commit -av -m 'exe util update'"; n);
     exe!("{cmd} push -v"; n);
+}
+
+pub fn get() {
+    H1!("Get exe binary file from GitHub");
+    let git_hub = "https://raw.githubusercontent.com/KonstantinSKY/Tools/main/bin/exe";
+    let bin_path = home_path!(".local/bin");
+    let tmp_path = bin_path.join("exe.tmp");
+    let exe_path = bin_path.join("exe");
+
+    h2!("Getting exe binary file from github");
+    exe!("mkdir -p {bin_path:?} && wget {git_hub} -O {tmp_path:?}");
+
+    h2!("Force Copying exe.tmp to ./local/bin/exe");
+    crate::sh::files::force_copy(&tmp_path, &exe_path);
+    h2!("Removing temporary exe ");
+    exe!("rm {tmp_path:?}");
 }
