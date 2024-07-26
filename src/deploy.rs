@@ -55,10 +55,10 @@ pub fn get() {
     let exe_path = bin_path.join("exe");
 
     h2!("Getting exe binary file from github");
-    exe!("mkdir -p {bin_path:?} && wget {git_hub} -O {tmp_path:?}");
+    exe!("mkdir -p {bin_path:?} && wget {git_hub} -O {tmp_path:?}"; true);
 
     h2!("Force Copying exe.tmp to ./local/bin/exe");
     crate::sh::files::force_copy(&tmp_path, &exe_path);
     h2!("Removing temporary exe ");
-    exe!("rm {tmp_path:?} -v");
+    exe!("rm {tmp_path:?} -v"; true);
 }

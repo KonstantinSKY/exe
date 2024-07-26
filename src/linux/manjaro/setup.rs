@@ -43,6 +43,9 @@ pub fn run(){
     
     h2!("Installing first required package collection: {:?}",config.packages.requirements);
     install(&config.packages.requirements);
+    
+    h2!("Making Trash folder");
+    exe!("mkdir -pv ~/Work/Trash; trash --trash-dir ~/Work/Trash"); // To do config
 
     H1!("Linux Kernel");
     h2!("Running manjaro setting manager for checking kernels");
