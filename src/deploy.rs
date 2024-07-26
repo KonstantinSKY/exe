@@ -25,11 +25,14 @@ fn deploy(no_confirm_flag: bool) {
     let destination_path = home_path!(".local/bin/exe");
     crate::sh::files::force_copy(source_path, &destination_path); 
 
-    h2!("Copying exe to Tools/bin");
-    exe!("cp target/release/exe $HOME/Tools/bin/exe -v"; n); 
+    h2!("Copying exe to Project Directory");
+    let project_path = home_path!("Projects/exe");
+    let bin_path = home_path!(project_path.clone(), "bin/exe");
+
+    exe!("cp {destination_path:?} {bin_path:?} -v"; true); 
 
     h2!("Commit and pushing Tools directory");
-    let cmd = "git -C $HOME/Tools";
+    let cmd = &format!("git -C {project_path:?}");
     exe!("{cmd} pull -v"; n);
     exe!("{cmd} add . -v"; n);
     exe!("{cmd} commit -av -m 'exe util update'"; n);
