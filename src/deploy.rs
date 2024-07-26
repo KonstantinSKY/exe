@@ -25,7 +25,7 @@ fn deploy(no_confirm_flag: bool) {
     let destination_path = home_path!(".local/bin/exe");
     crate::sh::files::force_copy(source_path, &destination_path); 
 
-    h2!("Copying exe to Project Directory");
+    h2!("Copying exe to Project exe Directory");
     let project_path = home_path!("Projects/exe");
     let bin_path = home_path!(project_path.clone(), "bin/exe");
 
