@@ -49,6 +49,9 @@ fn deploy(no_confirm_flag: bool) {
 
 pub fn get() {
     H1!("Get exe binary file from GitHub");
+
+    let project_path = home_path!("Projects/exe");
+
     let git_hub = "https://raw.githubusercontent.com/KonstantinSKY/exe/main/bin/exe";
     let bin_path = home_path!(".local/bin");
     let tmp_path = bin_path.join("exe.tmp");
@@ -61,4 +64,7 @@ pub fn get() {
     crate::sh::files::force_copy(&tmp_path, &exe_path);
     h2!("Removing temporary exe ");
     exe!("rm {tmp_path:?} -v"; true);
+
+    h2!("Pulling exe project to {project_path:?}");
+    exe!("git -C {project_path:?} pull -v");
 }
