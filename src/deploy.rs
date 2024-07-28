@@ -49,7 +49,7 @@ fn deploy(no_confirm_flag: bool) {
 
 pub fn get() {
     H1!("Get exe binary file from GitHub");
-    let git_hub = "https://raw.githubusercontent.com/KonstantinSKY/exe/bin/exe";
+    let git_hub = "https://raw.githubusercontent.com/KonstantinSKY/exe/main/bin/exe";
     let bin_path = home_path!(".local/bin");
     let tmp_path = bin_path.join("exe.tmp");
     let exe_path = bin_path.join("exe");
