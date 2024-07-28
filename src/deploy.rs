@@ -64,6 +64,9 @@ pub fn get() {
     crate::sh::files::force_copy(&tmp_path, &exe_path);
     h2!("Removing temporary exe ");
     exe!("rm {tmp_path:?} -v"; true);
+    
+    h2!("Set permission for {exe_path:?}");
+    exe!("chmod +x {exe_path:?}");
 
     h2!("Pulling exe project to {project_path:?}");
     exe!("git -C {project_path:?} pull -v");
