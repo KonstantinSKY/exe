@@ -1,4 +1,5 @@
 use crate::prelude::*;
+use exec::exe;
 use serde::Deserialize;
 use crate::sh::files::slink; 
 
@@ -54,6 +55,13 @@ pub fn run() {
 
     h2!("Checking GitHub ssh access");
     exe!("ssh -T git@github.com");
+
+    let config_path = home_path!(CONFIGS_DIR);
+    h2!("Change remote type for: {config_path:?}");
+    exe!("git -C {config_path:?} remote -v"; true);
+    exe!("git -C {config_path:?} remote set-url origin git@github.com:KonstantinSKY/Configs.git");
+    exe!("git -C {config_path:?} remote -v"; true);
+
 
     H1!("gh setting");
     h2!("Checking gh version");
