@@ -33,6 +33,7 @@ fn main() {
         .subcommand(app::js::commands())
         .subcommand(app::python::commands())
         .subcommand(app::nvim::commands())
+        .subcommand(app::vm::commands())
         .get_matches();
 
     match matches.subcommand() {
@@ -57,6 +58,7 @@ fn main() {
         Some(("js", arg_matches)) => app::js::handle(arg_matches),
         Some(("py", arg_matches)) => app::python::handle(arg_matches),
         Some(("nvim", arg_matches)) => app::nvim::handle(arg_matches),
+        Some(("vm", arg_matches)) => app::vm::handle(arg_matches),
 
         _ => println!("No Function Found"),
     }

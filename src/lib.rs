@@ -16,6 +16,7 @@ pub mod ssh;
 pub mod git;
 pub mod js;
 pub mod python;
+pub mod vm;
 
 use clap::Arg;
 
