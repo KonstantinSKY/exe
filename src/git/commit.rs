@@ -3,7 +3,7 @@ use rustyline::{history::FileHistory, Editor};
 use std::process::{exit, Command};
 
 pub fn run() {
-    H1!("git commit and push");
+    H1!("git add, commit and push");
     status();
 
     println!("Adding all files...");
@@ -30,7 +30,7 @@ pub fn run() {
             let mut rl = Editor::<(), FileHistory>::new().unwrap();
             // Read the line with the default message prepopulated
             let readline = rl.readline_with_initial(
-                " * Text your message for the commit * ",
+                " * Text your message for the commit * \n",
                 (&default_message, ""),
             );
 
