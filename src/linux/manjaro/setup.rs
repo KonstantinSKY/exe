@@ -1,5 +1,5 @@
 use files::{slink, delete};
-use super::packages::{update, enable_aur, install};
+use super::packages::{enable_aur, install};
 
 use crate::{linux::manjaro::packages, prelude::*};
 

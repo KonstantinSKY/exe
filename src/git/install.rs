@@ -1,7 +1,5 @@
 use crate::prelude::*;
-use exec::exe;
 use serde::Deserialize;
-use crate::sh::files::slink; 
 
 #[derive(Deserialize, Debug)]
 pub struct Config {
