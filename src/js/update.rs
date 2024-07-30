@@ -1,4 +1,3 @@
-use std::process::Command;
 
 use crate::prelude::*;
 use exec::exe;
