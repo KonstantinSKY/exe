@@ -49,7 +49,7 @@ pub fn run() {
         }
     }
     h2!("Pushing");
-    exe!("git push -v");
+    exe!("git push -v"; true);
 }
 
 fn status() -> String {
