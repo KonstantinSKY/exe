@@ -38,15 +38,15 @@ pub fn install(packages: &str) {
     }
 }
 
-pub fn install_many(packages: &[String]){
-    update();
-    for package in packages{
-        if package.is_empty(){
-            continue;
-        }
-        install(package);
-    }
-}
+// pub fn install_many(packages: &[String]){
+//     update();
+//     for package in packages{
+//         if package.is_empty(){
+//             continue;
+//         }
+//         install(package);
+//     }
+// }
 
 pub fn remove(packages: &str) {
     h2!("Removing packages: {packages}");
