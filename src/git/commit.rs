@@ -29,8 +29,10 @@ pub fn run() {
             let default_message = format!("{file} - {message} :");
             let mut rl = Editor::<(), FileHistory>::new().unwrap();
             // Read the line with the default message prepopulated
-            let readline = rl.readline_with_initial(" * Text your message for the commit * ", (&default_message, ""));
-
+            let readline = rl.readline_with_initial(
+                " * Text your message for the commit * ",
+                (&default_message, ""),
+            );
 
             let message = match readline {
                 Ok(input) => input.trim().to_string(),
@@ -42,13 +44,10 @@ pub fn run() {
 
             h2!("Committing for {}:", file);
             exe!("git commit -m '{message}'");
-        
         }
     }
     h2!("Pushing");
     exe!("git push -v");
-
-
 }
 
 fn status() -> String {

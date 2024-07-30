@@ -26,10 +26,3 @@ pub fn commit_commands() -> Command {
         .about("GIT COMMIT command")
 
 }
-
-pub fn commit_handle(arg_matches: &ArgMatches) {
-    match arg_matches.subcommand() {
-        Some(("commit", _sub_matches)) => commit::run(),
-        _ => eprintln!("No valid subcommand found"),
-    }
-}
