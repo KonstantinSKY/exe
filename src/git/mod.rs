@@ -24,8 +24,6 @@ pub fn handle(arg_matches: &ArgMatches) {
 pub fn commit_commands() -> Command {
     Command::new("commit")
         .about("GIT COMMIT command")
-        .arg_required_else_help(true)
-        .subcommand(Command::new("commit").about("GIT full commit the Directory"))
 
 }
 
