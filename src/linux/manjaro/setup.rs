@@ -92,9 +92,9 @@ pub fn run(){
 }
 
 
-fn i3_setup(){
-    H1!("Manjaro i3 GUI Setup");
-}
+// fn i3_setup(){
+//     H1!("Manjaro i3 GUI Setup");
+// }
 
 pub fn set_time(){
     H1!("System time Setup ");

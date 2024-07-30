@@ -4,7 +4,6 @@ pub mod sync;
 pub mod work_drive;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
-use manjaro::packages;
 
 #[must_use]
 pub fn commands() -> Command {

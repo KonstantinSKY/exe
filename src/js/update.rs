@@ -1,7 +1,5 @@
 
 use crate::prelude::*;
-use exec::exe;
-use xshell::{cmd as shell_cmd, Shell};
 
 pub fn run() {
     H1!("NODE.JS ecosystem update");
