@@ -43,7 +43,7 @@ pub fn run() {
             };
 
             h2!("Committing for {}:", file);
-            exe!("git commit -m '{message}'");
+            exe!("git commit -m '{message}'"; true);
         }
     }
     h2!("Pushing");
