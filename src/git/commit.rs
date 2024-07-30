@@ -4,6 +4,8 @@ use std::process::{exit, Command};
 
 pub fn run() {
     H1!("git add, commit and push");
+    h2!("pulling from remote repo");
+    exe!("git pull -v");
     status();
 
     println!("Adding all files...");
