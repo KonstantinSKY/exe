@@ -56,7 +56,7 @@ fn main() {
         Some(("pass", arg_matches)) => app::pass::handle(arg_matches),
         Some(("ssh", arg_matches)) => app::ssh::handle(arg_matches),
         Some(("git", arg_matches)) => app::git::handle(arg_matches),
-        Some(("commit", arg_matches)) => app::git::commit_handle(arg_matches),
+        Some(("commit", _arg_matches)) => app::git::commit::run(),
         Some(("js", arg_matches)) => app::js::handle(arg_matches),
         Some(("py", arg_matches)) => app::python::handle(arg_matches),
         Some(("nvim", arg_matches)) => app::nvim::handle(arg_matches),
