@@ -5,7 +5,7 @@ use std::process::{exit, Command};
 pub fn run() {
     H1!("git add, commit and push");
     h2!("pulling from remote repo");
-    exe!("git pull -v");
+    exe!("git pull -v"; true);
     status();
 
     println!("Adding all files...");
@@ -29,7 +29,10 @@ pub fn run() {
 
             println!("========================================================");
             let default_message = format!("{file} - {message} :");
-            let mut rl = Editor::<(), FileHistory>::new().unwrap();
+            let mut rl = Editor::<(), FileHistory>::new().unwrap_or_else(|e| {
+                eprintln!("Failed to initialize the line editor: {e:?}");
+                exit(0);
+            });
             // Read the line with the default message prepopulated
             let readline = rl.readline_with_initial(
                 " * Text your message for the commit * \n",
