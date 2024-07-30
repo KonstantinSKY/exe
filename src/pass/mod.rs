@@ -1,4 +1,5 @@
 pub mod install;
+pub mod config;
 
 
 use clap::{ArgMatches, Command};

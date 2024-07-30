@@ -1,29 +1,9 @@
 use crate::prelude::*;
-use serde::Deserialize;
 use crate::sh::files::slink; 
-
-#[derive(Deserialize, Debug)]
-pub struct Config {
-    packages: String,
-    security_dir: String,
-    password_store_link: String,
-    password_store_source: String,
-    password_store_repo: String,
-    ot_list: String,
-    // ot_txt: String,
-    pub_key: String,
-    sec_key: String,
-}
-
-impl Config {
-    fn new(path: &Path) -> Self {
-        crate::configs::read_and_parse_toml(path)
-    }
-}
 
 pub fn run() {
     let config_source_path = crate::configs::get_config_path("pass");
-    let config = Config::new(&config_source_path);
+    let config = super::config::Config::new(&config_source_path);
 
     H1!("Pass Installation and setup for Linux");
     
