@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use crate::sh::files::enable_config_param;
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::str;
 use files::backup;
 
@@ -14,9 +14,31 @@ pub fn update() {
     // exe!("pkill pamac-manager"; true);
     exe!("sudo pamac upgrade -a --no-confirm");
     update();
-    // h2!("Run pamac-manager in background");
-    // exe!("pamac-manager");
+
+    let output = Command::new("pamac")
+        .arg("list")
+        .arg("--orphans")
+        .stdout(Stdio::piped())
+        .output()
+        .expect("Failed to execute pamac command");
+    
+    if output.stdout.is_empty() {
+        println!("No orphaned packages found.");
+        return;
+    }
+    println!("Found orphaned packages");
+    h2!("Checking and removing all orphans");
+    exe!("pamac list --orphans && pamac remove --orphans");
+
+    h2!("Package cache cleaning");
+    exe!("pamac clean");
 }
+pub fn full_update(){
+    H1!("Manjaro linux full update");
+    update();
+
+}
+
 
 pub fn install(packages: &str) {
     h2!("Installing packages for Manjaro: {packages}");
