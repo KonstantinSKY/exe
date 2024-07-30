@@ -46,6 +46,9 @@ pub fn run(){
     
     h2!("Making Trash folder");
     exe!("mkdir -pv ~/Work/Trash; trash --trash-dir ~/Work/Trash"); // To do config
+    h2!("Checking Trash Directory");
+    exe!("ls -la ~/Work/Trash; trash --directory"; true);
+
 
     H1!("Linux Kernel");
     h2!("Running manjaro setting manager for checking kernels");

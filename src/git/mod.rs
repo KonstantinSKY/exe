@@ -1,4 +1,5 @@
 pub mod install;
+pub mod commit;
 
 use clap::{ArgMatches, Command};
 
@@ -14,6 +15,23 @@ pub fn commands() -> Command {
 pub fn handle(arg_matches: &ArgMatches) {
     match arg_matches.subcommand() {
         Some(("install", _sub_matches)) => install::run(),
+        _ => eprintln!("No valid subcommand found"),
+    }
+}
+
+
+#[must_use]
+pub fn commit_commands() -> Command {
+    Command::new("commit")
+        .about("GIT COMMIT command")
+        .arg_required_else_help(true)
+        .subcommand(Command::new("commit").about("GIT full commit the Directory"))
+
+}
+
+pub fn commit_handle(arg_matches: &ArgMatches) {
+    match arg_matches.subcommand() {
+        Some(("commit", _sub_matches)) => commit::run(),
         _ => eprintln!("No valid subcommand found"),
     }
 }
