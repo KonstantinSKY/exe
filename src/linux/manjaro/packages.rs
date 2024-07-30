@@ -20,7 +20,10 @@ pub fn update() {
         .arg("--orphans")
         .stdout(Stdio::piped())
         .output()
-        .expect("Failed to execute pamac command");
+        .unwrap_or_else(|e| {
+            eprintln!("Failed to execute pamac command to check orphans: {e}");
+            std::process::exit(1);
+        });
     
     if output.stdout.is_empty() {
         println!("No orphaned packages found.");
@@ -33,11 +36,7 @@ pub fn update() {
     h2!("Package cache cleaning");
     exe!("pamac clean");
 }
-pub fn full_update(){
-    H1!("Manjaro linux full update");
-    update();
 
-}
 
 
 pub fn install(packages: &str) {
