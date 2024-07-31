@@ -5,7 +5,7 @@ pub fn run() {
     H1!("JavaScript Eco System");
 
     h2!("Installing needed packages");
-    install("nodejs npm yarn nvm");
+    install("nodejs npm pnpm yarn nvm");
 
     h2!("Activating NVM");
 
