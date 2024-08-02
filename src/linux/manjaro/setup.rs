@@ -21,19 +21,18 @@ pub fn run(){
     exe!("sudo sed -i 's/exec i3-config-wizard//g' /etc/i3/config; cat /etc");
 
     h2!("Creating .i3 directory for configs if absent");
-    exe!("mkdir -vp $HOME/.i3; la -la $HOME/.i3");
+    exe!("mkdir -vp $HOME/.config/i3; la -la $HOME/.config/i3");
+    slink(&home_path!(CONFIGS_DIR, "i3"),  &home_path!(".config/i3"));
 
-    slink(&home_path!(CONFIGS_DIR, "i3.cfg"),  &home_path!(".i3/config"));
-
-    slink(&home_path!(CONFIGS_DIR, "i3.profile"), &home_path!(".profile"));
+    slink(&home_path!(CONFIGS_DIR, "profile"), &home_path!(".profile"));
     // slink(&home_path!(CONFIGS_DIR, "bash_profile"), &home_path!(".profile"));
-    slink(&home_path!(CONFIGS_DIR, "mimeapps.list.cfg"), &home_path!(".config","mimeapps.list"));
+    slink(&home_path!(CONFIGS_DIR, "mimeapps.list"), &home_path!(".config","mimeapps.list"));
 
     h2!("Qt configs");
     slink(&home_path!(CONFIGS_DIR, "qt5ct.conf"), &home_path!(".config","qt5ct/qt5ct.conf"));
 
     //urxvt terminal
-    slink(&home_path!(CONFIGS_DIR, "urxvt.Xresources.cfg"), &home_path!(".Xresources"));
+    slink(&home_path!(CONFIGS_DIR, "terminals/urxvt/Xresources"), &home_path!(".Xresources"));
 //     i3_setup();
     
     h2!("Removing unneeded packages");
