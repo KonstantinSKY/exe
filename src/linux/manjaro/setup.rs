@@ -104,6 +104,10 @@ pub fn set_time(){
     exe!("timedatectl status"; true);
 }
 
+pub fn alacritty(){
+    
+}
+
 
 #[cfg(test)]
 mod tests {
