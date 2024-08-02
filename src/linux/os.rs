@@ -74,6 +74,8 @@ pub fn setup() {
     }
     run!(setup_rc, "Setting RC files for all shell");
     run!(fonts, "Font Setting");
+
+    run!(crate::alacritty::install, "Alacritty terminal install and setup");
     manjaro::setup::run();
     // match get().as_str() {
         // "Manjaro" => manjaro::setup::run(),

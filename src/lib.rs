@@ -1,5 +1,6 @@
 #![warn(clippy::pedantic)]
 
+pub mod alacritty;
 pub mod code;
 pub mod deploy;
 pub mod docker;
