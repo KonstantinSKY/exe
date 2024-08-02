@@ -15,14 +15,14 @@ pub const CONFIG_REPO: &str = "https://github.com/KonstantinSKY/Configs.git";
 // TODO  pub const I3_CONFIG_FILES [($str, &str); 5] =  
 
 // MANJARO PACKAGES
-pub const REQUIRED_PACKAGES_1: [&str; 6] = [
-    "trash-cli",
-    "manjaro-settings-manager",
-    "materia-gtk-theme",
-    "update-grub",
-    "",
-    "",
-];
+// pub const REQUIRED_PACKAGES_1: [&str; 6] = [
+//     "trash-cli",
+//     "manjaro-settings-manager",
+//     "materia-gtk-theme",
+//     "update-grub",
+//     "",
+//     "",
+// ];
 
 // VS_CODE
 pub const CONFIG_FILES: [&str; 3] = ["settings.json", "keybindings.json", ""];

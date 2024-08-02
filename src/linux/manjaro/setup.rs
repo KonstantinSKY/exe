@@ -26,6 +26,7 @@ pub fn run(){
     h2!("Creating .i3 directory for configs if absent");
     exe!("mkdir -vp $HOME/.config/i3; la -la $HOME/.config/i3");
     slink(&home_path!(CONFIGS_DIR, "i3"),  &home_path!(".config/i3"));
+    exe!("rm ~/.i3 -r");
 
     slink(&home_path!(CONFIGS_DIR, "profile"), &home_path!(".profile"));
     // slink(&home_path!(CONFIGS_DIR, "bash_profile"), &home_path!(".profile"));
