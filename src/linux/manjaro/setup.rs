@@ -16,8 +16,11 @@ pub fn run(){
 
     H1!("Manjaro i3 Create symbolic links for Configs");
 
+
+    //Manjaro i3 setting
     h2!("Editing global i3 config for removing config wizard");
     //TODO backup /etc/i3/config --sudo
+    
     exe!("sudo sed -i 's/exec i3-config-wizard//g' /etc/i3/config; cat /etc");
 
     h2!("Creating .i3 directory for configs if absent");
