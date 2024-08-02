@@ -1,4 +1,5 @@
 pub mod manjaro;
+pub mod setup;
 pub mod os;
 pub mod sync;
 pub mod work_drive;

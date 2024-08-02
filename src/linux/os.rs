@@ -41,6 +41,9 @@ pub fn setup() {
 
     exe!("git clone {CONFIG_REPO} {configs_path:?}; ls -la {configs_path:?}"; true);
 
+
+    // Getting configs 
+
     h2!("Creating symbolic links to main directories");
     for dir in MAIN_DIRS {
         if dir.is_empty() {
