@@ -1,4 +1,5 @@
 use crate::prelude::*;
+use console::Key;
 use files::slink;
 use serde::Deserialize;
 
@@ -21,15 +22,14 @@ pub struct Files {
 }
 
 impl Config {
-    fn new(path: &Path) -> Self {
-        crate::configs::read_and_parse_toml(path)
+    fn new(key: &str) -> Self {
+        crate::configs::get(key)
     }
 }
 pub fn run() {
     // let configs= crate::configs::Configs::new();
     // println!("Got Configs: {configs:#?}");
-    let config_source_path = crate::configs::get_config_path("nvim");
-    let config = Config::new(&config_source_path);
+    let config = Config::new("nvim");
     // println!("nvim config: {config:#?}");
     H1!("NEOVIM and ECOSYSTEM Installation and setup for Linux");
 

@@ -6,8 +6,7 @@ use crate::{linux::manjaro::packages, prelude::*};
 
 pub fn run(){
     H1!("Manjaro Linux Setup");
-
-    let config = super::config::get("manjaro");
+    let config = super::config::Config::new("manjaro");
 
     h2!("Stop PC beeper");
     exe!("echo 'blacklist pcspkr' | sudo tee -a /etc/modprobe.d/nobeep.conf");

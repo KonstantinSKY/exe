@@ -10,15 +10,14 @@ pub struct Config {
 }
 
 impl Config {
-    fn new(path: &Path) -> Self {
-        crate::configs::read_and_parse_toml(path)
+    fn new(key: &str) -> Self {
+        crate::configs::get(key)
     }
 }
 
 pub fn run() {
     H1!("GIT Installation and setup for Linux");
-    let config_source_path = crate::configs::get_config_path("git");
-    let config = Config::new(&config_source_path);
+    let config = Config::new("git");
 
     h2!("Installing GIT and Ecosystem");
     crate::linux::manjaro::packages::update();

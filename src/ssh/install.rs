@@ -1,4 +1,5 @@
 use crate::prelude::*;
+use console::Key;
 use serde::Deserialize;
 use crate::sh::files::slink; 
 
@@ -12,16 +13,14 @@ pub struct Config {
 }
 
 impl Config {
-    fn new(path: &Path) -> Self {
-        crate::configs::read_and_parse_toml(path)
+    fn new(key:&str) -> Self {
+        crate::configs::get(key)
     }
 }
 
 pub fn run() {
     H1!("SSH Installation and setup for Linux");
-    
-    let config_source_path = crate::configs::get_config_path("ssh");
-    let config = Config::new(&config_source_path);
+    let config = Config::new("ssh");
 
     h2!("Installing OpenSSH");
     crate::linux::manjaro::packages::update();

@@ -123,20 +123,20 @@ pub fn init_config() {
 /// # Errors
 /// This function will exit the program if the file cannot be read or if the
 /// contents cannot be parsed as TOML.
-#[must_use] 
-pub fn read_and_parse_toml<T: for<'de> Deserialize<'de>>(path: &Path) -> T {
-    if let Ok(contents) = fs::read_to_string(path) {
-        if let Ok(config) = toml::from_str::<T>(&contents) {
-            config
-        } else {
-            println!("Can't convert from TOML file: {path:?}");
-            exit(1);
-        }
-    } else {
-        println!("Can't read file: {path:?}");
-        exit(1);
-    }
-}
+// #[must_use] 
+// pub fn read_and_parse_toml<T: for<'de> Deserialize<'de>>(path: &Path) -> T {
+//     if let Ok(contents) = fs::read_to_string(path) {
+//         if let Ok(config) = toml::from_str::<T>(&contents) {
+//             config
+//         } else {
+//             println!("Can't convert from TOML file: {path:?}");
+//             exit(1);
+//         }
+//     } else {
+//         println!("Can't read file: {path:?}");
+//         exit(1);
+//     }
+// }
 
 
 #[cfg(test)]
