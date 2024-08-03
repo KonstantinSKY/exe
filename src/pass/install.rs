@@ -2,11 +2,8 @@ use crate::prelude::*;
 use crate::sh::files::slink; 
 
 pub fn run() {
-    // let config_source_path = crate::configs::get_config_path("pass");
-    let config = super::config::Config::new("pass");
-
     H1!("Pass Installation and setup for Linux");
-    println!("Got pass config: {config:#?}");
+    let config = super::config::Config::new("pass");
     
     h2!("Cloning .password-store directory");
     let password_store_source_path = home_path!(&config.password_store_source);

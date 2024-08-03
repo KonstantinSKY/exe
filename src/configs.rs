@@ -70,11 +70,12 @@ impl Configs {
 }
 
 #[must_use]
-pub fn get<T: for<'de> Deserialize<'de>>(key: &str) -> T {
+pub fn get<T: for<'de> Deserialize<'de> + std::fmt::Debug>(key: &str) -> T {
     let path = get_config_path(key);
     // read_and_parse_toml(&config_source_path)
     if let Ok(contents) = fs::read_to_string(&path) {
         if let Ok(config) = toml::from_str::<T>(&contents) {
+            println!("Got config: \n {config:#?}");
             config
         } else {
             println!("Can't convert from TOML file: {path:?}");
