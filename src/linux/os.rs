@@ -25,8 +25,8 @@ pub fn install(packages: &str) {
 pub fn mirrors() {
     match get().as_str() {
         "Manjaro" => manjaro::packages::get_mirrors(),
-        "Unknown" => println!("Unknown operating system"),
-        _ => println!("OS not supported for install"),
+        "Unknown" => println!("Unknown operating system and not supported for mirrors"),
+        _ => println!("OS not supported for Mirrors"),
     }
 }
 
@@ -78,7 +78,6 @@ pub fn setup() {
     run!(setup_rc, "Setting RC files for all shell");
     run!(fonts, "Font Setting");
 
-    run!(crate::alacritty::install, "Alacritty terminal install and setup");
     manjaro::setup::run();
     // match get().as_str() {
         // "Manjaro" => manjaro::setup::run(),
@@ -87,7 +86,7 @@ pub fn setup() {
     // }
 }
 
-fn is_empty_dir(path: &Path) -> bool {
+pub fn is_empty_dir(path: &Path) -> bool {
     if !path.is_dir() {
         return false;
     };

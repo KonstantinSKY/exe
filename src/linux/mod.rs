@@ -3,6 +3,7 @@ pub mod setup;
 pub mod os;
 pub mod sync;
 pub mod work_drive;
+pub mod config;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 
