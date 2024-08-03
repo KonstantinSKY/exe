@@ -69,6 +69,24 @@ impl Configs {
     }
 }
 
+#[must_use]
+pub fn get<T: for<'de> Deserialize<'de>>(key: &str) -> T {
+    let path = get_config_path(key);
+    // read_and_parse_toml(&config_source_path)
+    if let Ok(contents) = fs::read_to_string(&path) {
+        if let Ok(config) = toml::from_str::<T>(&contents) {
+            config
+        } else {
+            println!("Can't convert from TOML file: {path:?}");
+            exit(1);
+        }
+    } else {
+        println!("Can't read file: {path:?}");
+        exit(1);
+    }
+}
+
+
 pub fn get_config_path(key: &str) -> PathBuf {
     // println!("CONFIGS FROM path got config: {CONFIGS:#?}");
     if let Some(configs) = CONFIGS.get() {

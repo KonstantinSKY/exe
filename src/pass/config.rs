@@ -17,7 +17,7 @@ pub struct Config {
 
 impl Config {
     #[must_use] 
-    pub fn new(path: &Path) -> Self {
-        crate::configs::read_and_parse_toml(path)
+    pub fn new(key: &str) -> Self {
+        crate::configs::get(key)
     }
 }
