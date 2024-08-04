@@ -28,7 +28,8 @@ impl Configs {
     pub fn new() -> Self {
         let path = home_path!(CONFIGS_DIR, CONFIGS_TOML);
         if let Ok(contents) = fs::read_to_string(&path) {
-        Self::get_from_toml(&contents)
+            println!("Contents found: {contents}");
+            Self::get_from_toml(&contents)
         } else {
             println!("Cant find the main configs.toml file! {path:?}");
             Configs {
@@ -63,7 +64,7 @@ impl Configs {
         });
     }
 
-    #[must_use] 
+    #[must_use]
     pub fn get_config_path(&self, key: &str) -> PathBuf {
         get_config_path(key)
     }
@@ -86,7 +87,6 @@ pub fn get<T: for<'de> Deserialize<'de> + std::fmt::Debug>(key: &str) -> T {
         exit(1);
     }
 }
-
 
 pub fn get_config_path(key: &str) -> PathBuf {
     // println!("CONFIGS FROM path got config: {CONFIGS:#?}");
@@ -112,6 +112,7 @@ pub fn get_config_path(key: &str) -> PathBuf {
 
 pub fn init_config() {
     let configs = Configs::new();
+    println!("Main Configs Initialization: {configs:?}");
     match CONFIGS.set(configs) {
         Ok(()) => (),
         Err(_) => println!("Failed to set CONFIGS GLOBAL VARIABLE. It might be already set."),
@@ -124,7 +125,7 @@ pub fn init_config() {
 /// # Errors
 /// This function will exit the program if the file cannot be read or if the
 /// contents cannot be parsed as TOML.
-// #[must_use] 
+// #[must_use]
 // pub fn read_and_parse_toml<T: for<'de> Deserialize<'de>>(path: &Path) -> T {
 //     if let Ok(contents) = fs::read_to_string(path) {
 //         if let Ok(config) = toml::from_str::<T>(&contents) {
@@ -138,7 +139,6 @@ pub fn init_config() {
 //         exit(1);
 //     }
 // }
-
 
 #[cfg(test)]
 mod tests {
