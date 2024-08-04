@@ -2,7 +2,7 @@ use super::os::{mirrors, update};
 use crate::prelude::*;
 
 use std::fs;
-pub fn setup() {
+pub fn run() {
     H1!("Linux common setup");
 
     h2!("Cloning config repository to Work directory");

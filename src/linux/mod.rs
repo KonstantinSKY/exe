@@ -23,7 +23,7 @@ pub fn handle(arg_matches: &ArgMatches) {
         Some(("mount_work", _sub_matches)) => work_drive::mount(),
         Some(("update", _sub_matches)) => os::update(),
         Some(("mirrors", _sub_matches)) => os::mirrors(),
-        Some(("setup", _sub_matches)) => os::setup(),
+        Some(("setup", _sub_matches)) => setup::run(),
 
         _ => eprintln!("No valid subcommand found"),
     }
