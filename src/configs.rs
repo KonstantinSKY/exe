@@ -28,7 +28,7 @@ impl Configs {
     pub fn new() -> Self {
         let path = home_path!(CONFIGS_DIR, CONFIGS_TOML);
         if let Ok(contents) = fs::read_to_string(&path) {
-            println!("Contents found: {contents}");
+            // println!("Contents found: {contents}");
             Self::get_from_toml(&contents)
         } else {
             println!("Cant find the main configs.toml file! {path:?}");
@@ -40,7 +40,7 @@ impl Configs {
 
     fn get_from_toml(contents: &str) -> Configs {
         if let Ok(mut configs) = toml::from_str::<Configs>(contents) {
-            println!("Got Configs: {configs:?}");
+            // println!("Got Configs: {configs:?}");
             configs.canonicalize_paths();
             configs
         } else {

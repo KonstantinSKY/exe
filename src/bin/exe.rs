@@ -7,7 +7,7 @@ use clap::Command;
 fn main() {
     // styles::app_started();
     app::configs::init_config();
-    print!("RAN APPS");
+    // print!("RAN APPS");
 
 
     let matches = Command::new("Universal Beautiful Executor")
