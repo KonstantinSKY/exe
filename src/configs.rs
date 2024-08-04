@@ -40,7 +40,7 @@ impl Configs {
 
     fn get_from_toml(contents: &str) -> Configs {
         if let Ok(mut configs) = toml::from_str::<Configs>(contents) {
-            // println!("Got Configs: {contents}");
+            println!("Got Configs: {configs:?}");
             configs.canonicalize_paths();
             configs
         } else {
