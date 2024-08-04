@@ -91,16 +91,17 @@ pub fn get<T: for<'de> Deserialize<'de> + std::fmt::Debug>(key: &str) -> T {
 pub fn get_config_path(key: &str) -> PathBuf {
     // println!("CONFIGS FROM path got config: {CONFIGS:#?}");
     if let Some(configs) = CONFIGS.get() {
+        println!("Config got: {configs:?}");
         if let Some(path) = configs.paths.get(key) {
             // println!("{key} path from global config: {path:?}");
             if path.exists() {
                 path.clone()
             } else {
-                println!("{key} path does not exist");
+                println!("{key} - path does not exist");
                 exit(0)
             }
         } else {
-            println!("{key} path is not set");
+            println!("{key} - path is not set");
             exit(0)
         }
     } else {
