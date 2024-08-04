@@ -8,13 +8,9 @@ pub fn run(){
     H1!("Manjaro Linux Setup");
     let config = super::config::Config::new("manjaro");
 
-    h2!("Stop PC beeper");
-    exe!("echo 'blacklist pcspkr' | sudo tee -a /etc/modprobe.d/nobeep.conf");
-
     run!(set_time, "Setting system time");
 
     H1!("Manjaro i3 Create symbolic links for Configs");
-
 
     //Manjaro i3 setting
     h2!("Editing global i3 config for removing config wizard");
@@ -46,12 +42,6 @@ pub fn run(){
     h2!("Installing first required package collection: {:?}",config.packages.requirements);
     install(&config.packages.requirements);
     
-    h2!("Making Trash folder");
-    exe!("mkdir -pv ~/Work/Trash; trash --trash-dir ~/Work/Trash"); // To do config
-    h2!("Checking Trash Directory");
-    exe!("ls -la ~/Work/Trash; trash --directory"; true);
-
-
     H1!("Linux Kernel");
     h2!("Running manjaro setting manager for checking kernels");
     exe!("manjaro-settings-manager &");

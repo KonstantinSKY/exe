@@ -1,12 +1,10 @@
-
-use crate::prelude::*;
 use super::os::{mirrors, update};
+use crate::prelude::*;
 
 use std::fs;
 pub fn setup() {
     H1!("Linux common setup");
-    
-    
+
     h2!("Cloning config repository to Work directory");
     // let home_dir = get_home_dir();
     // let home_dir_path = Path::new(&home_dir);
@@ -16,15 +14,23 @@ pub fn setup() {
 
     run!(mirrors, "Setting mirrors for Linux");
     run!(update, "Full update Linux packages");
-    
-    run!(crate::alacritty::install, "Alacritty terminal install and setup");
-    
-    run!(create_dir_symlinks, "Creating SymLinks for Common Work Directories");
+
+    run!(
+        crate::alacritty::install,
+        "Alacritty terminal install and setup"
+    );
+
+    run!(
+        create_dir_symlinks,
+        "Creating SymLinks for Common Work Directories"
+    );
     run!(setup_rc, "Setting RC files for all shell");
     run!(fonts, "Font Setting");
+    run!(stop_beep_sound, "Stop PC beeper sound");
+    run!(trash, "Setup trash-cli and trash-folder");
 }
 
-fn create_dir_symlinks(){
+fn create_dir_symlinks() {
     let config = super::config::Config::new("linux");
     let work_path = home_path!(WORK_DIR);
 
@@ -60,7 +66,6 @@ fn create_dir_symlinks(){
     }
 }
 
-
 fn setup_rc() {
     let config = super::config::Config::new("linux");
     H1!("Setting up rc files");
@@ -72,7 +77,7 @@ fn setup_rc() {
     for rc_file in config.rc_files {
         h2!("\n For {}", rc_file.clone().green());
         let rc_path = home_path!(rc_file);
-        
+
         if !rc_path.exists() {
             exe!("touch {rc_path:?}");
         }
@@ -111,8 +116,24 @@ pub fn fonts() {
     crate::sh::files::slink(&config_font_path, &local_font_path);
 
     h2!("Clearing fontconfig  cache");
-    exe!("rm -rf ~/{}", config.font_cache_files );
+    exe!("rm -rf ~/{}", config.font_cache_files);
 
     h2!("Updating fonts cache");
     exe!("fc-cache -fv {local_font_path:?}");
+}
+
+fn stop_beep_sound() {
+    exe!("echo 'blacklist pcspkr' | sudo tee -a /etc/modprobe.d/nobeep.conf");
+}
+
+fn trash() {
+    super::os::install("trash-cli");
+    let config = super::config::Config::new("linux");
+    let trash_path = home_path!(config.trash_dir);
+
+    h2!("Making Trash folder");
+    exe!("mkdir -pv {trash_path:?}; trash --trash-dir {trash_path:?}"); // To do config
+
+    h2!("Checking Trash Directory");
+    exe!("ls -la {trash_path:?}; trash --directory"; true);
 }

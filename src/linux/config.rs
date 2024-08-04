@@ -11,7 +11,7 @@ pub struct Config {
     pub local_font_dir: String,
     pub config_font_dir: String,
     pub font_cache_files: String,
-
+    pub trash_dir: String,
 }
 
 impl Config {
