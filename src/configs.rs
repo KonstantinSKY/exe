@@ -76,7 +76,7 @@ pub fn get<T: for<'de> Deserialize<'de> + std::fmt::Debug>(key: &str) -> T {
     // read_and_parse_toml(&config_source_path)
     if let Ok(contents) = fs::read_to_string(&path) {
         if let Ok(config) = toml::from_str::<T>(&contents) {
-            println!("Got config: \n {config:#?}");
+            // println!("Got config: \n {config:#?}");
             config
         } else {
             println!("Can't convert from TOML file: {path:?}");
@@ -91,7 +91,7 @@ pub fn get<T: for<'de> Deserialize<'de> + std::fmt::Debug>(key: &str) -> T {
 pub fn get_config_path(key: &str) -> PathBuf {
     // println!("CONFIGS FROM path got config: {CONFIGS:#?}");
     if let Some(configs) = CONFIGS.get() {
-        println!("Config got: {configs:?}");
+        // println!("Config got: {configs:?}");
         if let Some(path) = configs.paths.get(key) {
             // println!("{key} path from global config: {path:?}");
             if path.exists() {
@@ -112,7 +112,7 @@ pub fn get_config_path(key: &str) -> PathBuf {
 
 pub fn init_config() {
     let configs = Configs::new();
-    println!("Main Configs Initialization: {configs:?}");
+    // println!("Main Configs Initialization: {configs:?}");
     match CONFIGS.set(configs) {
         Ok(()) => (),
         Err(_) => println!("Failed to set CONFIGS GLOBAL VARIABLE. It might be already set."),

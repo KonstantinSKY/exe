@@ -16,7 +16,7 @@ pub fn run(){
      H1!("Password Store Sync");
     // let config_source_path = crate::configs::get_config_path("pass");
     let config = crate::pass::config::Config::new("pass");
-    println!("Config:\n {config:?}");
+    // println!("Config:\n {config:?}");
     let password_store_source_path = home_path!(&config.password_store_source);
 
     //password_storage
