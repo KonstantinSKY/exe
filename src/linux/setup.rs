@@ -67,52 +67,51 @@ fn setup_rc() {
     let rc_path = home_path!(config.rc);
     let include_string = format!(". {}", rc_path.to_str().unwrap());
 
-    println!("include string: {include_string}");
+    println!("Each rc files will include string: {include_string}");
 
-    // for &rc_file in &config.rc_files {
-    //     h2!("\n For {}", rc_file.green());
-    //     let target_file = format!(".{rc_file}");
-    //     let target_path = home_path!(target_file);
+    for rc_file in config.rc_files {
+        h2!("\n For {}", rc_file.clone().green());
+        let rc_path = home_path!(rc_file);
         
-    //     if !target_path.exists() {
-    //         exe!("touch {target_path:?}");
-    //     }
-    //     if !target_path.is_file() {
-    //         println!("{target_path:?} is not file, skipping)");
-    //         continue;
-    //     }
-    //     let file_content = match fs::read_to_string(&target_path) {
-    //         Ok(content) => content,
-    //         Err(e) => {
-    //             println!("Unable to read file. Error: {e}");
-    //             continue;
-    //         }
-    //     };
-    //     h2!("Checking if link string  {include_string} is already in {target_path:?}");
-    //     // println!("{file_content}");
-    //     if file_content.contains(&include_string) {
-    //         println!("The file {target_path:?} already has: {include_string}");
-    //         continue;
-    //     };
+        if !rc_path.exists() {
+            exe!("touch {rc_path:?}");
+        }
+        if !rc_path.is_file() {
+            println!("{rc_path:?} is not file, skipping)");
+            continue;
+        }
+        let file_content = match fs::read_to_string(&rc_path) {
+            Ok(content) => content,
+            Err(e) => {
+                println!("Unable to read file. Error: {e}");
+                continue;
+            }
+        };
+        h2!("Checking if link string  {include_string} is already in {rc_path:?}");
+        // println!("{file_content}");
+        if file_content.contains(&include_string) {
+            println!("The file {rc_path:?} already has: {include_string}");
+            continue;
+        };
 
-    //     h2!("Adding link string  {include_string} to {target_path:?}");
-    //     exe!("echo {include_string} | tee -a {target_path:?}");
+        h2!("Adding link string  {include_string} to {rc_path:?}");
+        exe!("echo {include_string} | tee -a {rc_path:?}");
 
-    //     h2!("Checking if added");
-    //     exe!("tail -n 2 {target_path:?}"; true);
-    // }
+        h2!("Checking if added");
+        exe!("tail -n 2 {rc_path:?}"; true);
+    }
 }
 
 pub fn fonts() {
     H1!("Additional fonts");
     let config = super::config::Config::new("linux");
-    let local_font_path = home_path!(LOCAL_FONT_DIR);
-    let config_font_path = home_path!(WORK_DIR, CONFIG_FONT_DIR);
+    let local_font_path = home_path!(config.local_font_dir);
+    let config_font_path = home_path!(config.config_font_dir);
 
     crate::sh::files::slink(&config_font_path, &local_font_path);
 
     h2!("Clearing fontconfig  cache");
-    exe!("rm -rf ~/.cache/fontconfig/*");
+    exe!("rm -rf ~/{}", config.font_cache_files );
 
     h2!("Updating fonts cache");
     exe!("fc-cache -fv {local_font_path:?}");
