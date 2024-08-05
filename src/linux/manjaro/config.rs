@@ -2,13 +2,9 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub struct Config {
-    pub local_config_dir: String,
-    pub target_config_dir: String,
     pub global_config_file: String,
-    pub local_mimeapps_list: String,
-    pub target_mimeapps_list: String,
-    pub local_qt5_conf: String,
-    pub target_qt5_conf: String,
+    pub i3_config_dir: Vec<String>,
+    pub qt5_conf: Vec<String>,
     pub pamac_conf: String,
     pub grub_config: String,
     pub grub_theme: String,

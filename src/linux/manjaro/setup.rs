@@ -1,7 +1,7 @@
 use super::config::Config;
 use super::packages::{enable_aur, install};
 use crate::{linux::manjaro::packages, prelude::*};
-use files::{delete, slink};
+use files::{delete, slink_pair};
 
 pub fn run() {
     H1!("Manjaro Linux Setup");
@@ -74,32 +74,16 @@ fn i3(cfg: &Config) {
     let cf = &cfg.global_config_file;
     exe!("sudo sed -i 's/exec i3-config-wizard//g' {cf}; cat {cf}");
 
-    let local_config_dir_path = home_path!(&cfg.local_config_dir);
-    let target_config_dir_path = home_path!(&cfg.target_config_dir);
+    let local_i3_config_dir_path = home_path!(&cfg.i3_config_dir[0]);
 
-    h2!("Creating i3 config  directory for configs if absent: {local_config_dir_path:?}");
-
-    exe!("mkdir -vp {local_config_dir_path:?}; la -la {local_config_dir_path:?}");
-    slink(&target_config_dir_path, &local_config_dir_path);
+    h2!("Creating i3 config  directory for configs if absent: {local_i3_config_dir_path:?}");
+    exe!("mkdir -vp {local_i3_config_dir_path:?}; la -la {local_i3_config_dir_path:?}");
+    slink_pair(&cfg.i3_config_dir);
     exe!("rm ~/.i3 -r");
 
-    // slink(&home_path!(CONFIGS_DIR, "bash_profile"), &home_path!(".profile"));
-    slink(
-        &home_path!(&cfg.target_mimeapps_list),
-        &home_path!(&cfg.local_config_dir),
-    );
 
     h2!("Qt configs");
-    slink(
-        &home_path!(&cfg.target_qt5_conf),
-        &home_path!(&cfg.local_qt5_conf),
-    );
-
-    h2!("urxvt terminal");
-    slink(
-        &home_path!(CONFIGS_DIR, "terminals/urxvt/Xresources"),
-        &home_path!(".Xresources"),
-    );
+    slink_pair(&cfg.qt5_conf);
     //     i3_setup();
 }
 
