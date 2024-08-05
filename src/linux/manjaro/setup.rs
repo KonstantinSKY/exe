@@ -7,7 +7,7 @@ use crate::{linux::manjaro::packages, prelude::*};
 pub fn run(){
     H1!("Manjaro Linux Setup");
     let config = super::config::Config::new("manjaro");
-
+    
     run!(set_time, "Setting system time");
 
 
@@ -15,7 +15,7 @@ pub fn run(){
     h2!("Removing unneeded packages");
     super::packages::remove(&config.packages.unneeded);
 
-    delete(MANJARO_I3_FILES_TO_DELETE, true);
+    delete(&config.delete_files, true);
     
     h2!("Installing first required package collection: {:?}",config.packages.requirements);
     install(&config.packages.requirements);
@@ -25,7 +25,7 @@ pub fn run(){
     exe!("manjaro-settings-manager &");
 
 
-    run!(enable_aur, "Enabling AUR and others pamac settings");
+    run!(||enable_aur(&config), "Enabling AUR and others pamac settings");
     packages::update();
     run!(i3, "Setup I3 window manager");
     run!(grub, "GRUB Setup");

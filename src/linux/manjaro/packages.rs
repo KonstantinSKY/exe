@@ -3,6 +3,7 @@ use crate::sh::files::enable_config_param;
 use std::process::{Command, Stdio};
 use std::str;
 use files::backup;
+use super::config::Config;
 
 
 pub fn update() {
@@ -114,38 +115,39 @@ fn check() -> bool {
     output.status.success()
 }
 
-pub fn enable_aur() {
+pub fn enable_aur(cfg: &Config) {
+    let pc = &cfg.pamac_conf;
     H1!("PAMAC & AUR (ADVANCED USER REPOSITORY) SETUP in $CONFIG");
-    if !backup!("{PAMAC_CONFIG}") {return;}
-    h2!("Updating config file: {PAMAC_CONFIG}");
+    if !backup!("{pc}") {return;}
+    h2!("Updating config file: {pc}");
     
     let ecp = enable_config_param;
     ecp(
         "EnableAUR",
-        PAMAC_CONFIG,
+        pc,
         "Allow Pamac to search and install packages from AUR",
     );
     ecp(
         "CheckAURUpdate",
-        PAMAC_CONFIG,
+        pc,
         "When AUR support is enabled check for updates from AUR",
     );
     ecp("RemoveUnrequiredDeps",
-        PAMAC_CONFIG, 
+        pc, 
         "When removing a package, also remove those dependencies that are not required by other packages (recurse option)");
     ecp(
         "NoUpdateHideIcon",
-        PAMAC_CONFIG,
+        pc,
         "When no update is available, hide the tray icon",
     );
     ecp(
         "DownloadUpdates",
-        PAMAC_CONFIG,
+        pc,
         "Download updates in background",
     );
 
-    h2!("Showing config file {PAMAC_CONFIG}");
-    exe!("sudo cat {PAMAC_CONFIG}");
+    h2!("Showing config file {pc}");
+    exe!("sudo cat {pc}");
 }
 
 #[must_use] 

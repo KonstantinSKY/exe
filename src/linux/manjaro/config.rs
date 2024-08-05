@@ -11,7 +11,7 @@ pub struct Config {
     pub pamac_conf: String,
     pub grub_config: String,
     pub grub_theme: String,
-    pub delete_file: String,
+    pub delete_files: String,
     pub packages: Packages,
 }
 
