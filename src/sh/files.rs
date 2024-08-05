@@ -82,6 +82,13 @@ pub fn enable_config_param(param: &str, config_file: &str, message: &str) {
     }
 }
 
+pub fn slink_pair(link_source_pair: &[String]){
+    slink(
+        &home_path!(&link_source_pair[1]),
+        &home_path!(&link_source_pair[0]),
+    );
+}
+
 pub fn slink(source_path: &Path, link_path: &Path) {
     h2!("Creating Symbolic link: {link_path:?} -> {source_path:?}");
 

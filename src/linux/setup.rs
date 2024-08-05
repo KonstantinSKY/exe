@@ -2,7 +2,7 @@ use super::config::Config;
 use crate::prelude::*;
 
 use super::os::{mirrors, update};
-use files::slink;
+use files::{slink, slink_pair};
 use std::fs;
 
 pub fn run() {
@@ -25,22 +25,13 @@ pub fn run() {
         "Alacritty terminal install and setup"
     );
     run!(
-        || create_dir_symlinks(&config),
-        "Creating SymLinks for Common Work Directories"
+        || create_symlinks(&config),
+        "Creating SymLinks for Common Work Directories and Files"
     );
     h2!("Creating symlinks to important file");
-    slink(
-        &home_path!(&config.target_profile),
-        &home_path!(&config.local_profile),
-    );
-    slink(
-        &home_path!(&config.target_xresources),
-        &home_path!(&config.local_xresources),
-    );
-    slink(
-        &home_path!(&config.target_mimeapps_list),
-        &home_path!(&config.local_mimeapps_list),
-    );
+    slink_pair(&config.profile);
+    slink_pair(&config.mimeapps_list);
+    slink_pair(&config.xresources);
 
     run!(|| setup_rc(&config), "Setting RC files for all shell");
     run!(|| fonts(&config), "Font Setting");
@@ -51,7 +42,11 @@ pub fn run() {
     );
 }
 
-fn create_dir_symlinks(cfg: &Config) {
+fn create_symlinks(cfg: &Config) {
+    h2!("Creating File Symlinks");
+    
+    
+    h2!("Creating Directory Symlinks");
     for dir in &cfg.work_dirs {
         if dir.is_empty() {
             continue;
@@ -77,18 +72,14 @@ fn create_dir_symlinks(cfg: &Config) {
             continue;
         }
         exe!("mkdir -vp {source_path:?}"; true);
-        crate::sh::files::slink(&source_path, &link_path);
+        slink(&source_path, &link_path);
     }
 }
 
+
 fn fonts(cfg: &Config) {
     H1!("Fonts settings");
-    // let config = super::config::Config::new("linux");
-
-    crate::sh::files::slink(
-        &home_path!(&cfg.config_font_dir),
-        &home_path!(&cfg.local_font_dir),
-    );
+    slink_pair(&cfg.font_dir);
     update_fonts(cfg);
 }
 
