@@ -1,9 +1,10 @@
+
+use crate::prelude::*;
 use super::config::Config;
+
 use super::os::{mirrors, update};
-use crate::{js::update, prelude::*};
-use files::{delete, slink};
-use rustyline::config;
-use std::{fs, os::linux};
+use files::slink;
+use std::fs;
 
 pub fn run() {
     H1!("Linux common setup");
@@ -18,6 +19,8 @@ pub fn run() {
     run!(mirrors, "Setting mirrors for Linux");
     run!(update, "Full update Linux packages");
 
+    run!(stop_beep_sound, "Stop PC beeper sound");
+    
     run!(
         crate::alacritty::install,
         "Alacritty terminal install and setup"
@@ -28,15 +31,10 @@ pub fn run() {
     );
     run!(|| setup_rc(&config), "Setting RC files for all shell");
     run!(|| fonts(&config), "Font Setting");
-    run!(stop_beep_sound, "Stop PC beeper sound");
     run!(|| trash(&config), "Setup trash-cli and trash-folder");
     h2!(
         "Installing Linux common package collection: {:?}",
         config.packages
-    );
-    run!(
-        || super::os::install(&config.packages),
-        "Alacritty terminal install and setup"
     );
 }
 
