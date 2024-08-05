@@ -91,7 +91,7 @@ pub fn get_mirrors() {
     exe!("pacman-mirrors --status"; true);
 
     h2!("Searching and updating fastest");
-    exe!("sudo pacman-mirrors -c United_States --fasttrack
+    exe!("sudo pacman-mirrors --geoip --fasttrack
 ");
 
     h2!("Showing New status of mirrors pool");
