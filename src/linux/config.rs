@@ -4,8 +4,14 @@ use serde::Deserialize;
 pub struct Config {
     pub work_dirs: Vec<String>,
     pub rc: String,
-    pub profile: String,
-    pub mimeapps_list: String,
+    
+    pub local_profile: String,
+    pub target_profile: String,
+    pub local_mimeapps_list: String,
+    pub target_mimeapps_list: String,
+    pub local_xresources: String,
+    pub target_xresources: String,
+    
     pub delete_files: String,
     pub rc_files: Vec<String>,
     pub local_font_dir: String,

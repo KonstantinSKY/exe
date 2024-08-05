@@ -1,6 +1,5 @@
-
-use crate::prelude::*;
 use super::config::Config;
+use crate::prelude::*;
 
 use super::os::{mirrors, update};
 use files::slink;
@@ -20,7 +19,7 @@ pub fn run() {
     run!(update, "Full update Linux packages");
 
     run!(stop_beep_sound, "Stop PC beeper sound");
-    
+
     run!(
         crate::alacritty::install,
         "Alacritty terminal install and setup"
@@ -29,6 +28,20 @@ pub fn run() {
         || create_dir_symlinks(&config),
         "Creating SymLinks for Common Work Directories"
     );
+    h2!("Creating symlinks to important file");
+    slink(
+        &home_path!(&config.target_profile),
+        &home_path!(&config.local_profile),
+    );
+    slink(
+        &home_path!(&config.target_xresources),
+        &home_path!(&config.local_xresources),
+    );
+    slink(
+        &home_path!(&config.target_mimeapps_list),
+        &home_path!(&config.local_mimeapps_list),
+    );
+
     run!(|| setup_rc(&config), "Setting RC files for all shell");
     run!(|| fonts(&config), "Font Setting");
     run!(|| trash(&config), "Setup trash-cli and trash-folder");
@@ -99,8 +112,6 @@ fn trash(cfg: &Config) {
 
 fn setup_rc(cfg: &Config) {
     H1!("Setting up rc files");
-
-    slink(&home_path!(CONFIGS_DIR, "profile"), &home_path!(".profile"));
 
     let include_string = format!(". {}", cfg.rc);
     println!("Each rc files will include string: {include_string}");

@@ -4,6 +4,7 @@ use serde::Deserialize;
 pub struct Config {
     pub local_config_dir: String,
     pub target_config_dir: String,
+    pub global_config_file: String,
     pub local_mimeapps_list: String,
     pub target_mimeapps_list: String,
     pub local_qt5_conf: String,
