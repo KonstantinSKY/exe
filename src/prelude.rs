@@ -46,23 +46,23 @@ pub const VSCODE_EXTENSIONS: [&str; 10] = [
     ""
 ];
 
-pub const MAIN_DIRS: [&str; 15] = [
-    "Tools",
-    "Downloads",
-    "Security",
-    "Documents",
-    "Music",
-    "Pictures",
-    "Projects",
-    "Videos",
-    "Configs",
-    "Obsidian",
-    "BackUps",
-    "VirtualBox_VMs",
-    "",
-    "",
-    "",
-];
+// pub const MAIN_DIRS: [&str; 15] = [
+//     "Tools",
+//     "Downloads",
+//     "Security",
+//     "Documents",
+//     "Music",
+//     "Pictures",
+//     "Projects",
+//     "Videos",
+//     "Configs",
+//     "Obsidian",
+//     "BackUps",
+//     "VirtualBox_VMs",
+//     "",
+//     "",
+//     "",
+// ];
 pub const MAIN_RC: &str = "Work/Configs/rc";
 pub const RC_FILES: [&str; 2] = ["bashrc", "zshrc"];
 
