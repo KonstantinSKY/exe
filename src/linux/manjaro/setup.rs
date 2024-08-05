@@ -10,29 +10,7 @@ pub fn run(){
 
     run!(set_time, "Setting system time");
 
-    H1!("Manjaro i3 Create symbolic links for Configs");
 
-    //Manjaro i3 setting
-    h2!("Editing global i3 config for removing config wizard");
-    //TODO backup /etc/i3/config --sudo
-    
-    exe!("sudo sed -i 's/exec i3-config-wizard//g' /etc/i3/config; cat /etc");
-
-    h2!("Creating .i3 directory for configs if absent");
-    exe!("mkdir -vp $HOME/.config/i3; la -la $HOME/.config/i3");
-    slink(&home_path!(CONFIGS_DIR, "i3"),  &home_path!(".config/i3"));
-    exe!("rm ~/.i3 -r");
-
-    slink(&home_path!(CONFIGS_DIR, "profile"), &home_path!(".profile"));
-    // slink(&home_path!(CONFIGS_DIR, "bash_profile"), &home_path!(".profile"));
-    slink(&home_path!(CONFIGS_DIR, "mimeapps.list"), &home_path!(".config","mimeapps.list"));
-
-    h2!("Qt configs");
-    slink(&home_path!(CONFIGS_DIR, "qt5ct.conf"), &home_path!(".config","qt5ct/qt5ct.conf"));
-
-    //urxvt terminal
-    slink(&home_path!(CONFIGS_DIR, "terminals/urxvt/Xresources"), &home_path!(".Xresources"));
-//     i3_setup();
     
     h2!("Removing unneeded packages");
     super::packages::remove(&config.packages.unneeded);
@@ -49,21 +27,8 @@ pub fn run(){
 
     run!(enable_aur, "Enabling AUR and others pamac settings");
     packages::update();
-
-    H1!("GRUB SETTINGS");
-
-    h2!("Showing GRUB Config {GRUB_CONFIG}");
-    exe!("cat {GRUB_CONFIG}");
-    
-    h2!("Changing GRUB_TIMEOUT_STYLE and select theme for loading menu");
-    exe!("sudo sed -i 's/GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=menu/' {GRUB_CONFIG}");
-    exe!("sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME={GRUB_MANJARO_THEME}|' {GRUB_CONFIG}");
-
-    h2!("Showing updated GRUB Config {GRUB_CONFIG}");
-    exe!("cat {GRUB_CONFIG}");
-    
-    h2!("Update GRUB to apply the changes");
-    exe!("sudo update-grub");
+    run!(i3, "Setup I3 window manager");
+    run!(grub, "GRUB Setup");
 
     h2!("Installing package collection: requirements2 : {:?}", config.packages.requirements_2);
     install(&config.packages.requirements_2);
@@ -97,9 +62,51 @@ pub fn set_time(){
     exe!("timedatectl status"; true);
 }
 
-pub fn alacritty(){
+fn i3(){
+    H1!("Manjaro i3 Create symbolic links for Configs");
+
+    //Manjaro i3 setting
+    h2!("Editing global i3 config for removing config wizard");
+    exe!("sudo sed -i 's/exec i3-config-wizard//g' /etc/i3/config; cat /etc");
+
+    let local_config_dir_path = home_path!(".config/i3");
+    let target_config_dir_path = home_path!("Work/Configs/i3");
+
+    h2!("Creating i3 config  directory for configs if absent: {local_config_dir_path:?}");
     
+    exe!("mkdir -vp {local_config_dir_path:?}; la -la {local_config_dir_path:?}");
+    slink(&target_config_dir_path, &local_config_dir_path);
+    exe!("rm ~/.i3 -r");
+
+    // slink(&home_path!(CONFIGS_DIR, "bash_profile"), &home_path!(".profile"));
+    slink(&home_path!(CONFIGS_DIR, "mimeapps.list"), &home_path!(".config","mimeapps.list"));
+
+    h2!("Qt configs");
+    slink(&home_path!(CONFIGS_DIR, "qt5ct.conf"), &home_path!(".config","qt5ct/qt5ct.conf"));
+
+    h2!("urxvt terminal");
+    slink(&home_path!(CONFIGS_DIR, "terminals/urxvt/Xresources"), &home_path!(".Xresources"));
+//     i3_setup();
 }
+
+fn grub(){
+    H1!("GRUB SETTINGS");
+
+    h2!("Showing GRUB Config {GRUB_CONFIG}");
+    exe!("cat {GRUB_CONFIG}");
+    
+    h2!("Changing GRUB_TIMEOUT_STYLE and select theme for loading menu");
+    exe!("sudo sed -i 's/GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=menu/' {GRUB_CONFIG}");
+    exe!("sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME={GRUB_MANJARO_THEME}|' {GRUB_CONFIG}");
+
+    h2!("Showing updated GRUB Config {GRUB_CONFIG}");
+    exe!("cat {GRUB_CONFIG}");
+    
+    h2!("Update GRUB to apply the changes");
+    exe!("sudo update-grub");
+}
+
+
 
 
 #[cfg(test)]

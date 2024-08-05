@@ -1,6 +1,6 @@
 use super::os::{mirrors, update};
 use crate::prelude::*;
-
+use files::{slink, delete};
 use std::fs;
 pub fn run() {
     H1!("Linux common setup");
@@ -71,6 +71,8 @@ fn setup_rc() {
     H1!("Setting up rc files");
     let rc_path = home_path!(config.rc);
     let include_string = format!(". {}", rc_path.to_str().unwrap());
+    
+    slink(&home_path!(CONFIGS_DIR, "profile"), &home_path!(".profile"));
 
     println!("Each rc files will include string: {include_string}");
 
