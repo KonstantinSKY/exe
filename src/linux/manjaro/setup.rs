@@ -1,6 +1,6 @@
 use files::{slink, delete};
 use super::packages::{enable_aur, install};
-
+use super::config::Config;
 use crate::{linux::manjaro::packages, prelude::*};
 
 
@@ -27,7 +27,7 @@ pub fn run(){
 
     run!(||enable_aur(&config), "Enabling AUR and others pamac settings");
     packages::update();
-    run!(i3, "Setup I3 window manager");
+    run!(|| i3(&config), "Setup I3 window manager");
     run!(grub, "GRUB Setup");
 
     h2!("Installing package collection: requirements2 : {:?}", config.packages.requirements_2);
@@ -58,15 +58,15 @@ pub fn set_time(){
     exe!("timedatectl status"; true);
 }
 
-fn i3(){
+fn i3(cfg: &Config){
     H1!("Manjaro i3 Create symbolic links for Configs");
 
     //Manjaro i3 setting
     h2!("Editing global i3 config for removing config wizard");
     exe!("sudo sed -i 's/exec i3-config-wizard//g' /etc/i3/config; cat /etc");
 
-    let local_config_dir_path = home_path!(".config/i3");
-    let target_config_dir_path = home_path!("Work/Configs/i3");
+    let local_config_dir_path = home_path!(&cfg.local_config_dir);
+    let target_config_dir_path = home_path!(&cfg.target_config_dir);
 
     h2!("Creating i3 config  directory for configs if absent: {local_config_dir_path:?}");
     
