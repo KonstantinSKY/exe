@@ -8,17 +8,13 @@ use std::{io, process::{Command as ShellCommand, Stdio}};
 
 #[macro_export]
 macro_rules! run {
-    // Pattern for a function with no arguments, no message, and no confirmation flag
+    // Pattern for a function with no arguments and no message
     ($func:expr) => {{
         $crate::sh::exec::run_fn($func, "", false);
     }};
-    // Pattern for a function with a message but no confirmation flag
+    // Pattern for a function with a message
     ($func:expr, $msg:expr) => {{
         $crate::sh::exec::run_fn($func, $msg, false);
-    }};
-    // Pattern for a function with a confirmation flag but no message
-    ($func:expr, $confirm:expr) => {{
-        $crate::sh::exec::run_fn($func, "", $confirm);
     }};
     // Pattern for a function with both a message and a confirmation flag
     ($func:expr, $msg:expr, $confirm:expr) => {{

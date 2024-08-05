@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Config {
     pub work_dirs: Vec<String>,
     pub rc: String,
@@ -12,6 +12,7 @@ pub struct Config {
     pub config_font_dir: String,
     pub font_cache_files: String,
     pub trash_dir: String,
+    pub packages: String,
 }
 
 impl Config {
@@ -20,3 +21,4 @@ impl Config {
         crate::configs::get(key)
     }
 }
+
