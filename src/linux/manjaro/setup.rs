@@ -30,7 +30,7 @@ pub fn run() {
     );
     packages::update();
     run!(|| i3(&config), "Setup I3 window manager");
-    run!(grub, "GRUB Setup");
+    run!(|| grub(&config), "GRUB Setup");
 
     h2!(
         "Installing package collection: requirements2 : {:?}",
@@ -81,37 +81,26 @@ fn i3(cfg: &Config) {
     slink_pair(&cfg.i3_config_dir);
     exe!("rm ~/.i3 -r");
 
-
     h2!("Qt configs");
     slink_pair(&cfg.qt5_conf);
     //     i3_setup();
 }
 
-fn grub() {
+fn grub(cfg: &Config) {
     H1!("GRUB SETTINGS");
+    let gc = &cfg.grub_config;
+    let gt = &cfg.grub_theme;
 
-    h2!("Showing GRUB Config {GRUB_CONFIG}");
-    exe!("cat {GRUB_CONFIG}");
+    h2!("Showing GRUB Config {gc}");
+    exe!("cat {gc}"; true);
 
     h2!("Changing GRUB_TIMEOUT_STYLE and select theme for loading menu");
-    exe!("sudo sed -i 's/GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=menu/' {GRUB_CONFIG}");
-    exe!("sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME={GRUB_MANJARO_THEME}|' {GRUB_CONFIG}");
+    exe!("sudo sed -i 's/GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=menu/' {gc}");
+    exe!("sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME={gt}|' {gc}");
 
-    h2!("Showing updated GRUB Config {GRUB_CONFIG}");
-    exe!("cat {GRUB_CONFIG}");
+    h2!("Showing updated GRUB Config {gc}");
+    exe!("cat {gc}"; true);
 
     h2!("Update GRUB to apply the changes");
     exe!("sudo update-grub");
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_exe() {
-        exe!("cat {GRUB_CONFIG}");
-        exe!("cat {}", GRUB_CONFIG);
-        exe!("cat {GRUB_CONFIG}"; true);
-    }
 }

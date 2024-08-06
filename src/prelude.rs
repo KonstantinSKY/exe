@@ -63,15 +63,15 @@ pub const VSCODE_EXTENSIONS: [&str; 10] = [
 //     "",
 //     "",
 // ];
-pub const MAIN_RC: &str = "Work/Configs/rc";
-pub const RC_FILES: [&str; 2] = ["bashrc", "zshrc"];
+// pub const MAIN_RC: &str = "Work/Configs/rc";
+// pub const RC_FILES: [&str; 2] = ["bashrc", "zshrc"];
 
-pub const MANJARO_I3_PACKAGES_TO_REMOVE: &str = "bmenu palemoon pacui pcmanfm mupdf libmupdf tesseract-data-afr tesseract" ;
-pub const MANJARO_I3_FILES_TO_DELETE: &str = ".bash_profile";
-pub const PAMAC_CONFIG: &str = "/etc/pamac.conf";
+// pub const MANJARO_I3_PACKAGES_TO_REMOVE: &str = "bmenu palemoon pacui pcmanfm mupdf libmupdf tesseract-data-afr tesseract" ;
+// pub const MANJARO_I3_FILES_TO_DELETE: &str = ".bash_profile";
+// pub const PAMAC_CONFIG: &str = "/etc/pamac.conf";
 
-pub const GRUB_CONFIG: &str = "/etc/default/grub";
-pub const GRUB_MANJARO_THEME: &str = "/usr/share/grub/themes/manjaro/theme.txt";
+// pub const GRUB_CONFIG: &str = "/etc/default/grub";
+// pub const GRUB_MANJARO_THEME: &str = "/usr/share/grub/themes/manjaro/theme.txt";
 
 // const DESKTOP_VARS: [] =[
 //         ("GNOME_DESKTOP_SESSION_ID", "GNOME"),
