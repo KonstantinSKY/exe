@@ -20,9 +20,17 @@ pub fn run() {
     );
     install(&config.packages.requirements);
 
-    H1!("Linux Kernel");
+    H1!("Linux Kernel and Drivers");
     h2!("Running manjaro setting manager for checking kernels");
     exe!("manjaro-settings-manager &");
+
+    h2!("Showing installed Drivers");
+    exe!("mhwd -li"; true);
+    h2!("Installing and update proprietary video drivers");
+    exe!("sudo mhwd -a pci nonfree 0300");
+    h2!("Checking using Video driver, may be u need to reboot before");
+    exe!("lspci -k | grep -EA3 'VGA|3D|Display'"; true);
+
 
     run!(
         || enable_aur(&config),
