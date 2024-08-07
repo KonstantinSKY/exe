@@ -21,8 +21,14 @@ pub struct Config {
 }
 
 impl Config {
+    #[must_use] 
     pub fn new() -> Self {
         crate::configs::get("linux")
     }
 }
 
+impl Default for Config {
+    fn default() -> Self {
+        Self::new()
+    }
+}
