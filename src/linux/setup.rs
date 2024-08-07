@@ -29,18 +29,18 @@ pub fn run() {
         || create_symlinks(&config),
         "Creating SymLinks for Common Work Directories and Files"
     );
-    h2!("Creating symlinks to important file");
-    slink_pair(&config.profile);
-    slink_pair(&config.mimeapps_list);
-    slink_pair(&config.xresources);
+    // h2!("Creating symlinks to important file");
+    // slink_pair(&config.profile);
+    // slink_pair(&config.mimeapps_list);
+    // slink_pair(&config.xresources);
 
-    run!(|| setup_rc(&config), "Setting RC files for all shell");
-    run!(|| fonts(&config), "Font Setting");
-    run!(|| trash(&config), "Setup trash-cli and trash-folder");
-    h2!(
-        "Installing Linux common package collection: {:?}",
-        config.packages
-    );
+    // run!(|| setup_rc(&config), "Setting RC files for all shell");
+    // run!(|| fonts(&config), "Font Setting");
+    // run!(|| trash(&config), "Setup trash-cli and trash-folder");
+    // h2!(
+    //     "Installing Linux common package collection: {:?}",
+    //     config.packages
+    // );
 }
 
 fn create_symlinks(cfg: &Config) {
