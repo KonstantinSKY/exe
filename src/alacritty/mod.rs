@@ -8,5 +8,5 @@ pub fn install (){
 
     os::install("alacritty");
     sh::files::slink(&config_source_path, &config_link_path);
-    exe!("alacritty");
+    exe!("alacritty &");
 }

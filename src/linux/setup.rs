@@ -36,7 +36,7 @@ pub fn run() {
 
     run!(|| setup_rc(&config), "Setting RC files for all shell");
     run!(|| fonts(&config), "Font Setting");
-    run!(|| trash(&config), "Setup trash-cli and trash-folder");
+    // run!(|| trash(&config), "Setup trash-cli and trash-folder");
     h2!(
         "Installing Linux common package collection: {:?}",
         config.packages
