@@ -7,7 +7,6 @@ use std::fs;
 
 pub fn run() {
     H1!("Linux common setup");
-    let config = Config::new("linux");
     h2!("Cloning config repository to Work directory");
     // let home_dir = get_home_dir();
     // let home_dir_path = Path::new(&home_dir);
@@ -24,6 +23,8 @@ pub fn run() {
         crate::alacritty::install,
         "Alacritty terminal install and setup"
     );
+    
+    let config = Config::new("linux");
     run!(
         || create_symlinks(&config),
         "Creating SymLinks for Common Work Directories and Files"
