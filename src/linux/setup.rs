@@ -25,10 +25,10 @@ pub fn run() {
     );
     
     let config = Config::new();
-    run!(
-        || create_symlinks(&config),
-        "Creating SymLinks for Common Work Directories and Files"
-    );
+    // run!(
+    //     || create_symlinks(&config),
+    //     "Creating SymLinks for Common Work Directories and Files"
+    // );
     // h2!("Creating symlinks to important file");
     // slink_pair(&config.profile);
     // slink_pair(&config.mimeapps_list);
@@ -78,68 +78,68 @@ fn create_symlinks(cfg: &Config) {
 }
 
 
-fn fonts(cfg: &Config) {
-    H1!("Fonts settings");
-    slink_pair(&cfg.font_dir);
-    update_fonts(cfg);
-}
+// fn fonts(cfg: &Config) {
+//     H1!("Fonts settings");
+//     slink_pair(&cfg.font_dir);
+//     update_fonts(cfg);
+// }
 
-fn update_fonts(cfg: &Config) {
-    h2!("Clearing fontconfig  cache");
-    exe!("rm -rf ~/{}", cfg.font_cache_files);
+// fn update_fonts(cfg: &Config) {
+//     h2!("Clearing fontconfig  cache");
+//     exe!("rm -rf ~/{}", cfg.font_cache_files);
 
-    h2!("Updating fonts cache");
-    exe!("fc-cache -fv {}", cfg.font_dir[0]);
-}
+//     h2!("Updating fonts cache");
+//     exe!("fc-cache -fv {}", cfg.font_dir[0]);
+// }
 
-fn trash(cfg: &Config) {
-    super::os::install("trash-cli");
-    let tp = home_path!(&cfg.trash_dir);
-    h2!("Making Trash folder");
-    exe!("mkdir -pv {tp:?}; trash --trash-dir {tp:?}"); // To do config
+// fn trash(cfg: &Config) {
+//     super::os::install("trash-cli");
+//     let tp = home_path!(&cfg.trash_dir);
+//     h2!("Making Trash folder");
+//     exe!("mkdir -pv {tp:?}; trash --trash-dir {tp:?}"); // To do config
 
-    h2!("Checking Trash Directory");
-    exe!("ls -la {tp:?}; trash --directory"; true);
-}
+//     h2!("Checking Trash Directory");
+//     exe!("ls -la {tp:?}; trash --directory"; true);
+// }
 
-fn setup_rc(cfg: &Config) {
-    H1!("Setting up rc files");
+// fn setup_rc(cfg: &Config) {
+//     H1!("Setting up rc files");
 
-    let include_string = format!(". {}", cfg.rc);
-    println!("Each rc files will include string: {include_string}");
+//     let include_string = format!(". {}", cfg.rc);
+//     println!("Each rc files will include string: {include_string}");
 
-    for rc_file in &cfg.rc_files {
-        h2!("\n For {}", rc_file.clone().green());
-        let rc_path = home_path!(rc_file);
+//     for rc_file in &cfg.rc_files {
+//         h2!("\n For {}", rc_file.clone().green());
+//         let rc_path = home_path!(rc_file);
 
-        if !rc_path.exists() {
-            exe!("touch {rc_path:?}");
-        }
-        if !rc_path.is_file() {
-            println!("{rc_path:?} is not file, skipping)");
-            continue;
-        }
-        let file_content = match fs::read_to_string(&rc_path) {
-            Ok(content) => content,
-            Err(e) => {
-                println!("Unable to read file. Error: {e}");
-                continue;
-            }
-        };
-        h2!("Checking if link string  {include_string} is already in {rc_path:?}");
-        // println!("{file_content}");
-        if file_content.contains(&include_string) {
-            println!("The file {rc_path:?} already has: {include_string}");
-            continue;
-        };
+//         if !rc_path.exists() {
+//             exe!("touch {rc_path:?}");
+//         }
+//         if !rc_path.is_file() {
+//             println!("{rc_path:?} is not file, skipping)");
+//             continue;
+//         }
+//         let file_content = match fs::read_to_string(&rc_path) {
+//             Ok(content) => content,
+//             Err(e) => {
+//                 println!("Unable to read file. Error: {e}");
+//                 continue;
+//             }
+//         };
+//         h2!("Checking if link string  {include_string} is already in {rc_path:?}");
+//         // println!("{file_content}");
+//         if file_content.contains(&include_string) {
+//             println!("The file {rc_path:?} already has: {include_string}");
+//             continue;
+//         };
 
-        h2!("Adding link string  {include_string} to {rc_path:?}");
-        exe!("echo {include_string} | tee -a {rc_path:?}");
+//         h2!("Adding link string  {include_string} to {rc_path:?}");
+//         exe!("echo {include_string} | tee -a {rc_path:?}");
 
-        h2!("Checking if added");
-        exe!("tail -n 2 {rc_path:?}"; true);
-    }
-}
+//         h2!("Checking if added");
+//         exe!("tail -n 2 {rc_path:?}"; true);
+//     }
+// }
 
 fn stop_beep_sound() {
     exe!("echo 'blacklist pcspkr' | sudo tee -a /etc/modprobe.d/nobeep.conf");
