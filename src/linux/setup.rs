@@ -42,6 +42,8 @@ pub fn run() {
         config.packages
     );
     super::os::install(&config.packages);
+    
+    run!(super::os::setup_by_os_type, "Setting by Linux Type");
 }
 
 fn create_symlinks(cfg: &Config) {

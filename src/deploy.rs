@@ -66,8 +66,11 @@ pub fn get() {
     exe!("rm {tmp_path:?} -v"; true);
     
     h2!("Set permission for {exe_path:?}");
-    exe!("chmod +x {exe_path:?}");
+    exe!("chmod +x {exe_path:?}"; true);
 
+    if !exe_path.exists(){
+        return;
+    } 
     h2!("Pulling exe project to {project_path:?}");
     exe!("git -C {project_path:?} pull -v");
 }

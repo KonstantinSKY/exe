@@ -28,6 +28,13 @@ pub fn mirrors() {
     }
 }
 
+pub fn setup_by_os_type() {
+    match get().as_str() {
+        "Manjaro" => manjaro::setup::run(),
+        "Unknown" => println!("Unknown operating system and not supported for mirrors"),
+        _ => println!("OS not supported for Mirrors"),
+    }
+}
 
 
 #[must_use] 
