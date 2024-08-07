@@ -3,7 +3,7 @@ use crate::prelude::*;
 
 use super::os::{mirrors, update};
 use files::{slink, slink_pair};
-use std::fs;
+use std::{fs, rc::Rc};
 
 pub fn run() {
     H1!("Linux common setup");
@@ -107,8 +107,8 @@ fn update_fonts(cfg: &Config) {
 
 fn setup_rc(cfg: &Config) {
     H1!("Setting up rc files");
-
-    let include_string = format!(". {}", cfg.rc);
+    let include_rc_path = home_path!(&cfg.rc);
+    let include_string = format!(". {include_rc_path:?}");
     println!("Each rc files will include string: {include_string}");
 
     for rc_file in &cfg.rc_files {

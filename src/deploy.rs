@@ -68,9 +68,10 @@ pub fn get() {
     h2!("Set permission for {exe_path:?}");
     exe!("chmod +x {exe_path:?}"; true);
 
-    if !project_path.exists(){
-        return;
-    } 
     h2!("Pulling exe project to {project_path:?}");
+    if !project_path.exists(){
+        println!("{project_path:?} not exists"); 
+        return;
+    }
     exe!("git -C {project_path:?} pull -v");
 }
