@@ -96,7 +96,7 @@ fn trash(cfg: &Config) {
     super::os::install("trash-cli");
     let tp = home_path!(&cfg.trash_dir);
     h2!("Making Trash folder");
-    exe!("mkdir -pv {tp:?}; trash --trash-dir {tp:?}"); // To do config
+    exe!("mkdir -pv {tp:?} & trash --trash-dir {tp:?}"); // To do config
 
     h2!("Checking Trash Directory");
     exe!("ls -la {tp:?}; trash --directory"; true);
