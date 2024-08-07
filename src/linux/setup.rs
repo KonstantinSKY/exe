@@ -89,7 +89,7 @@ fn update_fonts(cfg: &Config) {
     exe!("rm -rf ~/{}", cfg.font_cache_files);
 
     h2!("Updating fonts cache");
-    exe!("fc-cache -fv {}", cfg.local_font_dir);
+    exe!("fc-cache -fv {}", cfg.font_dir[0]);
 }
 
 fn trash(cfg: &Config) {
