@@ -41,6 +41,7 @@ pub fn run() {
         "Installing Linux common package collection: {:?}",
         config.packages
     );
+    super::os::install(&config.packages);
 }
 
 fn create_symlinks(cfg: &Config) {
@@ -92,15 +93,15 @@ fn update_fonts(cfg: &Config) {
     exe!("fc-cache -fv {}", cfg.font_dir[0]);
 }
 
-fn trash(cfg: &Config) {
-    super::os::install("trash-cli");
-    let tp = home_path!(&cfg.trash_dir);
-    h2!("Making Trash folder");
-    exe!("mkdir -pv {tp:?} & trash --trash-dir {tp:?}"); // To do config
+// fn trash(cfg: &Config) {
+//     super::os::install("trash-cli");
+//     let tp = home_path!(&cfg.trash_dir);
+//     h2!("Making Trash folder");
+//     exe!("mkdir -pv {tp:?} & trash --trash-dir {tp:?}"); // To do config
 
-    h2!("Checking Trash Directory");
-    exe!("ls -la {tp:?}; trash --directory"; true);
-}
+//     h2!("Checking Trash Directory");
+//     exe!("ls -la {tp:?}; trash --directory"; true);
+// }
 
 fn setup_rc(cfg: &Config) {
     H1!("Setting up rc files");
