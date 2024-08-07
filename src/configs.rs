@@ -76,10 +76,11 @@ pub fn get<T: for<'de> Deserialize<'de> + std::fmt::Debug>(key: &str) -> T {
     // read_and_parse_toml(&config_source_path)
     if let Ok(contents) = fs::read_to_string(&path) {
         if let Ok(config) = toml::from_str::<T>(&contents) {
-            // println!("Got config: \n {config:#?}");
+            println!("Got config: \n {config:#?}");
             config
         } else {
             println!("Can't convert from TOML file: {path:?}");
+            exe!("cat {path:?}"; true); 
             exit(1);
         }
     } else {

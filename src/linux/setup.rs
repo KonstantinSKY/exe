@@ -24,7 +24,7 @@ pub fn run() {
         "Alacritty terminal install and setup"
     );
     
-    let config = Config::new("linux");
+    let config = Config::new();
     run!(
         || create_symlinks(&config),
         "Creating SymLinks for Common Work Directories and Files"

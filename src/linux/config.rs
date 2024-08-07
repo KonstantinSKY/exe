@@ -21,9 +21,8 @@ pub struct Config {
 }
 
 impl Config {
-    #[must_use] 
-    pub fn new(key: &str) -> Self {
-        crate::configs::get(key)
+    pub fn new() -> Self {
+        crate::configs::get("linux")
     }
 }
 
