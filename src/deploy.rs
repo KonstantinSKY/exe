@@ -68,7 +68,7 @@ pub fn get() {
     h2!("Set permission for {exe_path:?}");
     exe!("chmod +x {exe_path:?}"; true);
 
-    if !exe_path.exists(){
+    if !project_path.exists(){
         return;
     } 
     h2!("Pulling exe project to {project_path:?}");
