@@ -47,12 +47,13 @@ fn move_to_old(path: &Path) {
 
     let filename = path.to_str().unwrap();
     let old_filename = format!("{filename}.old");
-    let old_path = parent_path.join(last_file).join(".old");
+    let old_path = parent_path.join(&old_filename);
 
 
     println!("Path name: {path:?}");
     println!("Parent path name: {parent_path:?}");
     println!("Last File name: {last_file:?}");
+    println!("OLD File name: {old_filename}");
     println!("Old path name: {old_path:?}");
 
     // if path.is_dir() {
