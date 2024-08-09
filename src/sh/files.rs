@@ -34,17 +34,28 @@ pub fn delete(files: &str, noconfirm_flag: bool) {
 }
 
 fn move_to_old(path: &Path) {
+    let Some(parent_path) = path.parent() else {
+        println!("The path has no parent or it's the root directory");
+        return;
+    };
+           
+    let last_file = path
+        .file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or("");
     let filename = path.to_str().unwrap();
     let old_filename = format!("{filename}.old");
-    let old_path = path.join(".old");
-    
+    let old_path = parent_path.join(last_file);
+
     println!("Old file name: {old_filename}");
     println!("Old path name: {old_path:?}");
+    println!("Parent path name: {parent_path:?}");
+    println!("Old filename: {old_filename:?}");
 
-    // if path.is_dir() {
-    //     h2!("Moving existing dir {filename} to {old_filename}");
-    //     exe!("mv -r {path:?} '{old_filename}'"; true);
-    // }
+    if path.is_dir() {
+        h2!("Moving existing dir {filename} to {old_filename}");
+        exe!("mv -r {path:?} '{old_filename}'"; true);
+    }
     // if path.is_file(){
     //     h2!("Moving existing dir {filename} to {old_filename}");
     //     exe!("mv {path:?} '{old_filename}'"; true);
@@ -88,7 +99,7 @@ pub fn enable_config_param(param: &str, config_file: &str, message: &str) {
     }
 }
 
-pub fn slink_pair(link_source_pair: &[String]){
+pub fn slink_pair(link_source_pair: &[String]) {
     slink(
         &home_path!(&link_source_pair[1]),
         &home_path!(&link_source_pair[0]),
@@ -217,7 +228,11 @@ pub fn force_copy(source_path: &Path, destination_path: &Path) {
             return;
         }
     }
-    println!("{}", format!("Force copy finished successfully from {source_path:?} to {destination_path:?}").green());
+    println!(
+        "{}",
+        format!("Force copy finished successfully from {source_path:?} to {destination_path:?}")
+            .green()
+    );
 }
 
 #[cfg(test)]
