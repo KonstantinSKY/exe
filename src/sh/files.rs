@@ -44,8 +44,6 @@ fn move_to_old(path: &Path) {
         .and_then(|name| name.to_str())
         .unwrap_or("");
 
-
-    // let filename = path.to_str().unwrap();
     let old_filename = format!("{last_file}.old");
     let old_path = parent_path.join(&old_filename);
 
@@ -56,14 +54,8 @@ fn move_to_old(path: &Path) {
     println!("OLD File name: {old_filename}");
     println!("Old path name: {old_path:?}");
 
-    // if path.is_dir() {
-    //     h2!("Moving existing dir {filename} to {old_filename}");
-    //     exe!("mv -r {path:?} '{old_filename}'"; true);
-    // }
-    // if path.is_file(){
-    //     h2!("Moving existing dir {filename} to {old_filename}");
-    //     exe!("mv {path:?} '{old_filename}'"; true);
-    // }
+    h2!("Moving existing {path:?} to {old_path:?}");
+    exe!("mv {path:?} {old_path:?}"; true);
 }
 
 pub fn enable_config_param(param: &str, config_file: &str, message: &str) {
