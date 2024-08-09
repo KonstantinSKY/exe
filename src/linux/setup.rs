@@ -3,7 +3,7 @@ use crate::prelude::*;
 
 use super::os::{mirrors, update};
 use files::{slink, slink_pair};
-use std::{fs, rc::Rc};
+use std::fs;
 
 pub fn run() {
     H1!("Linux common setup");
