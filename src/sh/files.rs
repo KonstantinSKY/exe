@@ -45,8 +45,8 @@ fn move_to_old(path: &Path) {
         .unwrap_or("");
 
 
-    let filename = path.to_str().unwrap();
-    let old_filename = format!("{filename}.old");
+    // let filename = path.to_str().unwrap();
+    let old_filename = format!("{last_file}.old");
     let old_path = parent_path.join(&old_filename);
 
 
