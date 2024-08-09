@@ -43,19 +43,22 @@ fn move_to_old(path: &Path) {
         .file_name()
         .and_then(|name| name.to_str())
         .unwrap_or("");
+
+
     let filename = path.to_str().unwrap();
     let old_filename = format!("{filename}.old");
     let old_path = parent_path.join(last_file);
 
-    println!("Old file name: {old_filename}");
-    println!("Old path name: {old_path:?}");
-    println!("Parent path name: {parent_path:?}");
-    println!("Old filename: {old_filename:?}");
 
-    if path.is_dir() {
-        h2!("Moving existing dir {filename} to {old_filename}");
-        exe!("mv -r {path:?} '{old_filename}'"; true);
-    }
+    println!("Path name: {last_file:?}");
+    println!("Parent path name: {parent_path:?}");
+    println!("Last File name: {last_file:?}");
+    println!("Old path name: {old_path:?}");
+
+    // if path.is_dir() {
+    //     h2!("Moving existing dir {filename} to {old_filename}");
+    //     exe!("mv -r {path:?} '{old_filename}'"; true);
+    // }
     // if path.is_file(){
     //     h2!("Moving existing dir {filename} to {old_filename}");
     //     exe!("mv {path:?} '{old_filename}'"; true);
