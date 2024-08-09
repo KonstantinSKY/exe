@@ -36,12 +36,13 @@ pub fn delete(files: &str, noconfirm_flag: bool) {
 fn move_to_old(path: &Path) {
     let filename = path.to_str().unwrap();
     let old_filename = format!("{filename}.old");
-
-    // Check if the file exists
-    if fs::metadata(filename).is_ok() {
-        h2!("Moving existing file {filename} to {old_filename}");
+    if path.is_dir() {
+        h2!("Moving existing dir {filename} to {old_filename}");
+        exe!("mv -r '{path:?}' '{old_filename}'"; true);
+    }
+    if path.is_file(){
+        h2!("Moving existing dir {filename} to {old_filename}");
         exe!("mv '{filename}' '{old_filename}'"; true);
-        // Execute the move command
     }
 }
 
