@@ -36,14 +36,19 @@ pub fn delete(files: &str, noconfirm_flag: bool) {
 fn move_to_old(path: &Path) {
     let filename = path.to_str().unwrap();
     let old_filename = format!("{filename}.old");
-    if path.is_dir() {
-        h2!("Moving existing dir {filename} to {old_filename}");
-        exe!("mv -r '{path:?}' '{old_filename}'"; true);
-    }
-    if path.is_file(){
-        h2!("Moving existing dir {filename} to {old_filename}");
-        exe!("mv '{filename}' '{old_filename}'"; true);
-    }
+    let old_path = path.join(".old");
+    
+    println!("Old file name: {old_filename}");
+    println!("Old path name: {old_path:?}");
+
+    // if path.is_dir() {
+    //     h2!("Moving existing dir {filename} to {old_filename}");
+    //     exe!("mv -r {path:?} '{old_filename}'"; true);
+    // }
+    // if path.is_file(){
+    //     h2!("Moving existing dir {filename} to {old_filename}");
+    //     exe!("mv {path:?} '{old_filename}'"; true);
+    // }
 }
 
 pub fn enable_config_param(param: &str, config_file: &str, message: &str) {
