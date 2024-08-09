@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use crate::linux::os;
-use crate::sh::files::slink_pair;
+use crate::sh::files::slink;
 
 pub fn run() {
     H1!("VS Code install and setup");
@@ -17,7 +17,11 @@ pub fn run() {
     }
 
     h2!("Creating configs symbolic links");
-    slink_pair(&config.config_dir);
+    for file in &config.config_files {
+        let link_file = home_path!(&config.config_dir[0], file);
+        let target_file = home_path!(&config.config_dir[1], file);
+        slink(&target_file, &link_file);
+    }
 }
 
 #[cfg(test)]
