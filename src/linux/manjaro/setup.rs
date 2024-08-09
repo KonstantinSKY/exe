@@ -40,6 +40,8 @@ pub fn run() {
     run!(|| i3(&config), "Setup I3 window manager");
     run!(|| grub(&config), "GRUB Setup");
 
+    run!(crate::megasync::install::run, "Install and Setup Megasync");
+
     h2!(
         "Installing package collection: requirements2 : {:?}",
         config.packages.requirements_2
