@@ -6,21 +6,8 @@ use serde::Deserialize;
 #[derive(Deserialize, Debug)]
 pub struct Config {
     packages: String,
-    paths: Paths,
-    files: Files,
+    config_dir: Vec<String>,
 }
-
-#[derive(Deserialize, Debug)]
-pub struct Paths {
-    config_dir: PathBuf,
-    config_source_dir: PathBuf,
-}
-
-#[derive(Deserialize, Debug)]
-pub struct Files {
-    init_vim: PathBuf,
-}
-
 impl Config {
     fn new(key: &str) -> Self {
         crate::configs::get(key)
@@ -39,13 +26,13 @@ pub fn run() {
     h2!("Installing Neovim and Eco system");
     crate::linux::manjaro::packages::install(&config.packages);
 
-    h2!("Creating directory: {:?}", &config.paths.config_dir);
-    exe!("mkdir -pv {:?}", &config.paths.config_dir);
+    h2!("Creating directory: {:?}", &config.config_dir[0]);
+    exe!("mkdir -pv {}", &config.config_dir[0]);
 
-    let link_path = home_path!(&config.paths.config_dir, &config.files.init_vim);
-    let source_path = home_path!(&config.paths.config_source_dir, &config.files.init_vim);
-
-    slink(&source_path, &link_path);
+    slink(
+        &home_path!(&config.config_dir[1]),
+        &home_path!(&config.config_dir[0]),
+    );
 
     h2!("installing plugins");
     exe!("nvim -c 'PlugInstall' -c ':x' -c ':x'");
