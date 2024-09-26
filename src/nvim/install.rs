@@ -1,6 +1,7 @@
 use crate::prelude::*;
 use console::Key;
 use files::slink;
+use rustyline::completion::Candidate;
 use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
@@ -27,7 +28,7 @@ pub fn run() {
     crate::linux::manjaro::packages::install(&config.packages);
 
     h2!("Creating directory: {:?}", &config.config_dir[0]);
-    exe!("mkdir -pv {}", home_path!(&config.config_dir[0]));
+    // exe!("mkdir -pv {}", home_path!(&config.config_dir[0]));
 
     slink(
         &home_path!(&config.config_dir[1]),
