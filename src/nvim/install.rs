@@ -27,7 +27,7 @@ pub fn run() {
     crate::linux::manjaro::packages::install(&config.packages);
 
     h2!("Creating directory: {:?}", &config.config_dir[0]);
-    exe!("mkdir -pv {}", &config.config_dir[0]);
+    exe!("mkdir -pv {}", home_path!(&config.config_dir[0]));
 
     slink(
         &home_path!(&config.config_dir[1]),

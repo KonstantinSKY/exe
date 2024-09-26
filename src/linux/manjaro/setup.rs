@@ -1,7 +1,16 @@
 use super::config::Config;
 use super::packages::{enable_aur, install};
 use crate::{linux::manjaro::packages, prelude::*};
+use battery::Manager;
 use files::{delete, slink_pair};
+
+fn is_laptop() -> bool {
+    let manager = Manager::new().unwrap();
+    match manager.batteries().unwrap().next() {
+        Some(Ok(_)) => true, // If a battery is found, it's likely a laptop
+        _ => false,          // No battery found means it's likely a desktop
+    }
+}
 
 pub fn run() {
     H1!("Manjaro Linux Setup");
@@ -30,7 +39,6 @@ pub fn run() {
     exe!("sudo mhwd -a pci nonfree 0300");
     h2!("Checking using Video driver, may be u need to reboot before");
     exe!("lspci -k | grep -EA3 'VGA|3D|Display'"; true);
-
 
     run!(
         || enable_aur(&config),
@@ -88,7 +96,18 @@ fn i3(cfg: &Config) {
 
     h2!("Creating i3 config  directory for configs if absent: {local_i3_config_dir_path:?}");
     exe!("mkdir -vp {local_i3_config_dir_path:?}; la -la {local_i3_config_dir_path:?}");
-    slink_pair(&cfg.i3_config_dir);
+
+    // config slink
+    slink_pair(&cfg.i3_config);
+
+    //link to monitor include
+    if is_laptop() {
+        slink_pair(&cfg.i3_laptop_config_dir);
+    } else {
+        slink_pair(&cfg.i3_desktop_config_dir);
+    }
+
+    // Slink by PC type
     exe!("rm ~/.i3 -r");
 
     h2!("Qt configs");

@@ -4,6 +4,9 @@ use serde::Deserialize;
 pub struct Config {
     pub global_config_file: String,
     pub i3_config_dir: Vec<String>,
+    pub i3_config: Vec<String>,
+    pub i3_laptop_config_dir: Vec<String>,
+    pub i3_desktop_config_dir: Vec<String>,
     pub qt5_conf: Vec<String>,
     pub pamac_conf: String,
     pub grub_config: String,
