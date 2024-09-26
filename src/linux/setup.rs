@@ -16,14 +16,8 @@ pub fn run() {
 
     run!(mirrors, "Setting mirrors for Linux");
     run!(update, "Full update Linux packages");
-
     run!(stop_beep_sound, "Stop PC beeper sound");
 
-    run!(
-        crate::alacritty::install,
-        "Alacritty terminal install and setup"
-    );
-    
     let config = Config::new();
     run!(
         || create_symlinks(&config),
@@ -36,20 +30,23 @@ pub fn run() {
 
     run!(|| setup_rc(&config), "Setting RC files for all shell");
     run!(|| fonts(&config), "Font Setting");
-    // run!(|| trash(&config), "Setup trash-cli and trash-folder");
-    h2!(
-        "Installing Linux common package collection: {:?}",
-        config.packages
-    );
-    super::os::install(&config.packages);
-    
     run!(super::os::setup_by_os_type, "Setting by Linux Type");
+
+    run!(
+        crate::alacritty::install,
+        "Alacritty terminal install and setup"
+    );
+
+    // h2!(
+    //     "Installing Linux common package collection: {:?}",
+    //     config.packages
+    // );
+    // super::os::install(&config.packages);
 }
 
 fn create_symlinks(cfg: &Config) {
     h2!("Creating File Symlinks");
-    
-    
+
     h2!("Creating Directory Symlinks");
     for dir in &cfg.work_dirs {
         if dir.is_empty() {
@@ -79,7 +76,6 @@ fn create_symlinks(cfg: &Config) {
         slink(&source_path, &link_path);
     }
 }
-
 
 fn fonts(cfg: &Config) {
     H1!("Fonts settings");

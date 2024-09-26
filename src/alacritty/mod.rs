@@ -1,18 +1,36 @@
-use files::slink;
+use crate::sh::files::slink_pair;
 
 use crate::prelude::*;
 use crate::{home_path, linux::os, sh};
 
-pub fn install() {
-    let config_link_path = home_path!(".config/alacritty");
-    let config_source_path = home_path!(CONFIGS_DIR, "alacritty");
 
+use serde::Deserialize;
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct Config {
+    pub config_dirs: Vec<String>,
+    pub terminal_files: Vec<String>,
+}
+
+impl Config {
+    #[must_use] 
+    pub fn new() -> Self {
+        crate::configs::get("alacritty")
+    }
+}
+
+impl Default for Config {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+pub fn install() {
+    let config = Config::new();
     os::install("alacritty");
-    sh::files::slink(&config_source_path, &config_link_path);
+    slink_pair(&config.config_dirs);
     exe!("mkdir -pv .local/bin");
-    slink(
-        &home_path!(CONFIGS_DIR, "terminal"),
-        &home_path!(".local/bin/terminal"),
-    );
+    slink_pair(&config.terminal_files);
     exe!("alacritty &");
 }
+
